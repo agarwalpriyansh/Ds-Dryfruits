@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const schema = mongoose.schema;
+const Schema = mongoose.Schema;
 
 const themeSchema = new Schema({
     name: {
@@ -7,10 +7,6 @@ const themeSchema = new Schema({
       required: true,
       unique: true, 
       trim: true
-    },
-    description: {
-      type: String,
-      required: false
     },
     imageUrl: {
       type: String, 

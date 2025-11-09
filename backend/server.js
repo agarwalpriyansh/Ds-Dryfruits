@@ -13,6 +13,12 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected successfully'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
+const themesRouter = require('./routes/theme');
+const productsRouter = require('./routes/product');
+
+app.use('/api/themes', themesRouter);
+app.use('/api/products', productsRouter);
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
