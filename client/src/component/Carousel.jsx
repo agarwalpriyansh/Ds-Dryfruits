@@ -5,6 +5,24 @@ import { useState, useEffect } from "react"
 export default function ImageCarousel({ images, autoPlayInterval = 5000 }) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlay, setIsAutoPlay] = useState(true)
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== 'undefined' ? window.innerWidth : 1024
+  )
+
+  // Handle window resize for responsive design
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth)
+    }
+    
+    // Set initial width
+    handleResize()
+    
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   // Auto-advance carousel
   useEffect(() => {
@@ -16,6 +34,19 @@ export default function ImageCarousel({ images, autoPlayInterval = 5000 }) {
 
     return () => clearInterval(interval)
   }, [isAutoPlay, autoPlayInterval, images?.length])
+
+  // Responsive styles based on window width
+  const isMobile = windowWidth < 640
+  const isTablet = windowWidth >= 640 && windowWidth < 1024
+  
+  const carouselHeight = isMobile ? '300px' : isTablet ? '400px' : '500px'
+  const buttonSize = isMobile ? '20px' : '24px'
+  const buttonPadding = isMobile ? '6px' : '8px'
+  const buttonLeftRight = isMobile ? '8px' : '16px'
+  const indicatorSize = isMobile ? '8px' : '10px'
+  const indicatorActiveWidth = isMobile ? '24px' : '32px'
+  const indicatorBottom = isMobile ? '12px' : '16px'
+  const borderRadius = isMobile ? '8px' : '12px'
 
   const goToSlide = (index) => {
     setCurrentIndex(index)
@@ -39,9 +70,9 @@ export default function ImageCarousel({ images, autoPlayInterval = 5000 }) {
       style={{
         position: 'relative',
         width: '100%',
-        height: '500px',
+        height: carouselHeight,
         overflow: 'hidden',
-        borderRadius: '12px',
+        borderRadius: borderRadius,
       }}
       onMouseEnter={() => setIsAutoPlay(false)}
       onMouseLeave={() => setIsAutoPlay(true)}
@@ -61,7 +92,12 @@ export default function ImageCarousel({ images, autoPlayInterval = 5000 }) {
             <img
               src={image.src || "/placeholder.svg"}
               alt={image.alt}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'cover',
+                objectPosition: 'center'
+              }}
             />
           </div>
         ))}
@@ -71,20 +107,23 @@ export default function ImageCarousel({ images, autoPlayInterval = 5000 }) {
         onClick={prevSlide}
         style={{
           position: 'absolute',
-          left: '16px',
+          left: buttonLeftRight,
           top: '50%',
           transform: 'translateY(-50%)',
           zIndex: 10,
           background: 'rgba(255,255,255,0.85)',
           color: '#111827',
-          padding: '8px',
+          padding: buttonPadding,
           borderRadius: '9999px',
           border: 'none',
           cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
         aria-label="Previous slide"
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width={buttonSize} height={buttonSize} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M15 6L9 12L15 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </button>
@@ -92,20 +131,23 @@ export default function ImageCarousel({ images, autoPlayInterval = 5000 }) {
         onClick={nextSlide}
         style={{
           position: 'absolute',
-          right: '16px',
+          right: buttonLeftRight,
           top: '50%',
           transform: 'translateY(-50%)',
           zIndex: 10,
           background: 'rgba(255,255,255,0.85)',
           color: '#111827',
-          padding: '8px',
+          padding: buttonPadding,
           borderRadius: '9999px',
           border: 'none',
           cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
         aria-label="Next slide"
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width={buttonSize} height={buttonSize} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </button>
@@ -113,12 +155,12 @@ export default function ImageCarousel({ images, autoPlayInterval = 5000 }) {
       <div
         style={{
           position: 'absolute',
-          bottom: '16px',
+          bottom: indicatorBottom,
           left: '50%',
           transform: 'translateX(-50%)',
           zIndex: 10,
           display: 'flex',
-          gap: '8px',
+          gap: isMobile ? '6px' : '8px',
         }}
       >
         {images.map((_, index) => (
@@ -126,10 +168,10 @@ export default function ImageCarousel({ images, autoPlayInterval = 5000 }) {
             key={index}
             onClick={() => goToSlide(index)}
             style={{
-              height: '10px',
+              height: indicatorSize,
               borderRadius: '9999px',
               transition: 'all 300ms',
-              width: index === currentIndex ? '32px' : '10px',
+              width: index === currentIndex ? indicatorActiveWidth : indicatorSize,
               background: index === currentIndex ? '#ffffff' : 'rgba(255,255,255,0.6)',
               border: 'none',
               cursor: 'pointer',
