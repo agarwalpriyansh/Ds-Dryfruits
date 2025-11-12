@@ -1,28 +1,8 @@
-"use client"
-
 import { useState, useEffect } from "react"
 
 export default function ImageCarousel({ images, autoPlayInterval = 5000 }) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlay, setIsAutoPlay] = useState(true)
-  const [windowWidth, setWindowWidth] = useState(
-    typeof window !== 'undefined' ? window.innerWidth : 1024
-  )
-
-  // Handle window resize for responsive design
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth)
-    }
-    
-    // Set initial width
-    handleResize()
-    
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
 
   // Auto-advance carousel
   useEffect(() => {
@@ -34,19 +14,6 @@ export default function ImageCarousel({ images, autoPlayInterval = 5000 }) {
 
     return () => clearInterval(interval)
   }, [isAutoPlay, autoPlayInterval, images?.length])
-
-  // Responsive styles based on window width
-  const isMobile = windowWidth < 640
-  const isTablet = windowWidth >= 640 && windowWidth < 1024
-  
-  const carouselHeight = isMobile ? '300px' : isTablet ? '400px' : '500px'
-  const buttonSize = isMobile ? '20px' : '24px'
-  const buttonPadding = isMobile ? '6px' : '8px'
-  const buttonLeftRight = isMobile ? '8px' : '16px'
-  const indicatorSize = isMobile ? '8px' : '10px'
-  const indicatorActiveWidth = isMobile ? '24px' : '32px'
-  const indicatorBottom = isMobile ? '12px' : '16px'
-  const borderRadius = isMobile ? '8px' : '12px'
 
   const goToSlide = (index) => {
     setCurrentIndex(index)
@@ -67,128 +34,75 @@ export default function ImageCarousel({ images, autoPlayInterval = 5000 }) {
 
   return (
     <div
-      style={{
-        position: 'relative',
-        width: '100%',
-        height: carouselHeight,
-        overflow: 'hidden',
-        borderRadius: borderRadius,
-      }}
+      className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] overflow-hidden rounded-lg md:rounded-xl"
       onMouseEnter={() => setIsAutoPlay(false)}
       onMouseLeave={() => setIsAutoPlay(true)}
     >
       {/* Main carousel container */}
-      <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+      <div className="relative w-full h-full">
         {images.map((image, index) => (
           <div
             key={index}
-            style={{
-              position: 'absolute',
-              inset: 0,
-              opacity: index === currentIndex ? 1 : 0,
-              transition: 'opacity 700ms ease-in-out',
-            }}
+            className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+              index === currentIndex ? 'opacity-100' : 'opacity-0'
+            }`}
           >
             <img
               src={image.src || "/placeholder.svg"}
-              alt={image.alt}
-              style={{ 
-                width: '100%', 
-                height: '100%', 
-                objectFit: 'cover',
-                objectPosition: 'center'
+              alt={image.alt || `Carousel image ${index + 1}`}
+              className="w-full h-full object-cover object-center"
+              onError={(e) => {
+                console.error('Image failed to load:', image.src);
+                e.target.src = '/placeholder.svg';
+              }}
+              onLoad={() => {
+                console.log('Image loaded successfully:', image.src);
               }}
             />
           </div>
         ))}
       </div>
 
+      {/* Previous button */}
       <button
         onClick={prevSlide}
-        style={{
-          position: 'absolute',
-          left: buttonLeftRight,
-          top: '50%',
-          transform: 'translateY(-50%)',
-          zIndex: 10,
-          background: 'rgba(255,255,255,0.85)',
-          color: '#111827',
-          padding: buttonPadding,
-          borderRadius: '9999px',
-          border: 'none',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
+        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 bg-white/85 text-gray-900 p-1.5 sm:p-2 rounded-full border-none cursor-pointer flex items-center justify-center hover:bg-white/95 transition-colors"
         aria-label="Previous slide"
       >
-        <svg width={buttonSize} height={buttonSize} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M15 6L9 12L15 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </button>
+
+      {/* Next button */}
       <button
         onClick={nextSlide}
-        style={{
-          position: 'absolute',
-          right: buttonLeftRight,
-          top: '50%',
-          transform: 'translateY(-50%)',
-          zIndex: 10,
-          background: 'rgba(255,255,255,0.85)',
-          color: '#111827',
-          padding: buttonPadding,
-          borderRadius: '9999px',
-          border: 'none',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
+        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 bg-white/85 text-gray-900 p-1.5 sm:p-2 rounded-full border-none cursor-pointer flex items-center justify-center hover:bg-white/95 transition-colors"
         aria-label="Next slide"
       >
-        <svg width={buttonSize} height={buttonSize} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </button>
 
-      <div
-        style={{
-          position: 'absolute',
-          bottom: indicatorBottom,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 10,
-          display: 'flex',
-          gap: isMobile ? '6px' : '8px',
-        }}
-      >
+      {/* Indicators */}
+      <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-1.5 sm:gap-2">
         {images.map((_, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            style={{
-              height: indicatorSize,
-              borderRadius: '9999px',
-              transition: 'all 300ms',
-              width: index === currentIndex ? indicatorActiveWidth : indicatorSize,
-              background: index === currentIndex ? '#ffffff' : 'rgba(255,255,255,0.6)',
-              border: 'none',
-              cursor: 'pointer',
-            }}
+            className={`rounded-full transition-all duration-300 border-none cursor-pointer ${
+              index === currentIndex
+                ? 'w-6 sm:w-8 h-2 sm:h-2.5 bg-white'
+                : 'w-2 sm:w-2.5 h-2 sm:h-2.5 bg-white/60'
+            }`}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>
 
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(to top, rgba(0,0,0,0.2), rgba(0,0,0,0))',
-          pointerEvents: 'none',
-        }}
-      />
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
     </div>
   )
 }
