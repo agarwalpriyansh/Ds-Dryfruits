@@ -1,10 +1,7 @@
 import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
-import Carousel from './component/Carousel';
-
 import HomePage from './page/Home';
 import ThemeDetail from './page/ThemeDetail';
-
 
 function App() {
   return (
