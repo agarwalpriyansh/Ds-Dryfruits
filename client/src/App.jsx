@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import HomePage from './page/Home';
 import ThemeDetail from './page/ThemeDetail';
+import ProductDetail from './page/ProductDetail';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           {/* Route 1: The Home Page */}
           <Route path="/" element={<HomePage />} />
           <Route path="/themes/:themeSlug" element={<ThemeDetail />} />
+          <Route path="/products/:productId" element={<ProductDetail />} />
         </Routes>
       </main>
     </div>

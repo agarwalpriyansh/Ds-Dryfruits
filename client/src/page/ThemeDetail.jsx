@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, Link } from 'react-router-dom';
 import { apiService } from '../utils/apiConnector';
 import { deslugifyThemeName, slugifyThemeName } from '../utils/slugify';
 
@@ -206,10 +206,16 @@ function ThemeDetail() {
                     </p>
                   )}
                   {product.defaultPrice && (
-                    <p className="text-base font-medium text-gray-900">
+                    <p className="text-base font-medium text-gray-900 mb-4">
                       {product.defaultPrice.weight} &bull; ₹{product.defaultPrice.price}
                     </p>
                   )}
+                  <Link
+                    to={`/products/${product._id}`}
+                    className="block w-full text-center bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                  >
+                    View
+                  </Link>
                 </article>
               ))}
             </div>
