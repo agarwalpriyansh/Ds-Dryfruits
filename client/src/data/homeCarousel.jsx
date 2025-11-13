@@ -3,9 +3,6 @@ import cBanner2 from "../assets/cBanner2.jpg";
 import cBanner3 from "../assets/cBanner3.jpg";
 import cBanner4 from "../assets/cBanner4.jpg";
 
-// Debug: Log image imports to verify they're working
-console.log('Image imports:', { cBanner1, cBanner2, cBanner3, cBanner4 });
-
 const heroImages = [
     {
         src: cBanner1,
