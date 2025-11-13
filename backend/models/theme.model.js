@@ -11,6 +11,10 @@ const themeSchema = new Schema({
     imageUrl: {
       type: String, 
       required: false
+    },
+    bannerUrl: {
+      type: String,
+      required: true
     }
   }, {
     timestamps: true,

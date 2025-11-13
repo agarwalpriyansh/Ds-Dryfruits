@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+import { slugifyThemeName } from '../utils/slugify';
+
 export default function ThemeCard({ theme }) {
   if (!theme) return null;
 
@@ -40,8 +43,14 @@ export default function ThemeCard({ theme }) {
 
   const imageUrl = getImageUrl();
 
+  const themeSlug = slugifyThemeName(theme.name);
+
   return (
-    <div className="flex flex-col items-center cursor-pointer transition-all duration-300 ease-in-out rounded-xl overflow-hidden bg-white shadow-md hover:-translate-y-2 hover:shadow-lg">
+    <Link
+      to={`/themes/${themeSlug}`}
+      state={{ theme }}
+      className="flex flex-col items-center cursor-pointer transition-all duration-300 ease-in-out rounded-xl overflow-hidden bg-white shadow-md hover:-translate-y-2 hover:shadow-lg"
+    >
       <div className="w-full h-48 overflow-hidden bg-gray-100">
         <img
           src={imageUrl}
@@ -73,7 +82,7 @@ export default function ThemeCard({ theme }) {
           {theme.name}
         </h3>
       </div>
-    </div>
+    </Link>
   );
 }
 

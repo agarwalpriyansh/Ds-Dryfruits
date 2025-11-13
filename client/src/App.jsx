@@ -3,6 +3,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 import Carousel from './component/Carousel';
 
 import HomePage from './page/Home';
+import ThemeDetail from './page/ThemeDetail';
 
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
         <Routes>
           {/* Route 1: The Home Page */}
           <Route path="/" element={<HomePage />} />
-          
+          <Route path="/themes/:themeSlug" element={<ThemeDetail />} />
         </Routes>
       </main>
     </div>
