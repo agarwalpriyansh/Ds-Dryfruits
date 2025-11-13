@@ -12,7 +12,6 @@ const api = axios.create({
 export const apiService = {
   // Theme functions
   getThemes: () => api.get('/themes'),
-  getThemeById: (id) => api.get(`/themes/${id}`),
 
   // Product functions
   getProductsByTheme: (themeId) => api.get(`/products/by-theme/${themeId}`),
