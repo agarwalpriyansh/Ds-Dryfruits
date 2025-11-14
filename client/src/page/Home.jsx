@@ -3,6 +3,7 @@ import Carousel from '../component/Carousel';
 import ThemeCard from '../component/Themecard';
 import heroImages from '../data/homeCarousel';
 import { apiService } from '../utils/apiConnector';
+import FeaturedCollection from '../component/FeaturedCollection';
 
 
 function Home() {
@@ -65,6 +66,7 @@ function Home() {
                     </div>
                 )}
             </div>
+            <FeaturedCollection />
         </div>
     );
 }
