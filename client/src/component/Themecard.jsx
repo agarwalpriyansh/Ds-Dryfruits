@@ -51,7 +51,7 @@ export default function ThemeCard({ theme }) {
       state={{ theme }}
       className="flex flex-col items-center cursor-pointer transition-all duration-300 ease-in-out rounded-xl overflow-hidden bg-white shadow-md hover:-translate-y-2 hover:shadow-lg"
     >
-      <div className="w-full h-48 overflow-hidden bg-gray-100">
+      <div className="w-full h-40 sm:h-48 overflow-hidden bg-gray-100">
         <img
           src={imageUrl}
           alt={theme.name || 'Theme image'}
@@ -77,8 +77,8 @@ export default function ThemeCard({ theme }) {
           }}
         />
       </div>
-      <div className="p-4 w-full text-center">
-        <h3 className="m-0 text-lg font-semibold text-gray-900">
+      <div className="p-3 sm:p-4 w-full text-center">
+        <h3 className="m-0 text-base sm:text-lg font-semibold text-gray-900">
           {theme.name}
         </h3>
       </div>
