@@ -3,10 +3,8 @@ let Product = require('../models/product.model');
 
 // IMPORTANT: Define /featured route FIRST before any parameterized routes
 router.get('/featured', (req, res) => {
-  console.log('Featured products route hit');
   Product.find({ isFeatured: true })
     .then(products => {
-      console.log(`Found ${products.length} featured products`);
       if (!products || products.length === 0) {
         return res.json([]); 
       }
