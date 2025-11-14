@@ -51,6 +51,10 @@ const productSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId, // Stores the Theme's unique _id
     ref: 'Theme',                          // Tells Mongoose this ID refers to the 'Theme' model
     required: true
+  },
+  isFeatured: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true, // Automatically adds 'createdAt' and 'updatedAt'
