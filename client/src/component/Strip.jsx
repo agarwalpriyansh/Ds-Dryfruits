@@ -43,7 +43,8 @@ export default function Strip() {
 
   return (
     <div
-      className={`w-full flex flex-col z-[1100]  ${
+      data-strip-component
+      className={`w-full flex flex-col z-[1100] transition-transform duration-300 ease-in-out ${
         isSmallScreen && !showStrip ? '-translate-y-full' : 'translate-y-0'
       }`}
     >

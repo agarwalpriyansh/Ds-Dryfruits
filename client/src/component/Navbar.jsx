@@ -4,11 +4,14 @@ import { Link } from 'react-router-dom';
 
 export default function Navbar() {
   const [isMobile, setIsMobile] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [shopMenuOpen, setShopMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const [elevated, setElevated] = useState(false);
   const [isAtTop, setIsAtTop] = useState(true);
+  const [stripHeight, setStripHeight] = useState(0);
+  const [isStripVisible, setIsStripVisible] = useState(true);
   const lastScrollY = useRef(0);
   const shopMenuRef = useRef(null);
   const mobileMenuRef = useRef(null);
@@ -17,6 +20,7 @@ export default function Navbar() {
   useEffect(() => {
     const checkScreenSize = () => {
       setIsMobile(window.innerWidth < 768); // md breakpoint
+      setIsSmallScreen(window.innerWidth < 640); // sm breakpoint
     };
     
     checkScreenSize();
@@ -24,24 +28,58 @@ export default function Navbar() {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
+  // Get strip height and visibility on mount, resize, and periodically
+  useEffect(() => {
+    const updateStripInfo = () => {
+      const stripElement = document.querySelector('[data-strip-component]');
+      if (stripElement) {
+        setStripHeight(stripElement.offsetHeight);
+        // Check if strip is visible (not translated up)
+        const isVisible = !stripElement.classList.contains('-translate-y-full');
+        setIsStripVisible(isVisible);
+      }
+    };
+    
+    updateStripInfo();
+    window.addEventListener('resize', updateStripInfo);
+    
+    // Also check periodically to catch strip visibility changes
+    const interval = setInterval(updateStripInfo, 100);
+    
+    return () => {
+      window.removeEventListener('resize', updateStripInfo);
+      clearInterval(interval);
+    };
+  }, []);
+
   // Scroll listener - handles both hide/show and elevated shadow
   const handleScroll = () => {
     if (typeof window !== "undefined") {
-      // Check if at top of page
-      setIsAtTop(window.scrollY < 50);
+      const scrollY = window.scrollY;
+      
+      // Check if at top of page (use stripHeight for small screens, 50px for large)
+      const threshold = isSmallScreen && stripHeight > 0 ? stripHeight : 50;
+      setIsAtTop(scrollY < threshold);
+      
+      // Update strip visibility check
+      const stripElement = document.querySelector('[data-strip-component]');
+      if (stripElement) {
+        const isVisible = !stripElement.classList.contains('-translate-y-full');
+        setIsStripVisible(isVisible);
+      }
       
       // Handle hide/show on scroll direction
-      if (window.scrollY > lastScrollY.current) {
+      if (scrollY > lastScrollY.current) {
         // Scrolling DOWN → hide navbar
         setShowNavbar(false);
       } else {
         // Scrolling UP → show navbar
         setShowNavbar(true);
       }
-      lastScrollY.current = window.scrollY;
+      lastScrollY.current = scrollY;
 
       // Handle elevated shadow effect
-      if (window.scrollY > 10) {
+      if (scrollY > 10) {
         setElevated(true);     // Add shadow when scrolling
       } else {
         setElevated(false);    // Remove shadow at top
@@ -52,7 +90,7 @@ export default function Navbar() {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isSmallScreen, stripHeight]);
 
   // Close menus when clicking outside
   useEffect(() => {
@@ -78,13 +116,38 @@ export default function Navbar() {
     'Gift Boxes'
   ];
 
+  // Calculate top position based on screen size and scroll position
+  const getTopStyle = () => {
+    // Large screens: keep original behavior using classes
+    if (!isSmallScreen) {
+      return {};
+    }
+    
+    // Small screens: prevent navbar from covering strip
+    // If strip is visible and we're at the top (scrollY <= strip height), position below strip
+    // Otherwise, allow navbar to go to top-0
+    if (isStripVisible && stripHeight > 0) {
+      const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
+      if (scrollY <= stripHeight) {
+        return { top: `${stripHeight}px` };
+      }
+    }
+    return { top: '0px' };
+  };
+
+  const topStyle = getTopStyle();
+  const topClass = !isSmallScreen 
+    ? (isAtTop ? 'top-10 sm:top-[50px] md:top-[52px]' : 'top-0')
+    : '';
+
   return (
     <nav
       className={`fixed w-full bg-white text-black transition-all duration-100 ease-in-out z-[1000] ${
-        isAtTop ? 'top-10 sm:top-[50px] md:top-[52px]' : 'top-0'
+        topClass
       } ${
         showNavbar ? 'translate-y-0' : '-translate-y-full'
       } ${elevated ? 'shadow-[0px_2px_20px_rgba(0,0,0,0.35)]' : 'shadow-none'}`}
+      style={isSmallScreen ? topStyle : {}}
     >
       <div className="min-h-[48px] sm:min-h-16 flex items-center justify-between px-4 sm:px-8 md:px-12">
         {/* Logo/Brand */}
