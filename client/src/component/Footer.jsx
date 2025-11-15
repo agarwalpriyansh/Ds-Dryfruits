@@ -1,353 +1,135 @@
 import React from 'react';
-import { Box, Typography, Container, Grid } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Linkedin, Phone, Mail } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Linkedin, Mail, MapPin, Phone, ArrowUp } from 'lucide-react';
 
 export default function Footer() {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <Box
-      component="footer"
-      sx={{
-        backgroundColor: '#2c2c2c',
-        color: '#fff',
-        paddingTop: {
-          xs: 4,
-          sm: 5,
-          md: 6,
-        },
-        paddingBottom: {
-          xs: 3,
-          sm: 4,
-          md: 5,
-        },
-        marginTop: {
-          xs: 4,
-          sm: 6,
-          md: 8,
-        },
-      }}
-    >
-      <Container maxWidth="lg">
-        <Grid container spacing={{ xs: 3, sm: 4, md: 5 }}>
-          {/* Company Info */}
-          <Grid item xs={12} sm={6} md={4}>
-            <Typography
-              variant="h6"
-              sx={{
-                fontSize: {
-                  xs: '1.1rem',
-                  sm: '1.25rem',
-                  md: '1.5rem',
-                },
-                fontWeight: 600,
-                marginBottom: 2,
-              }}
-            >
-              The Dry Fruit Store
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: {
-                  xs: '0.85rem',
-                  sm: '0.9rem',
-                  md: '1rem',
-                },
-                color: '#b0b0b0',
-                lineHeight: 1.6,
-              }}
-            >
-              Your trusted source for premium quality dry fruits and nuts. 
-              Fresh, healthy, and delivered to your doorstep.
-            </Typography>
-          </Grid>
+    <footer className="bg-[#faf0e6] pt-16 pb-8">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 opacity-5 pointer-events-none">
+        <div className="absolute left-0 top-1/2 w-96 h-96 bg-green-300 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4">
+        {/* Main footer content */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+          {/* Brand section */}
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-black text-foreground tracking-tight">Dry Fruit House</h2>
+              <p className="text-sm font-semibold text-gray-600 tracking-widest mt-1">EAT HEALTHY</p>
+              <div className="h-1 w-24 bg-foreground mt-2"></div>
+            </div>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Dry Fruit House brings you a collection of carefully selected foods from India and across the world.{' '}
+              <a href="#" className="text-amber-700 font-semibold hover:underline">
+                [Explore More]
+              </a>
+            </p>
+            {/* Social icons */}
+            <div className="flex gap-4">
+              <a href="#" className="text-foreground hover:text-amber-700 transition" aria-label="Facebook">
+                <Facebook size={20} />
+              </a>
+              <a href="#" className="text-foreground hover:text-amber-700 transition" aria-label="Twitter">
+                <Twitter size={20} />
+              </a>
+              <a href="#" className="text-foreground hover:text-amber-700 transition" aria-label="Instagram">
+                <Instagram size={20} />
+              </a>
+              <a href="#" className="text-foreground hover:text-amber-700 transition" aria-label="LinkedIn">
+                <Linkedin size={20} />
+              </a>
+            </div>
+          </div>
 
           {/* Quick Links */}
-          <Grid item xs={12} sm={6} md={2}>
-            <Typography
-              variant="h6"
-              sx={{
-                fontSize: {
-                  xs: '1rem',
-                  sm: '1.1rem',
-                  md: '1.25rem',
-                },
-                fontWeight: 600,
-                marginBottom: 2,
-              }}
-            >
-              Quick Links
-            </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 1,
-              }}
-            >
-              <Link
-                to="/"
-                style={{
-                  color: '#b0b0b0',
-                  textDecoration: 'none',
-                  fontSize: '0.9rem',
-                  transition: 'color 0.3s ease',
-                }}
-                onMouseEnter={(e) => (e.target.style.color = '#fff')}
-                onMouseLeave={(e) => (e.target.style.color = '#b0b0b0')}
-              >
-                Home
-              </Link>
-              <Link
-                to="/about"
-                style={{
-                  color: '#b0b0b0',
-                  textDecoration: 'none',
-                  fontSize: '0.9rem',
-                  transition: 'color 0.3s ease',
-                }}
-                onMouseEnter={(e) => (e.target.style.color = '#fff')}
-                onMouseLeave={(e) => (e.target.style.color = '#b0b0b0')}
-              >
-                About Us
-              </Link>
-              <Link
-                to="/bulk"
-                style={{
-                  color: '#b0b0b0',
-                  textDecoration: 'none',
-                  fontSize: '0.9rem',
-                  transition: 'color 0.3s ease',
-                }}
-                onMouseEnter={(e) => (e.target.style.color = '#fff')}
-                onMouseLeave={(e) => (e.target.style.color = '#b0b0b0')}
-              >
-                Bulk Order
-              </Link>
-              <Link
-                to="/contact"
-                style={{
-                  color: '#b0b0b0',
-                  textDecoration: 'none',
-                  fontSize: '0.9rem',
-                  transition: 'color 0.3s ease',
-                }}
-                onMouseEnter={(e) => (e.target.style.color = '#fff')}
-                onMouseLeave={(e) => (e.target.style.color = '#b0b0b0')}
-              >
-                Contact Us
-              </Link>
-            </Box>
-          </Grid>
+          <div>
+            <h3 className="text-lg font-semibold text-foreground mb-6">Quick Links</h3>
+            <ul className="space-y-4">
+              {['About Us', 'Contact Us', 'Bulk Ordering', 'Shopping'].map((link) => (
+                <li key={link}>
+                  <a href="#" className="text-gray-600 hover:text-foreground transition text-sm">
+                    {link}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          {/* Contact Info */}
-          <Grid item xs={12} sm={6} md={3}>
-            <Typography
-              variant="h6"
-              sx={{
-                fontSize: {
-                  xs: '1rem',
-                  sm: '1.1rem',
-                  md: '1.25rem',
-                },
-                fontWeight: 600,
-                marginBottom: 2,
-              }}
-            >
-              Contact
-            </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 1.5,
-              }}
-            >
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1,
-                  color: '#b0b0b0',
-                }}
-              >
-                <Phone size={16} />
-                <Typography
-                  sx={{
-                    fontSize: {
-                      xs: '0.85rem',
-                      sm: '0.9rem',
-                    },
-                  }}
-                >
-                  +91-7483600212
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1,
-                  color: '#b0b0b0',
-                }}
-              >
-                <Mail size={16} />
-                <Typography
-                  sx={{
-                    fontSize: {
-                      xs: '0.85rem',
-                      sm: '0.9rem',
-                    },
-                    wordBreak: 'break-word',
-                  }}
-                >
+          {/* Account Info */}
+          <div>
+            <h3 className="text-lg font-semibold text-foreground mb-6">Account Info</h3>
+            <ul className="space-y-4">
+              {['My Account', 'Privacy Policy', 'Return Policy', 'Terms & Conditions'].map((link) => (
+                <li key={link}>
+                  <a href="#" className="text-gray-600 hover:text-foreground transition text-sm">
+                    {link}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact Details */}
+          <div>
+            <h3 className="text-lg font-semibold text-foreground mb-6">Contact Details</h3>
+            <div className="space-y-4">
+              <div className="flex gap-3">
+                <MapPin size={20} className="text-foreground flex-shrink-0 mt-0.5" />
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  NR TOWERS, 17th Cross, Sector 4, 19th Main Rd, HSR Layout, Bengaluru - 560102
+                </p>
+              </div>
+              <div className="flex gap-3 items-start">
+                <Mail size={20} className="text-foreground flex-shrink-0 mt-0.5" />
+                <a href="mailto:info@dryfruithouse.com" className="text-gray-600 hover:text-foreground transition text-sm">
                   info@dryfruithouse.com
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
+                </a>
+              </div>
+              <div className="flex gap-3 items-center">
+                <Phone size={20} className="text-foreground flex-shrink-0" />
+                <a href="tel:+917483600212" className="text-gray-600 hover:text-foreground transition text-sm">
+                  +91-7483600212
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          {/* Social Media */}
-          <Grid item xs={12} sm={6} md={3}>
-            <Typography
-              variant="h6"
-              sx={{
-                fontSize: {
-                  xs: '1rem',
-                  sm: '1.1rem',
-                  md: '1.25rem',
-                },
-                fontWeight: 600,
-                marginBottom: 2,
-              }}
-            >
-              Follow Us
-            </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                gap: 2,
-                flexWrap: 'wrap',
-              }}
-            >
-              <Box
-                component="a"
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                sx={{
-                  color: '#b0b0b0',
-                  cursor: 'pointer',
-                  transition: 'color 0.3s ease',
-                  display: 'flex',
-                  '&:hover': {
-                    color: '#fff',
-                  },
-                  '& svg': {
-                    width: { xs: 20, sm: 22, md: 24 },
-                    height: { xs: 20, sm: 22, md: 24 },
-                  }
-                }}
-              >
-                <Facebook size={24} />
-              </Box>
-              <Box
-                component="a"
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                sx={{
-                  color: '#b0b0b0',
-                  cursor: 'pointer',
-                  transition: 'color 0.3s ease',
-                  display: 'flex',
-                  '&:hover': {
-                    color: '#fff',
-                  },
-                  '& svg': {
-                    width: { xs: 20, sm: 22, md: 24 },
-                    height: { xs: 20, sm: 22, md: 24 },
-                  }
-                }}
-              >
-                <Twitter size={24} />
-              </Box>
-              <Box
-                component="a"
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                sx={{
-                  color: '#b0b0b0',
-                  cursor: 'pointer',
-                  transition: 'color 0.3s ease',
-                  display: 'flex',
-                  '&:hover': {
-                    color: '#fff',
-                  },
-                  '& svg': {
-                    width: { xs: 20, sm: 22, md: 24 },
-                    height: { xs: 20, sm: 22, md: 24 },
-                  }
-                }}
-              >
-                <Instagram size={24} />
-              </Box>
-              <Box
-                component="a"
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                sx={{
-                  color: '#b0b0b0',
-                  cursor: 'pointer',
-                  transition: 'color 0.3s ease',
-                  display: 'flex',
-                  '&:hover': {
-                    color: '#fff',
-                  },
-                  '& svg': {
-                    width: { xs: 20, sm: 22, md: 24 },
-                    height: { xs: 20, sm: 22, md: 24 },
-                  }
-                }}
-              >
-                <Linkedin size={24} />
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
+        {/* Divider */}
+        <div className="border-t border-gray-300 my-8"></div>
 
-        {/* Copyright */}
-        <Box
-          sx={{
-            marginTop: {
-              xs: 3,
-              sm: 4,
-              md: 5,
-            },
-            paddingTop: {
-              xs: 2,
-              sm: 3,
-            },
-            borderTop: '1px solid #444',
-            textAlign: 'center',
-          }}
-        >
-          <Typography
-            sx={{
-              fontSize: {
-                xs: '0.75rem',
-                sm: '0.85rem',
-                md: '0.9rem',
-              },
-              color: '#888',
-            }}
-          >
-            © {new Date().getFullYear()} The Dry Fruit Store. All rights reserved.
-          </Typography>
-        </Box>
-      </Container>
-    </Box>
+        {/* Bottom section */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-gray-600 text-sm">
+            Copyright © 2025 <span className="font-semibold">Dry Fruit House</span> . All Rights Reserved.
+          </p>
+          
+          {/* Payment methods */}
+          <div className="flex gap-3 items-center">
+            <span className="text-sm text-gray-600">Payment Methods:</span>
+            <div className="flex gap-3">
+              <span className="font-bold text-foreground text-sm">VISA</span>
+              <span className="font-bold text-foreground text-sm">PayPal</span>
+              <span className="font-bold text-foreground text-sm">Mastercard</span>
+              <span className="font-bold text-foreground text-sm">Stripe</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll to top button */}
+      <button
+        onClick={scrollToTop}
+        className="fixed bottom-8 right-8 w-12 h-12 bg-amber-900 hover:bg-amber-950 text-white rounded-full flex items-center justify-center transition shadow-lg"
+        aria-label="Scroll to top"
+      >
+        <ArrowUp size={24} />
+      </button>
+    </footer>
   );
 }
-
