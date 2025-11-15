@@ -32,7 +32,7 @@ function Home() {
     }, []);
 
     return (
-        <div>
+        <div className="m-0 p-0">
             <Carousel images={heroImages} autoPlayInterval={5000}></Carousel>
             
             {/* Themes Section */}

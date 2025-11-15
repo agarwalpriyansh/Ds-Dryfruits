@@ -1,34 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { AppBar, Toolbar, Typography, Button, Box, Menu, MenuItem, IconButton, useMediaQuery, useTheme } from '@mui/material';
-import { Menu as MenuIcon } from 'lucide-react';
+import { Menu as MenuIcon, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Navbar() {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [shopAnchorEl, setShopAnchorEl] = useState(null);
-  const [mobileMenuAnchorEl, setMobileMenuAnchorEl] = useState(null);
-  const shopOpen = Boolean(shopAnchorEl);
-  const mobileMenuOpen = Boolean(mobileMenuAnchorEl);
+  const [isMobile, setIsMobile] = useState(false);
+  const [shopMenuOpen, setShopMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const [elevated, setElevated] = useState(false);
   const lastScrollY = useRef(0);
+  const shopMenuRef = useRef(null);
+  const mobileMenuRef = useRef(null);
 
-  const handleShopClick = (event) => {
-    setShopAnchorEl(event.currentTarget);
-  };
-
-  const handleShopClose = () => {
-    setShopAnchorEl(null);
-  };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMenuAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMenuAnchorEl(null);
-  };
+  // Check screen size
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   // Scroll listener - handles both hide/show and elevated shadow
   const handleScroll = () => {
@@ -57,6 +50,21 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close menus when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (shopMenuRef.current && !shopMenuRef.current.contains(event.target)) {
+        setShopMenuOpen(false);
+      }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const shopCategories = [
     'Nuts & Dry Fruits',
     'Dates',
@@ -67,252 +75,146 @@ export default function Navbar() {
   ];
 
   return (
-    <AppBar 
-      position="fixed"   // <-- Navbar stays visible on scroll
-      sx={{ 
-        backgroundColor: '#fff',     // White navbar
-        color: '#000',               // Black text
-        top: {
-          xs: '40px',  // Smaller strip on mobile (text only)
-          sm: '50px',
-          md: '52px',  // Full strip height on desktop
-        },
-        transition: "transform 0.1s ease, box-shadow 0.3s ease, background-color 0.3s ease", // smooth animations
-        transform: showNavbar ? "translateY(0)" : "translateY(-100%)",
-        boxShadow: elevated ? "0px 2px 20px rgba(0,0,0,0.35)" : "none",
-        paddingY: {
-          xs: 0.5,
-          sm: 1,
-        },
-        paddingX: {
-          xs: 1,
-          sm: 2,
-          md: 3,
-        },
-        marginBottom: 4,
-        zIndex: 1000,
-      }}
+    <nav
+      className={`fixed w-full bg-white text-black top-10 sm:top-[50px] md:top-[52px] transition-all duration-100 ease-in-out z-[1000] px-4 sm:px-8 md:px-12 ${
+        showNavbar ? 'translate-y-0' : '-translate-y-full'
+      } ${elevated ? 'shadow-[0px_2px_20px_rgba(0,0,0,0.35)]' : 'shadow-none'}`}
     >
-      <Toolbar sx={{ minHeight: { xs: 48, sm: 64 } }}>
-        <Typography 
-          variant="h6" 
-          sx={{ 
-            flexGrow: 1,
-            fontSize: {
-              xs: '1rem',
-              sm: '1.25rem',
-              md: '1.5rem',
-            }
-          }}
-        >
+      <div className="min-h-[48px] sm:min-h-16 flex items-center justify-between">
+        {/* Logo/Brand */}
+        <h1 className="flex-grow text-base sm:text-xl md:text-2xl font-semibold">
           <Link 
             to="/" 
-            style={{ 
-              color: '#000', 
-              textDecoration: 'none',
-              fontWeight: '600'
-            }}
+            className="text-black no-underline font-semibold"
           >
             The Dry Fruit Store
           </Link>
-        </Typography>
+        </h1>
 
         {/* Desktop Navigation Buttons */}
-        <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 4 }}>
-          <Button 
-            component={Link} 
+        <div className="hidden md:flex items-center gap-8">
+          <Link 
             to="/" 
-            sx={{ 
-              color: '#000', 
-              fontSize: '0.95rem',
-              minWidth: 'auto',
-              padding: '6px 12px',
-            }}
+            className="text-black text-[0.95rem] min-w-0 py-1.5 px-3 hover:opacity-70 transition-opacity"
           >
             Home
-          </Button>
+          </Link>
 
-        
-          <Button
-            onClick={handleShopClick}
-            sx={{ 
-              color: '#000', 
-              fontSize: '0.95rem',
-              minWidth: 'auto',
-              padding: '6px 12px',
-            }}
-          >
-            shop +
-          </Button>
-          <Menu
-            anchorEl={shopAnchorEl}
-            open={shopOpen}
-            onClose={handleShopClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
-            }}
-            PaperProps={{
-              sx: {
-                mt: 1,
-                minWidth: 200,
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-              }
-            }}
-          >
-            {shopCategories.map((category) => (
-              <MenuItem
-                key={category}
-                onClick={handleShopClose}
-                sx={{
-                  color: '#2c2c2c',
-                  fontSize: '1rem',
-                  fontFamily: 'sans-serif',
-                  fontWeight: 500,
-                  py: 2,
-                  px: 3,
-                  '&:hover': {
-                    backgroundColor: '#f5f5f5',
-                  }
-                }}
-              >
-                {category}
-              </MenuItem>
-            ))}
-          </Menu>
+          {/* Shop Dropdown */}
+          <div className="relative" ref={shopMenuRef}>
+            <button
+              onClick={() => setShopMenuOpen(!shopMenuOpen)}
+              className="text-black text-[0.95rem] min-w-0 py-1.5 px-3 hover:opacity-70 transition-opacity bg-transparent border-none cursor-pointer"
+            >
+              shop +
+            </button>
+            {shopMenuOpen && (
+              <div className="absolute top-full left-0 mt-1 min-w-[200px] bg-white rounded shadow-[0_4px_6px_rgba(0,0,0,0.1)] py-2 z-50">
+                {shopCategories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setShopMenuOpen(false)}
+                    className="w-full text-left text-[#2c2c2c] text-base font-medium py-2 px-6 hover:bg-[#f5f5f5] transition-colors bg-transparent border-none cursor-pointer"
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
-          <Button 
-            component={Link} 
+          <Link 
             to="/about" 
-            sx={{ color: '#000', fontSize: '0.95rem' }}
+            className="text-black text-[0.95rem] hover:opacity-70 transition-opacity"
           >
             About Us
-          </Button>
+          </Link>
 
-          <Button 
-            component={Link} 
+          <Link 
             to="/bulk" 
-            sx={{ color: '#000', fontSize: '0.95rem' }}
+            className="text-black text-[0.95rem] hover:opacity-70 transition-opacity"
           >
             Bulk Order
-          </Button>
+          </Link>
 
-          <Button 
-            component={Link} 
+          <Link 
             to="/contact" 
-            sx={{ color: '#000', fontSize: '0.95rem' }}
+            className="text-black text-[0.95rem] hover:opacity-70 transition-opacity"
           >
             Contact Us
-          </Button>
-        </Box>
+          </Link>
+        </div>
 
         {/* Mobile Menu Button */}
-        <IconButton
-          edge="end"
-          color="inherit"
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="md:hidden flex items-center justify-center text-black bg-transparent border-none cursor-pointer p-2"
           aria-label="menu"
-          onClick={handleMobileMenuOpen}
-          sx={{ 
-            display: { xs: 'flex', md: 'none' },
-            color: '#000',
-          }}
         >
-          <MenuIcon />
-        </IconButton>
+          {mobileMenuOpen ? <X size={24} /> : <MenuIcon size={24} />}
+        </button>
 
         {/* Mobile Menu */}
-        <Menu
-          anchorEl={mobileMenuAnchorEl}
-          open={mobileMenuOpen}
-          onClose={handleMobileMenuClose}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          PaperProps={{
-            sx: {
-              mt: 1,
-              minWidth: 200,
-              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-            }
-          }}
-        >
-          <MenuItem
-            component={Link}
-            to="/"
-            onClick={handleMobileMenuClose}
-            sx={{
-              color: '#2c2c2c',
-              fontSize: '1rem',
-              py: 2,
-              px: 3,
-            }}
+        {mobileMenuOpen && (
+          <div 
+            ref={mobileMenuRef}
+            className="absolute top-full left-0 right-0 mt-1 bg-white rounded shadow-[0_4px_6px_rgba(0,0,0,0.1)] py-2 z-50 md:hidden"
           >
-            Home
-          </MenuItem>
-          <MenuItem
-            onClick={(e) => {
-              handleMobileMenuClose();
-              handleShopClick(e);
-            }}
-            sx={{
-              color: '#2c2c2c',
-              fontSize: '1rem',
-              py: 2,
-              px: 3,
-            }}
-          >
-            Shop +
-          </MenuItem>
-          <MenuItem
-            component={Link}
-            to="/about"
-            onClick={handleMobileMenuClose}
-            sx={{
-              color: '#2c2c2c',
-              fontSize: '1rem',
-              py: 2,
-              px: 3,
-            }}
-          >
-            About Us
-          </MenuItem>
-          <MenuItem
-            component={Link}
-            to="/bulk"
-            onClick={handleMobileMenuClose}
-            sx={{
-              color: '#2c2c2c',
-              fontSize: '1rem',
-              py: 2,
-              px: 3,
-            }}
-          >
-            Bulk Order
-          </MenuItem>
-          <MenuItem
-            component={Link}
-            to="/contact"
-            onClick={handleMobileMenuClose}
-            sx={{
-              color: '#2c2c2c',
-              fontSize: '1rem',
-              py: 2,
-              px: 3,
-            }}
-          >
-            Contact Us
-          </MenuItem>
-        </Menu>
-      </Toolbar>
-    </AppBar>
+            <Link
+              to="/"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-[#2c2c2c] text-base py-2 px-6 hover:bg-[#f5f5f5] transition-colors no-underline"
+            >
+              Home
+            </Link>
+            <div className="relative">
+              <button
+                onClick={() => setShopMenuOpen(!shopMenuOpen)}
+                className="w-full text-left text-[#2c2c2c] text-base py-2 px-6 hover:bg-[#f5f5f5] transition-colors bg-transparent border-none cursor-pointer"
+              >
+                Shop +
+              </button>
+              {shopMenuOpen && (
+                <div className="ml-4 mt-1 bg-white rounded shadow-[0_4px_6px_rgba(0,0,0,0.1)] py-2">
+                  {shopCategories.map((category) => (
+                    <button
+                      key={category}
+                      onClick={() => {
+                        setShopMenuOpen(false);
+                        setMobileMenuOpen(false);
+                      }}
+                      className="w-full text-left text-[#2c2c2c] text-base font-medium py-2 px-6 hover:bg-[#f5f5f5] transition-colors bg-transparent border-none cursor-pointer"
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <Link
+              to="/about"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-[#2c2c2c] text-base py-2 px-6 hover:bg-[#f5f5f5] transition-colors no-underline"
+            >
+              About Us
+            </Link>
+            <Link
+              to="/bulk"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-[#2c2c2c] text-base py-2 px-6 hover:bg-[#f5f5f5] transition-colors no-underline"
+            >
+              Bulk Order
+            </Link>
+            <Link
+              to="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-[#2c2c2c] text-base py-2 px-6 hover:bg-[#f5f5f5] transition-colors no-underline"
+            >
+              Contact Us
+            </Link>
+          </div>
+        )}
+      </div>
+    </nav>
   );
 }
