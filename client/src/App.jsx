@@ -5,6 +5,8 @@ import ThemeDetail from './page/ThemeDetail';
 import ProductDetail from './page/ProductDetail';
 import Navbar from './component/Navbar';
 import Strip from './component/Strip';
+import TrustStrip from './component/TrustStrip';
+import Footer from './component/Footer';
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           <Route path="/products/:productId" element={<ProductDetail />} />
         </Routes>
       </main>
+      <div><TrustStrip/></div>
+      <div><Footer/></div>
     </div>
     
   );

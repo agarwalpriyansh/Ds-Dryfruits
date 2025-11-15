@@ -68,7 +68,7 @@ function Home() {
                 )}
             </div>
             <FeaturedCollection />
-            <Footer />
+            
         </div>
     );
 }
