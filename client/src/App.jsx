@@ -13,7 +13,7 @@ function App() {
       <div><Navbar/></div>
 
       {/* Main Content Area */}
-      <main className="app-main pt-[88px] sm:pt-[114px] md:pt-[116px]">
+      <main className="app-main pt-[48px] sm:pt-16 md:pt-16">
         <Routes>
           {/* Route 1: The Home Page */}
           <Route path="/" element={<HomePage />} />

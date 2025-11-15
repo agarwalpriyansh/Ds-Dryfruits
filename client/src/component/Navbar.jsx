@@ -8,6 +8,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const [elevated, setElevated] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
   const lastScrollY = useRef(0);
   const shopMenuRef = useRef(null);
   const mobileMenuRef = useRef(null);
@@ -26,6 +27,9 @@ export default function Navbar() {
   // Scroll listener - handles both hide/show and elevated shadow
   const handleScroll = () => {
     if (typeof window !== "undefined") {
+      // Check if at top of page
+      setIsAtTop(window.scrollY < 50);
+      
       // Handle hide/show on scroll direction
       if (window.scrollY > lastScrollY.current) {
         // Scrolling DOWN → hide navbar
@@ -76,16 +80,18 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed w-full bg-white text-black top-10 sm:top-[50px] md:top-[52px] transition-all duration-100 ease-in-out z-[1000] px-4 sm:px-8 md:px-12 ${
+      className={`fixed w-full bg-white text-black transition-all duration-100 ease-in-out z-[1000] ${
+        isAtTop ? 'top-10 sm:top-[50px] md:top-[52px]' : 'top-0'
+      } ${
         showNavbar ? 'translate-y-0' : '-translate-y-full'
       } ${elevated ? 'shadow-[0px_2px_20px_rgba(0,0,0,0.35)]' : 'shadow-none'}`}
     >
-      <div className="min-h-[48px] sm:min-h-16 flex items-center justify-between">
+      <div className="min-h-[48px] sm:min-h-16 flex items-center justify-between px-4 sm:px-8 md:px-12">
         {/* Logo/Brand */}
-        <h1 className="flex-grow text-base sm:text-xl md:text-2xl font-semibold">
+        <h1 className="flex-grow text-base sm:text-xl md:text-2xl font-semibold m-0">
           <Link 
             to="/" 
-            className="text-black no-underline font-semibold"
+            className="text-black no-underline font-semibold hover:opacity-80 transition-opacity"
           >
             The Dry Fruit Store
           </Link>
@@ -95,7 +101,7 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-8">
           <Link 
             to="/" 
-            className="text-black text-[0.95rem] min-w-0 py-1.5 px-3 hover:opacity-70 transition-opacity"
+            className="text-black text-[0.95rem] py-1.5 px-3 hover:opacity-70 transition-opacity no-underline"
           >
             Home
           </Link>
@@ -104,12 +110,12 @@ export default function Navbar() {
           <div className="relative" ref={shopMenuRef}>
             <button
               onClick={() => setShopMenuOpen(!shopMenuOpen)}
-              className="text-black text-[0.95rem] min-w-0 py-1.5 px-3 hover:opacity-70 transition-opacity bg-transparent border-none cursor-pointer"
+              className="text-black text-[0.95rem] py-1.5 px-3 hover:opacity-70 transition-opacity bg-transparent border-none cursor-pointer"
             >
               shop +
             </button>
             {shopMenuOpen && (
-              <div className="absolute top-full left-0 mt-1 min-w-[200px] bg-white rounded shadow-[0_4px_6px_rgba(0,0,0,0.1)] py-2 z-50">
+              <div className="absolute top-full left-0 mt-1 min-w-[200px] bg-white rounded-md shadow-[0_4px_6px_rgba(0,0,0,0.1)] py-2 z-50 border border-gray-100">
                 {shopCategories.map((category) => (
                   <button
                     key={category}
@@ -125,21 +131,21 @@ export default function Navbar() {
 
           <Link 
             to="/about" 
-            className="text-black text-[0.95rem] hover:opacity-70 transition-opacity"
+            className="text-black text-[0.95rem] py-1.5 px-3 hover:opacity-70 transition-opacity no-underline"
           >
             About Us
           </Link>
 
           <Link 
             to="/bulk" 
-            className="text-black text-[0.95rem] hover:opacity-70 transition-opacity"
+            className="text-black text-[0.95rem] py-1.5 px-3 hover:opacity-70 transition-opacity no-underline"
           >
             Bulk Order
           </Link>
 
           <Link 
             to="/contact" 
-            className="text-black text-[0.95rem] hover:opacity-70 transition-opacity"
+            className="text-black text-[0.95rem] py-1.5 px-3 hover:opacity-70 transition-opacity no-underline"
           >
             Contact Us
           </Link>
@@ -158,7 +164,7 @@ export default function Navbar() {
         {mobileMenuOpen && (
           <div 
             ref={mobileMenuRef}
-            className="absolute top-full left-0 right-0 mt-1 bg-white rounded shadow-[0_4px_6px_rgba(0,0,0,0.1)] py-2 z-50 md:hidden"
+            className="absolute top-full left-0 right-0 mt-1 bg-white rounded-md shadow-[0_4px_6px_rgba(0,0,0,0.1)] py-2 z-50 md:hidden border border-gray-100"
           >
             <Link
               to="/"
@@ -175,7 +181,7 @@ export default function Navbar() {
                 Shop +
               </button>
               {shopMenuOpen && (
-                <div className="ml-4 mt-1 bg-white rounded shadow-[0_4px_6px_rgba(0,0,0,0.1)] py-2">
+                <div className="ml-4 mt-1 bg-white rounded-md shadow-[0_4px_6px_rgba(0,0,0,0.1)] py-2 border border-gray-100">
                   {shopCategories.map((category) => (
                     <button
                       key={category}
