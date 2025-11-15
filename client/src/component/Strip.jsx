@@ -48,8 +48,7 @@ export default function Strip() {
         isSmallScreen && !showStrip ? '-translate-y-full' : 'translate-y-0'
       }`}
     >
-      {/* Light Teal Top Strip */}
-      <div className="w-full h-2 bg-[#7FD8D2]" />
+      
 
       {/* Dark Maroon Main Section */}
       <div className="w-full bg-[#800020] py-2.5 px-4 sm:py-2.5 sm:px-5 md:py-3 md:px-10 flex justify-between items-center flex-row gap-2 sm:gap-2">
