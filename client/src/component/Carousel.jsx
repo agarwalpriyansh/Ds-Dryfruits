@@ -34,7 +34,7 @@ export default function ImageCarousel({ images, autoPlayInterval = 5000 }) {
 
   return (
     <div
-      className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] overflow-hidden m-0 p-0"
+      className="relative w-full h-[340px] sm:h-[400px] md:h-[500px] overflow-hidden m-0 p-0"
       onMouseEnter={() => setIsAutoPlay(false)}
       onMouseLeave={() => setIsAutoPlay(true)}
     >
