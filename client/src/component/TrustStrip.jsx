@@ -25,7 +25,7 @@ export default function TrustFeatures() {
   ]
 
   return (
-    <section className="w-full border-b border-border/50">
+    <section className="w-[1400px] mx-auto border rounded-xl  border-border/50 mb-10 mt-4 ">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-1 divide-x divide-border/50 sm:flex-row">
           {features.map((feature, index) => {
