@@ -65,9 +65,9 @@ export default function ReviewsSection() {
   }
 
   return (
-    <section className="w-full bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50 py-8 sm:py-12 md:py-16 lg:py-20 px-4">
+    <section className="w-full bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50 py-20 px-4">
       {/* Title */}
-      <div className="max-w-6xl mx-auto mb-6 sm:mb-12 md:mb-16 px-4">
+      <div className="max-w-6xl mx-auto mb-4 sm:mb-12 md:mb-10 px-4">
         <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl tracking-loose font-bold text-center text-slate-900 text-balance">
           Words From Our Delighted Customers
         </h2>
