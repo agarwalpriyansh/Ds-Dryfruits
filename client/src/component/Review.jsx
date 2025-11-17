@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Star } from 'lucide-react'
 
 const reviews = [
@@ -39,6 +39,17 @@ const reviews = [
 export default function ReviewsSection() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlay, setIsAutoPlay] = useState(true)
+  const [visibleCount, setVisibleCount] = useState(1)
+
+  const resolveVisibleCount = useCallback(() => {
+    if (typeof window === 'undefined') {
+      return 1
+    }
+
+    if (window.innerWidth >= 1024) return 3
+    if (window.innerWidth >= 640) return 2
+    return 1
+  }, [])
 
   useEffect(() => {
     if (!isAutoPlay) return
@@ -50,8 +61,14 @@ export default function ReviewsSection() {
     return () => clearInterval(timer)
   }, [isAutoPlay])
 
+  useEffect(() => {
+    const updateVisible = () => setVisibleCount(resolveVisibleCount())
+    updateVisible()
+    window.addEventListener('resize', updateVisible)
+    return () => window.removeEventListener('resize', updateVisible)
+  }, [resolveVisibleCount])
+
   const getVisibleReviews = () => {
-    const visibleCount = 3
     const items = []
     for (let i = 0; i < visibleCount; i++) {
       items.push(reviews[(currentIndex + i) % reviews.length])
@@ -65,9 +82,9 @@ export default function ReviewsSection() {
   }
 
   return (
-    <section className="w-full bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50 py-20 px-4">
+    <section className="w-full bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50 py-12 sm:py-16 px-4 sm:px-6">
       {/* Title */}
-      <div className="max-w-6xl mx-auto mb-4 sm:mb-12 md:mb-10 px-4">
+      <div className="max-w-6xl mx-auto mb-4 sm:mb-8 md:mb-10 px-4">
         <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl tracking-loose font-bold text-center text-slate-900 text-balance">
           Words From Our Delighted Customers
         </h2>

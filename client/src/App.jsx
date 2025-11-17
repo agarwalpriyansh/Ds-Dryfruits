@@ -10,12 +10,12 @@ import Footer from './component/Footer';
 
 function App() {
   return (
-    <div className="app-container">
-      <div><Strip/></div>
-      <div><Navbar/></div>
+    <div className="flex min-h-screen flex-col bg-white text-slate-900">
+      <Strip />
+      <Navbar />
 
       {/* Main Content Area */}
-      <main className="app-main pt-[48px] sm:pt-16 md:pt-16">
+      <main className="flex-1   md:pt-[80px]">
         <Routes>
           {/* Route 1: The Home Page */}
           <Route path="/" element={<HomePage />} />
@@ -23,10 +23,10 @@ function App() {
           <Route path="/products/:productId" element={<ProductDetail />} />
         </Routes>
       </main>
-      <div><TrustStrip/></div>
-      <div><Footer/></div>
+      <TrustStrip />
+      <Footer />
     </div>
-    
+
   );
 }
 

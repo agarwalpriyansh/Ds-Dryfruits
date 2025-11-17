@@ -31,8 +31,8 @@ function Home() {
     }, []);
 
     return (
-        <div className="m-0 p-0">
-            <Carousel images={heroImages} autoPlayInterval={5000}></Carousel>
+        <div className="m-0 p-0 flex flex-col gap-6 sm:gap-10">
+            <div className="sm:mt-[-10]"><Carousel images={heroImages} autoPlayInterval={5000}></Carousel></div>
             
             {/* Themes Section */}
             <div className="mt-6 sm:mt-8 md:mt-12 px-3 sm:px-4 md:px-5">

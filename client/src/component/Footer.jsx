@@ -7,9 +7,9 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#faf0e6] pt-16 pb-8">
+    <footer className="relative overflow-hidden bg-[#faf0e6] pt-16 pb-8">
       {/* Decorative background elements */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none">
+      <div className="absolute inset-0 opacity-5 pointer-events-none" aria-hidden="true">
         <div className="absolute left-0 top-1/2 w-96 h-96 bg-green-300 rounded-full blur-3xl"></div>
       </div>
 
