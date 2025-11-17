@@ -145,46 +145,46 @@ function ThemeDetail() {
       </div>
 
       {/* Body */}
-      <div className="px-5 max-w-[1200px] mx-auto mt-8">
+      <div className="px-4 sm:px-5 md:px-6 max-w-[1200px] mx-auto mt-6 sm:mt-8">
 
       {themeLoading && (
-        <div className="text-center text-gray-500">Loading theme details...</div>
+        <div className="text-center text-gray-500 text-sm sm:text-base">Loading theme details...</div>
       )}
 
       {themeError && (
-        <div className="text-center text-red-500">{themeError}</div>
+        <div className="text-center text-red-500 text-sm sm:text-base">{themeError}</div>
       )}
 
       {!themeLoading && !themeError && (
         <section>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4 text-center">
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6 text-center">
             Products in this theme
           </h2>
 
           {productsLoading && (
-            <div className="text-center text-gray-500">
+            <div className="text-center text-gray-500 text-sm sm:text-base">
               Loading products for this theme...
             </div>
           )}
 
           {productsError && (
-            <div className="text-center text-red-500">{productsError}</div>
+            <div className="text-center text-red-500 text-sm sm:text-base">{productsError}</div>
           )}
 
           {!productsLoading && !productsError && products.length === 0 && (
-            <div className="text-center text-gray-500">
+            <div className="text-center text-gray-500 text-sm sm:text-base">
               No products available for this theme yet.
             </div>
           )}
 
           {!productsLoading && !productsError && products.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
               {products.map((product) => (
                 <article
                   key={product._id}
-                  className="rounded-xl border border-gray-200 bg-white p-6 shadow hover:shadow-md transition-shadow"
+                  className="rounded-xl border border-gray-200 bg-white p-4 sm:p-5 md:p-6 shadow hover:shadow-md transition-shadow"
                 >
-                  <div className="h-48 w-full overflow-hidden rounded-lg bg-gray-100 mb-4">
+                  <div className="h-40 sm:h-44 md:h-48 w-full overflow-hidden rounded-lg bg-gray-100 mb-3 sm:mb-4">
                     {product.imageUrl ? (
                       <img
                         src={product.imageUrl}
@@ -192,27 +192,27 @@ function ThemeDetail() {
                         className="h-full w-full object-cover object-center"
                       />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-gray-400">
+                      <div className="flex h-full items-center justify-center text-gray-400 text-xs sm:text-sm">
                         No image
                       </div>
                     )}
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
                     {product.name}
                   </h3>
                   {product.shortDescription && (
-                    <p className="text-sm text-gray-600 mb-3">
+                    <p className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3 line-clamp-2">
                       {product.shortDescription}
                     </p>
                   )}
                   {product.defaultPrice && (
-                    <p className="text-base font-medium text-gray-900 mb-4">
+                    <p className="text-sm sm:text-base font-medium text-gray-900 mb-3 sm:mb-4">
                       {product.defaultPrice.weight} &bull; ₹{product.defaultPrice.price}
                     </p>
                   )}
                   <Link
                     to={`/products/${product._id}`}
-                    className="block w-full text-center bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                    className="block w-full text-center bg-blue-600 text-white py-2 px-4 rounded-lg font-medium text-sm sm:text-base hover:bg-blue-700 transition-colors"
                   >
                     View
                   </Link>

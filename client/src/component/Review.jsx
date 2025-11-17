@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Star, Quote } from 'lucide-react'
+import { Star } from 'lucide-react'
 
 const reviews = [
   {
@@ -65,10 +65,10 @@ export default function ReviewsSection() {
   }
 
   return (
-    <section className="w-full bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50  px-4 sm:py-20">
+    <section className="w-full bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50 py-8 sm:py-12 md:py-16 lg:py-20 px-4">
       {/* Title */}
-      <div className="max-w-6xl mx-auto mb-3 sm:mb-16">
-        <h2 className="text-3xl tracking-loose sm:text-md lg:text-md font-bold text-center text-slate-900 text-balance">
+      <div className="max-w-6xl mx-auto mb-6 sm:mb-12 md:mb-16 px-4">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl tracking-loose font-bold text-center text-slate-900 text-balance">
           Words From Our Delighted Customers
         </h2>
       </div>
@@ -76,7 +76,7 @@ export default function ReviewsSection() {
       {/* Reviews Container */}
       <div className="max-w-6xl mx-auto">
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6 mb-8 sm:mb-10 px-2 sm:px-0">
           {getVisibleReviews().map((review) => (
             <ReviewCard key={review.id} review={review} />
           ))}
@@ -104,20 +104,20 @@ export default function ReviewsSection() {
 
 function ReviewCard({ review }) {
   return (
-    <div className="bg-white rounded-xl shadow-lg p-4 hover:shadow-xl transition-shadow duration-300 flex flex-col">
+    <div className="bg-white rounded-xl shadow-lg p-3 sm:p-4 md:p-5 hover:shadow-xl transition-shadow duration-300 flex flex-col">
 
       {/* Customer Avatar */}
-      <div className="flex items-start gap-4 mb-4">
-        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-gray-300 to-gray-400 flex-shrink-0 flex items-center justify-center">
-          <div className="w-12 h-12 rounded-full bg-gray-200" />
+      <div className="flex items-start gap-3 sm:gap-4 mb-3 sm:mb-4">
+        <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-gray-300 to-gray-400 flex-shrink-0 flex items-center justify-center">
+          <div className="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full bg-gray-200" />
         </div>
         <div>
-          <h3 className="font-semibold text-slate-900 text-lg">{review.name}</h3>
+          <h3 className="font-semibold text-slate-900 text-base sm:text-lg">{review.name}</h3>
         </div>
       </div>
 
       {/* Review Text */}
-      <p className="text-gray-600 text-sm leading-relaxed mb-6 flex-grow">
+      <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 flex-grow">
         {review.text}
       </p>
 
@@ -126,7 +126,7 @@ function ReviewCard({ review }) {
         {Array.from({ length: review.rating }).map((_, i) => (
           <Star
             key={i}
-            className="w-4 h-4 fill-amber-400 text-amber-400"
+            className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-400 text-amber-400"
             strokeWidth={0}
           />
         ))}
