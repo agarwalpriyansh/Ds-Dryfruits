@@ -4,8 +4,7 @@ import ThemeCard from '../component/Themecard';
 import heroImages from '../data/homeCarousel';
 import { apiService } from '../utils/apiConnector';
 import FeaturedCollection from '../component/FeaturedCollection';
-import Footer from '../component/Footer';
-
+import ReviewsSection from '../component/Review';
 
 function Home() {
     const [themes, setThemes] = useState([]);
@@ -68,6 +67,7 @@ function Home() {
                 )}
             </div>
             <FeaturedCollection />
+            <ReviewsSection />
             
         </div>
     );
