@@ -19,12 +19,12 @@ export default function Footer() {
           {/* Brand section */}
           <div className="space-y-4 sm:space-y-6">
             <div>
-              <h2 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">Dry Fruit House</h2>
+              <h2 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">DS Dryfruits</h2>
               <p className="text-xs sm:text-sm font-semibold text-gray-600 tracking-widest mt-1">EAT HEALTHY</p>
               <div className="h-1 w-20 sm:w-24 bg-foreground mt-2"></div>
             </div>
             <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
-              Dry Fruit House brings you a collection of carefully selected foods from India and across the world.{' '}
+             DS Dryfruits brings you a collection of carefully selected foods from India and across the world.{' '}
               <a href="#" className="text-amber-700 font-semibold hover:underline">
                 [Explore More]
               </a>
