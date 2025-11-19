@@ -60,7 +60,7 @@ function Home() {
                 )}
                 
                 {!loading && !error && themes.length > 0 && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6 max-w-[1200px] mx-auto">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6 max-w-[1200px] mx-auto">
                         {themes.map((theme) => (
                             <ThemeCard key={theme._id} theme={theme} />
                         ))}
