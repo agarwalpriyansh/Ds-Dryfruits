@@ -1,17 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-
 export default function VideoCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [autoPlay, setAutoPlay] = useState(true);
-
-  const videos = [
-    { id: 1, title: 'Video 1', thumbnail: '/store-shelf.jpg' },
-    { id: 2, title: 'Video 2', thumbnail: '/store-shelf.jpg' },
-    { id: 3, title: 'Video 3', thumbnail: '/store-shelf.jpg' },
-    { id: 4, title: 'Video 4', thumbnail: '/store-shelf.jpg' },
+  const media = [
+    { id: 1, title: 'Video 1', thumbnail: '/store-shelf.jpg', type: 'video' },
+    { id: 2, title: 'Photo 1', thumbnail: '/store-shelf.jpg', type: 'photo' },
+    { id: 3, title: 'Photo 2', thumbnail: '/store-shelf.jpg', type: 'photo' },
+    { id: 4, title: 'Photo 3', thumbnail: '/store-shelf.jpg', type: 'photo' },
   ];
 
   const features = [
@@ -36,24 +30,6 @@ export default function VideoCarousel() {
       description: '30-day return policy',
     },
   ];
-
-  useEffect(() => {
-    if (!autoPlay) return;
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % videos.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [autoPlay, videos.length]);
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + videos.length) % videos.length);
-    setAutoPlay(false);
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % videos.length);
-    setAutoPlay(false);
-  };
 
   const FeatureIcon = ({ type }) => {
     switch (type) {
@@ -92,96 +68,52 @@ export default function VideoCarousel() {
   };
 
   return (
-    <div className="w-full bg-gray-100">
+    <div className="w-[90%]  mx-auto">
       {/* Video Carousel Section */}
-      <div className="relative bg-gradient-to-r from-[#6b3d3d] to-[#7a4848] px-4 py-16 md:py-24 rounded-b-3xl overflow-hidden">
-        {/* Decorative Film Strip Background */}
-        <div className="absolute left-8 top-1/2 transform -translate-y-1/2 opacity-20 pointer-events-none">
-          <svg className="w-32 h-64" viewBox="0 0 100 300" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M10 20 Q 20 40 10 60 Q 0 80 10 100 Q 20 120 10 140 Q 0 160 10 180" stroke="white" strokeWidth="1.5" />
-            <rect x="5" y="20" width="90" height="40" fill="none" stroke="white" strokeWidth="1.5" rx="2" />
-            <rect x="5" y="70" width="90" height="40" fill="none" stroke="white" strokeWidth="1.5" rx="2" />
-            <rect x="5" y="120" width="90" height="40" fill="none" stroke="white" strokeWidth="1.5" rx="2" />
-            <rect x="5" y="170" width="90" height="40" fill="none" stroke="white" strokeWidth="1.5" rx="2" />
-            <circle cx="25" cy="30" r="3" fill="white" />
-            <circle cx="75" cy="30" r="3" fill="white" />
-            <circle cx="25" cy="80" r="3" fill="white" />
-            <circle cx="75" cy="80" r="3" fill="white" />
-            <circle cx="25" cy="130" r="3" fill="white" />
-            <circle cx="75" cy="130" r="3" fill="white" />
-            <circle cx="25" cy="180" r="3" fill="white" />
-            <circle cx="75" cy="180" r="3" fill="white" />
-          </svg>
-        </div>
-
-        {/* Video Carousel Container */}
+      <div className="relative bg-[rgb(192,150,34)] px-4 py-16 md:py-24 rounded-xl overflow-hidden">
+        {/* Video and Photos Container */}
         <div className="max-w-6xl mx-auto">
-          <div className="relative flex items-center justify-center gap-4">
-            {/* Navigation Arrows */}
-            <button
-              onClick={handlePrev}
-              className="absolute left-0 z-20 p-3 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
-              aria-label="Previous video"
-            >
-              <ChevronLeft className="w-6 h-6 text-white" />
-            </button>
-
-            {/* Videos Grid */}
-            <div className="flex gap-6 justify-center items-center flex-wrap">
-              {videos.map((video, index) => {
-                const isActive = index === currentIndex;
-                const isVisible =
-                  index === currentIndex ||
-                  index === (currentIndex + 1) % videos.length ||
-                  index === (currentIndex + 2) % videos.length;
-
+          <div className="relative flex items-center justify-end">
+            {/* All Media - Overlapping */}
+            <div className="flex items-center">
+              {media.map((item, index) => {
+                const isVideo = item.type === 'video';
+                // Determine size based on item type and index
+                let sizeClasses = 'w-48 h-40'; // Default size (for video)
+                if (!isVideo) {
+                  if (index === 2) {
+                    // Photo 3 - bigger
+                    sizeClasses = 'w-64 h-60';
+                  } 
+                  else if (index === 1 || index === 2) {
+                    // Photo 1 and Photo 2 - big
+                    sizeClasses = 'w-56 h-48';
+                  }
+                }
+                
                 return (
                   <div
-                    key={video.id}
-                    className={`relative transition-all duration-500 ${
-                      isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75 absolute'
-                    } ${isActive ? 'z-10 scale-110' : 'z-0'}`}
+                    key={item.id}
+                    className="relative transition-all duration-300 hover:z-20"
+                    style={{ marginLeft: index > 0 ? '-3rem' : '0', zIndex: media.length - index }}
                   >
-                    <div className="relative w-48 h-40 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow">
-                      <img src={video.thumbnail || "/placeholder.svg"} alt={video.title} className="w-full h-full object-cover" />
-                      {/* Play Button */}
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/50 transition-colors group cursor-pointer">
-                        <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center group-hover:scale-110 transition-transform">
-                          <svg className="w-6 h-6 text-[#6b3d3d] ml-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                          </svg>
+                    <div className={`relative ${sizeClasses} rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow ${isVideo ? 'scale-110' : ''}`}>
+                      <img src={item.thumbnail || "/placeholder.svg"} alt={item.title} className="w-full h-full object-cover" />
+                      {/* Play Button - Only for Video */}
+                      {isVideo && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/50 transition-colors group cursor-pointer">
+                          <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <svg className="w-6 h-6 text-[#6b3d3d] ml-1" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                            </svg>
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                   </div>
                 );
               })}
             </div>
-
-            <button
-              onClick={handleNext}
-              className="absolute right-0 z-20 p-3 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
-              aria-label="Next video"
-            >
-              <ChevronRight className="w-6 h-6 text-white" />
-            </button>
-          </div>
-
-          {/* Carousel Indicators */}
-          <div className="flex justify-center gap-3 mt-8">
-            {videos.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setCurrentIndex(index);
-                  setAutoPlay(false);
-                }}
-                className={`w-3 h-3 rounded-full transition-all ${
-                  index === currentIndex ? 'bg-white w-8' : 'bg-white/50 hover:bg-white/70'
-                }`}
-                aria-label={`Go to video ${index + 1}`}
-              />
-            ))}
           </div>
         </div>
       </div>
