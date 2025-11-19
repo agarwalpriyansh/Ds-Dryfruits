@@ -188,15 +188,14 @@ export default function VideoCarousel() {
 
       {/* Features Section */}
       <div className="max-w-4xl mx-auto px-4 -mt-12 relative z-20 mb-12">
-        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
+        <div className="bg-white rounded-2xl shadow-lg py-6 px-10">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 divide-y md:divide-y-0 md:divide-x divide-gray-200">
             {features.map((feature, index) => (
               <div key={index} className="flex flex-col items-center text-center md:px-6 first:md:pl-0 last:md:pr-0 pt-8 md:pt-0 first:pt-0">
                 <div className="text-gray-700 mb-4">
                   <FeatureIcon type={feature.icon} />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">{feature.title}</h3>
-                <p className="text-sm text-gray-600">{feature.description}</p>
+                <h3 className="text font text-gray-900 mb-2">{feature.title}</h3>
               </div>
             ))}
           </div>
