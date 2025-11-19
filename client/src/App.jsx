@@ -11,11 +11,11 @@ import Footer from './component/Footer';
 function App() {
   return (
     <div className="flex min-h-screen flex-col bg-white text-slate-900">
-      <Strip />
-      <Navbar />
+      <div><Strip/></div>
+      <div><Navbar/></div>
 
       {/* Main Content Area */}
-      <main className="flex-1   md:pt-[80px]">
+      <main className="flex-1   md:pt-[71px]">
         <Routes>
           {/* Route 1: The Home Page */}
           <Route path="/" element={<HomePage />} />

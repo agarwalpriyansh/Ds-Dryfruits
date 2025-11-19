@@ -5,6 +5,7 @@ import heroImages from '../data/homeCarousel';
 import { apiService } from '../utils/apiConnector';
 import FeaturedCollection from '../component/FeaturedCollection';
 import ReviewsSection from '../component/Review';
+import VideoCarousel from '../component/VideoCarousel';
 
 function Home() {
     const [themes, setThemes] = useState([]);
@@ -66,6 +67,7 @@ function Home() {
                     </div>
                 )}
             </div>
+            <VideoCarousel />
             <FeaturedCollection />
             <ReviewsSection />
             
