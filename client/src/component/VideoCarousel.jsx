@@ -70,7 +70,8 @@ export default function VideoCarousel() {
   return (
     <div className="w-[90%]  mx-auto">
       {/* Video Carousel Section */}
-      <div className="relative bg-[rgb(192,150,34)] px-4 py-16 md:py-24 rounded-xl overflow-hidden">
+      <div className="relative px-4 py-16 md:py-24 rounded-xl overflow-hidden bg-[url('https://i.pinimg.com/1200x/1c/79/a6/1c79a6fbc48c1b8d5f87a075d08ad3fe.jpg')] bg-cover bg-center">
+
         {/* Video and Photos Container */}
         <div className="max-w-6xl mx-auto">
           <div className="relative flex items-center justify-end">

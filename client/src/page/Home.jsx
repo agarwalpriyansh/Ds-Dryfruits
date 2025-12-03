@@ -6,6 +6,7 @@ import { apiService } from '../utils/apiConnector';
 import FeaturedCollection from '../component/FeaturedCollection';
 import ReviewsSection from '../component/Review';
 import VideoCarousel from '../component/VideoCarousel';
+import LatestGiftBox from '../component/LatestGiftBox';
 
 function Home() {
     const [themes, setThemes] = useState([]);
@@ -67,6 +68,7 @@ function Home() {
                     </div>
                 )}
             </div>
+            <LatestGiftBox />
             <VideoCarousel />
             <FeaturedCollection />
             <ReviewsSection />

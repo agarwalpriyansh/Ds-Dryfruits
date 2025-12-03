@@ -51,7 +51,7 @@ export default function Strip() {
       
 
       {/* Dark Maroon Main Section */}
-      <div className="w-full bg-[#800020] py-2.5 px-4 sm:py-2.5 sm:px-5 md:py-3 md:px-10 flex justify-between items-center flex-row gap-2 sm:gap-2">
+      <div className="w-full bg-[#5e0404] py-2.5 px-4 sm:py-2.5 sm:px-5 md:py-3 md:px-10 flex justify-between items-center flex-row gap-2 sm:gap-2">
         {/* Small Screen: Show Text */}
         {isSmallScreen ? (
           <div className="w-full flex justify-center items-center">
