@@ -70,8 +70,9 @@ function Home() {
             </div>
             <LatestGiftBox />
             <VideoCarousel />
-            <FeaturedCollection />
             <ReviewsSection />
+            <FeaturedCollection />
+            
             
         </div>
     );
