@@ -24,13 +24,13 @@ const reviews = [
   },
   {
     id: 4,
-    name: 'Sarah Johnson',
+    name: 'Arjun Patel',
     text: 'Amazing products and incredible customer service. Highly recommend to everyone!',
     rating: 5,
   },
   {
     id: 5,
-    name: 'Michael Chen',
+    name: 'Menka Singh',
     text: 'The best selection I have found. Premium quality and fast delivery!',
     rating: 5,
   },
