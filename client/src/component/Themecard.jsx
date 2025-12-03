@@ -51,7 +51,8 @@ export default function ThemeCard({ theme }) {
       state={{ theme }}
       className="flex flex-col items-center cursor-pointer transition-all duration-300 ease-in-out rounded-xl overflow-hidden bg-white shadow-md hover:-translate-y-2 hover:shadow-lg"
     >
-      <div className="w-full h-40 sm:h-48 overflow-hidden bg-gray-100">
+      <div className="w-[90%] h-60 sm:h-40 md:h-80 overflow-hidden bg-gray-100">
+
         <img
           src={imageUrl}
           alt={theme.name || 'Theme image'}
