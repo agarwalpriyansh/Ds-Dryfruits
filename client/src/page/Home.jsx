@@ -39,7 +39,7 @@ function Home() {
             {/* Themes Section */}
             <div className="mt-6 sm:mt-8 md:mt-12 px-3 sm:px-4 md:px-5">
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 md:mb-8 text-center">
-                    Our Themes
+                    Our Categories
                 </h2>
                 
                 {loading && (

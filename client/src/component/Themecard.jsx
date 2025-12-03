@@ -49,10 +49,9 @@ export default function ThemeCard({ theme }) {
     <Link
       to={`/themes/${themeSlug}`}
       state={{ theme }}
-      className="flex flex-col items-center cursor-pointer transition-all duration-300 ease-in-out rounded-xl overflow-hidden bg-white shadow-md hover:-translate-y-2 hover:shadow-lg"
+      className="flex flex-col items-center cursor-pointer transition-all duration-300 ease-in-out rounded-xl border border-gray-400 bg-white shadow-sm hover:shadow-md"
     >
-      <div className="w-[90%] h-60 sm:h-40 md:h-80 overflow-hidden bg-gray-100">
-
+      <div className="w-[88%] mt-6 aspect-square overflow-hidden bg-gray-100">
         <img
           src={imageUrl}
           alt={theme.name || 'Theme image'}
@@ -78,8 +77,8 @@ export default function ThemeCard({ theme }) {
           }}
         />
       </div>
-      <div className="p-3 sm:p-4 w-full text-center">
-        <h3 className="m-0 text-base sm:text-lg font-semibold text-gray-900">
+      <div className="pt-6 pb-8 w-full text-center">
+        <h3 className="m-0 text-lg sm:text-xl font-semibold tracking-wide text-gray-900">
           {theme.name}
         </h3>
       </div>
