@@ -48,7 +48,9 @@ function FeaturedCollection() {
   const Wrapper = ({ children }) => (
     <div className="py-4 sm:py-6 md:py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-[1200px] mx-auto w-full">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6">Featured Collection</h2>
+        <h2 className="text-2xl lg:mb-10 mt-0 sm:text-3xl font-bold text-gray-900 sm:mb-6 text-center">
+          Dry-Fruits Featured Collection
+        </h2>
         {children}
       </div>
     </div>
