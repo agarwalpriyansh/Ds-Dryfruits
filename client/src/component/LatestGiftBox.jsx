@@ -87,7 +87,7 @@ export default function GiftBoxCarousel() {
               Celebrate all festivals in a healthy & delicious way with our exquisite range of dry fruit gift hampers.
             </p>
             <button
-              className="w-fit px-6 py-3 bg-foreground text-background hover:bg-foreground/90 font-semibold rounded-lg transition-colors"
+              className="border border-black w-fit px-6 py-3 bg-black text-white hover:bg-black/90 font-semibold rounded-lg transition-colors"
             >
               View More
             </button>
