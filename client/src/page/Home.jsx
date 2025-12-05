@@ -7,6 +7,8 @@ import FeaturedCollection from '../component/FeaturedCollection';
 import ReviewsSection from '../component/Review';
 import VideoCarousel from '../component/VideoCarousel';
 import LatestGiftBox from '../component/LatestGiftBox';
+import GiftBoxCarousel from '../component/GiftBoxCarousel';
+
 
 function Home() {
     const [themes, setThemes] = useState([]);
@@ -72,6 +74,7 @@ function Home() {
             <VideoCarousel />
             <ReviewsSection />
             <FeaturedCollection />
+            <GiftBoxCarousel />
             
             
         </div>
