@@ -31,6 +31,11 @@ const productSchema = new Schema({
     required: true
   },
 
+  benefits: {
+    type: String,
+    required: true
+  },
+
   imageUrl: {
     type: String,
     required: false
