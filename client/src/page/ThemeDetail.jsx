@@ -157,9 +157,7 @@ function ThemeDetail() {
 
       {!themeLoading && !themeError && (
         <section>
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6 text-center">
-            Products in this theme
-          </h2>
+          
 
           {productsLoading && (
             <div className="text-center text-gray-500 text-sm sm:text-base">
