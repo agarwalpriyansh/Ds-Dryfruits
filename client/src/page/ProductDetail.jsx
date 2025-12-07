@@ -10,6 +10,7 @@ function ProductDetail() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState('benefits');
 
   useEffect(() => {
     let isMounted = true;
@@ -142,21 +143,21 @@ function ProductDetail() {
               {product.name}
             </h1>
 
+            {/* Swift Delivery Line */}
+            <div className="mb-4 sm:mb-6">
+              <p className="text-sm sm:text-base text-red-600  px-3 py-2 rounded-md inline-block">
+                <strong>Swift Delivery</strong> - Shipping Across Jaipur. Bringing the goodness of dry fruits to your doorstep, no matter where you are! (Chat with us)
+              </p>
+            </div>
+
             {/* Short Description */}
             {product.shortDescription && (
-              <p className="text-base sm:text-lg text-gray-600 mb-4 sm:mb-6">
-                {product.shortDescription}
-              </p>
-            )}
-
-            {/* Full Description */}
-            {product.fullDescription && (
               <div className="mb-4 sm:mb-6">
                 <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-2 sm:mb-3">
-                  Description
+                  Description:
                 </h2>
-                <p className="text-sm sm:text-base text-gray-700 leading-relaxed whitespace-pre-line">
-                  {product.fullDescription}
+                <p className="text-base sm:text-lg text-gray-600">
+                  {product.shortDescription}
                 </p>
               </div>
             )}
@@ -187,10 +188,89 @@ function ProductDetail() {
 
             {/* Action Buttons */}
             <div className="mt-auto pt-4 sm:pt-6">
-              <button className="w-full bg-blue-600 text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold text-base sm:text-lg hover:bg-blue-700 transition-colors shadow-md">
-                Add to Cart
-              </button>
+              <a
+                href={`https://wa.me/919024675644?text=Hi, I'm interested in ${encodeURIComponent(product.name)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block w-[30%] bg-[#5e0404] text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-700 transition-colors shadow-md text-center"
+              >
+                Whatsapp Us
+              </a>
             </div>
+          </div>
+        </div>
+
+        {/* Tabs for Full Description and Benefits - width section */}
+        <div className="w-full mx-auto mt-8 sm:mt-10">
+          {/* Tab Headers */}
+          <div className="flex border-b border-gray-200 mb-4">
+            <button
+              onClick={() => setActiveTab('description')}
+              className={`px-4 py-2 text-base sm:text-lg font-medium transition-colors ${
+                activeTab === 'description'
+                  ? 'text-red-600 border-b-2 border-red-600'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Description
+            </button>
+            <button
+              onClick={() => setActiveTab('benefits')}
+              className={`px-4 py-2 text-base sm:text-lg font-medium transition-colors ${
+                activeTab === 'benefits'
+                  ? 'text-red-600 border-b-2 border-red-600'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Benefits
+            </button>
+          </div>
+
+          {/* Tab Content */}
+          <div className="bg-white rounded-lg p-4 sm:p-6 border border-gray-200">
+            {activeTab === 'description' && product.fullDescription && (
+              <div>
+                <p className="text-sm sm:text-base text-gray-700 leading-relaxed whitespace-pre-line">
+                  {product.fullDescription}
+                </p>
+              </div>
+            )}
+
+            {activeTab === 'benefits' && product.benefits && (
+              <div>
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
+                  Health Benefits
+                </h3>
+                <div className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                  {product.benefits.split('\n').map((line, index) => {
+                    // Check if line starts with a bullet point or should be formatted as one
+                    const trimmedLine = line.trim();
+                    if (trimmedLine) {
+                      // Format lines that start with specific keywords as bold headings
+                      const isHeading = /^(Heart Health|Nutrient Powerhouse|Weight Management|Brain Health|Bone Health|Skin Health|Digestive Health|Energy Boost|Immune Support|Blood Sugar|Antioxidant|Protein|Fiber|Vitamin|Mineral)/i.test(trimmedLine);
+                      
+                      if (isHeading && trimmedLine.includes(':')) {
+                        const [heading, ...rest] = trimmedLine.split(':');
+                        return (
+                          <div key={index} className="mb-2 sm:mb-3">
+                            <strong className="text-gray-900">{heading}:</strong>
+                            <span className="ml-1">{rest.join(':')}</span>
+                          </div>
+                        );
+                      }
+                      
+                      return (
+                        <div key={index} className="mb-2 sm:mb-3 flex items-start">
+                          <span className="mr-2 text-gray-900">•</span>
+                          <span>{trimmedLine}</span>
+                        </div>
+                      );
+                    }
+                    return null;
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
