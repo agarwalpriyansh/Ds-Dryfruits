@@ -101,7 +101,7 @@ export default function GiftBoxCarousel() {
   }
 
   return (
-    <div className="pb-4 sm:pb-6 md:pb-8 px-4 sm:px-6 lg:px-8">
+    <div className="sm:pb-6 md:pb-0 px-4 sm:px-6 lg:px-8">
       <div className="max-w-[99%] mx-auto w-full">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6 sm:mb-8">
           Gift Boxes - Signature Collection

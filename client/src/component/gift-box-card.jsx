@@ -2,7 +2,7 @@ import { Package, Calendar } from "lucide-react"
 
 export default function GiftBoxCard({ id, image, brand, collection }) {
   return (
-    <div className="bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+    <div className="border-2 border-gray-200 bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       {/* Image */}
       <div className="relative w-full aspect-square bg-muted overflow-hidden">
         <img src={image || "/placeholder.svg"} alt={collection} className="w-full h-full object-cover" />
