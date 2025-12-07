@@ -40,6 +40,8 @@ export default function GiftBoxCarousel() {
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [itemsPerView, setItemsPerView] = useState(3)
+  const [touchStart, setTouchStart] = useState(null)
+  const [touchEnd, setTouchEnd] = useState(null)
 
   // Handle scroll to top button visibility and screen size
   useEffect(() => {
@@ -71,6 +73,45 @@ export default function GiftBoxCarousel() {
     setCurrentIndex(index)
   }
 
+  const goToNext = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === CAROUSEL_ITEMS.length - 1 ? 0 : prevIndex + 1
+    )
+  }
+
+  const goToPrevious = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === 0 ? CAROUSEL_ITEMS.length - 1 : prevIndex - 1
+    )
+  }
+
+  // Swipe handlers
+  const minSwipeDistance = 50
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null)
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+
+    if (isLeftSwipe) {
+      goToNext()
+    }
+    if (isRightSwipe) {
+      goToPrevious()
+    }
+  }
+
   // Create extended items array for seamless wrapping
   const extendedItems = [...CAROUSEL_ITEMS, ...CAROUSEL_ITEMS.slice(0, itemsPerView)]
 
@@ -98,7 +139,12 @@ export default function GiftBoxCarousel() {
             {/* Carousel Container */}
             <div className="relative">
               {/* Responsive Carousel with Sliding Animation */}
-              <div className="h-[400px] sm:h-[450px] md:h-[500px] lg:h-[550px] overflow-hidden rounded-lg relative">
+              <div 
+                className="h-[200px] sm:h-[450px] md:h-[500px] lg:h-[550px] overflow-hidden rounded-lg relative touch-pan-y"
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+              >
                 <div 
                   className="flex gap-4 transition-transform duration-500 ease-in-out"
                   style={{ 

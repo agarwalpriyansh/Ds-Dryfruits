@@ -101,14 +101,17 @@ export default function GiftBoxCarousel() {
   }
 
   return (
-    <div className="py-4 sm:py-6 md:py-8 px-4 sm:px-6 lg:px-8">
+    <div className="pb-4 sm:pb-6 md:pb-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-[99%] mx-auto w-full">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6 sm:mb-8">
+          Gift Boxes - Signature Collection
+        </h2>
         <div className="relative w-full">
           <div className="flex items-center justify-center gap-4">
             {/* Left Arrow */}
             <button
               onClick={goToPrevious}
-              className="hidden sm:flex absolute left-0 z-10 -ml-3 sm:-ml-6 items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-700 hover:bg-red-800 text-white transition-colors"
+              className="hidden sm:flex absolute left-0 z-10 -left-12 sm:-left-14 md:-left-16 lg:-left-20 xl:-left-24 items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-700 hover:bg-red-800 text-white transition-colors shadow-lg"
               aria-label="Previous"
             >
               <ChevronLeft className="w-6 h-6" />
@@ -134,7 +137,7 @@ export default function GiftBoxCarousel() {
             {/* Right Arrow */}
             <button
               onClick={goToNext}
-              className="hidden sm:flex absolute right-0 z-10 -mr-3 sm:-mr-6 items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-700 hover:bg-red-800 text-white transition-colors"
+              className="hidden sm:flex absolute right-0 z-10 -right-12 sm:-right-14 md:-right-16 lg:-right-20 xl:-right-24 items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-700 hover:bg-red-800 text-white transition-colors shadow-lg"
               aria-label="Next"
             >
               <ChevronRight className="w-6 h-6" />
@@ -142,7 +145,7 @@ export default function GiftBoxCarousel() {
           </div>
 
           {/* Indicators */}
-          <div className="flex justify-center gap-2 mt-8">
+          <div className="flex justify-center gap-2 mt-4">
             {GIFT_BOXES.map((_, index) => (
               <button
                 key={index}

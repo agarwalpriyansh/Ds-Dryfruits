@@ -83,13 +83,13 @@ function FeaturedCollection() {
   return (
     <Wrapper>
       {/* Horizontal scrolling container */}
-      <div className="overflow-x-auto pb-3 sm:pb-4">
-        <div className="flex gap-4 sm:gap-6 min-w-max snap-x snap-mandatory">
+      <div className="overflow-x-auto pb-3 sm:pb-4 scroll-smooth -mx-4 sm:mx-0">
+        <div className="flex gap-0 sm:gap-4 md:gap-6 min-w-max snap-x snap-mandatory pl-4 pr-4 sm:pl-0 sm:pr-0">
           {products.map((product) => (
             <Link
               key={product._id}
               to={`/products/${product._id}`}
-              className="flex-shrink-0 w-[250px] sm:w-64 md:w-72 bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-2 snap-center"
+              className="flex-shrink-0 w-[calc(100vw-2rem)] sm:w-64 md:w-72 bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-2 snap-center"
             >
               {/* Product Image */}
               <div className="w-full h-40 sm:h-48 overflow-hidden bg-gray-100">
