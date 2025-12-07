@@ -1,8 +1,9 @@
 import { Package, Calendar } from "lucide-react"
+import { Link } from "react-router-dom"
 
 export default function GiftBoxCard({ id, image, brand, collection }) {
   return (
-    <div className="border-2 border-gray-200 bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+    <Link to="/themes/gift-boxes" className="block border-2 border-gray-200 bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer">
       {/* Image */}
       <div className="relative w-full aspect-square bg-muted overflow-hidden">
         <img src={image || "/placeholder.svg"} alt={collection} className="w-full h-full object-cover" />
@@ -23,10 +24,10 @@ export default function GiftBoxCard({ id, image, brand, collection }) {
         </div>
 
         {/* View More Button */}
-        <button className="w-full py-2 px-4 border-2 border-foreground text-foreground rounded-full font-medium hover:bg-foreground hover:text-card transition-colors">
+        <div className="w-full py-2 px-4 border-2 border-foreground text-foreground rounded-full font-medium hover:bg-foreground hover:text-card transition-colors text-center">
           View more
-        </button>
+        </div>
       </div>
-    </div>
+    </Link>
   )
 }
