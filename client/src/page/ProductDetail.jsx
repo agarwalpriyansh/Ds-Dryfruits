@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { apiService } from '../utils/apiConnector';
+import ProductStrip from '../component/ProductStrip';
 
 function ProductDetail() {
   const { productId } = useParams();
@@ -131,6 +132,8 @@ function ProductDetail() {
                 </div>
               )}
             </div>
+            {/* Product Strip */}
+            <ProductStrip />
           </div>
 
           {/* Product Details */}
