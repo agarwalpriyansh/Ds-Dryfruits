@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu as MenuIcon, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { slugifyThemeName } from '../utils/slugify';
 
 export default function Navbar() {
   const [isMobile, setIsMobile] = useState(false);
@@ -180,13 +181,14 @@ export default function Navbar() {
             {shopMenuOpen && (
               <div className="absolute top-full left-0 mt-1 min-w-[200px] bg-white rounded-md shadow-[0_4px_6px_rgba(0,0,0,0.1)] py-2 z-50 border border-gray-100">
                 {shopCategories.map((category) => (
-                  <button
+                  <Link
                     key={category}
+                    to={`/themes/${slugifyThemeName(category)}`}
                     onClick={() => setShopMenuOpen(false)}
-                    className="w-full text-left text-[#2c2c2c] text-base font-medium py-2 px-6 hover:bg-[#f5f5f5] transition-colors bg-transparent border-none cursor-pointer"
+                    className="block w-full text-left text-[#2c2c2c] text-base font-medium py-2 px-6 hover:bg-[#f5f5f5] transition-colors no-underline"
                   >
                     {category}
-                  </button>
+                  </Link>
                 ))}
               </div>
             )}
@@ -246,16 +248,17 @@ export default function Navbar() {
               {shopMenuOpen && (
                 <div className="ml-4 mt-1 bg-white rounded-md shadow-[0_4px_6px_rgba(0,0,0,0.1)] py-2 border border-gray-100">
                   {shopCategories.map((category) => (
-                    <button
+                    <Link
                       key={category}
+                      to={`/themes/${slugifyThemeName(category)}`}
                       onClick={() => {
                         setShopMenuOpen(false);
                         setMobileMenuOpen(false);
                       }}
-                      className="w-full text-left text-[#2c2c2c] text-base font-medium py-2 px-6 hover:bg-[#f5f5f5] transition-colors bg-transparent border-none cursor-pointer"
+                      className="block w-full text-left text-[#2c2c2c] text-base font-medium py-2 px-6 hover:bg-[#f5f5f5] transition-colors no-underline"
                     >
                       {category}
-                    </button>
+                    </Link>
                   ))}
                 </div>
               )}
