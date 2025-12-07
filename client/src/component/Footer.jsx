@@ -81,19 +81,19 @@ export default function Footer() {
               <div className="flex gap-2 sm:gap-3">
                 <MapPin size={18} className="sm:w-5 sm:h-5 text-foreground flex-shrink-0 mt-0.5" />
                 <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
-                  NR TOWERS, 17th Cross, Sector 4, 19th Main Rd, HSR Layout, Bengaluru - 560102
+                329-330 Khatipura Road,Opposite Bank of Baroda, Jhotwara, Jaipur.
                 </p>
               </div>
               <div className="flex gap-2 sm:gap-3 items-start">
                 <Mail size={18} className="sm:w-5 sm:h-5 text-foreground flex-shrink-0 mt-0.5" />
                 <a href="mailto:info@dryfruithouse.com" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm break-all">
-                  info@dryfruithouse.com
+                  dryfruits.ds@gmail.com
                 </a>
               </div>
               <div className="flex gap-2 sm:gap-3 items-center">
                 <Phone size={18} className="sm:w-5 sm:h-5 text-foreground flex-shrink-0" />
                 <a href="tel:+917483600212" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
-                  +91-7483600212
+                  +91-9024675644
                 </a>
               </div>
             </div>
@@ -106,7 +106,7 @@ export default function Footer() {
         {/* Bottom section */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4">
           <p className="text-gray-600 text-xs sm:text-sm text-center md:text-left">
-            Copyright © 2025 <span className="font-semibold">Dry Fruit House</span> . All Rights Reserved.
+            Copyright © 2025 <span className="font-semibold">DS Dryfruits</span> . All Rights Reserved.
           </p>
           
           {/* Payment methods */}
