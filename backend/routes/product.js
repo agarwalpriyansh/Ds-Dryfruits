@@ -14,7 +14,7 @@ router.get('/featured', (req, res) => {
         name: product.name,
         shortDescription: product.shortDescription,
         imageUrl: product.imageUrl,
-        
+        variants: product.variants, // include all variants for dropdown pricing
         defaultPrice: (product.variants && product.variants.length > 0)
           ? product.variants[0]
           : { weight: 'N/A', price: 0 }
@@ -40,7 +40,7 @@ router.route('/by-theme/:themeId').get((req, res) => {
         name: product.name,
         shortDescription: product.shortDescription,
         imageUrl: product.imageUrl,
-        
+        variants: product.variants, // include all variants for dropdown pricing
         defaultPrice: (product.variants && product.variants.length > 0)
           ? product.variants[0]
           : { weight: 'N/A', price: 0 }

@@ -1,15 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function ProductCard({ product }) {
   if (!product) return null;
 
-  // Get the first variant as default, or use the first variant from the array
-  const defaultVariant = product.variants && product.variants.length > 0 
-    ? product.variants[0] 
-    : null;
+  // Normalize variants; fall back to a single default price entry
+  const variants =
+    product?.variants && product.variants.length > 0
+      ? product.variants
+      : product.defaultPrice
+        ? [product.defaultPrice]
+        : [];
 
-  const [selectedVariant, setSelectedVariant] = useState(defaultVariant);
+  // Get the first variant as default
+  const defaultVariant = variants.length > 0 ? variants[0] : null;
+
+  const [selectedVariant, setSelectedVariant] = useState(null);
+
+  // Keep selected variant in sync when product data changes
+  useEffect(() => {
+    setSelectedVariant(defaultVariant);
+  }, [defaultVariant]);
 
   // Handle image URL
   const getImageUrl = () => {
@@ -35,16 +46,23 @@ export default function ProductCard({ product }) {
   const imageUrl = getImageUrl();
   const placeholderImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23f5f5dc'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='%239ca3af'%3ENo Image%3C/text%3E%3C/svg%3E";
 
-  // Get current price based on selected variant
-  const currentPrice = selectedVariant?.price || 0;
-  const currentWeight = selectedVariant?.weight || '';
+  // Get current price based on selected variant; fall back to default/product price
+  const currentPrice =
+    selectedVariant?.price ??
+    product.defaultPrice?.price ??
+    product.price ??
+    null;
+  const currentWeight =
+    selectedVariant?.weight ??
+    product.defaultPrice?.weight ??
+    product.weight ??
+    '';
 
   return (
-    <div className="flex flex-col rounded-xl overflow-hidden border border-gray-300 bg-white shadow-sm hover:shadow-md transition-all duration-300">
-      {/* Top Section - Beige Background with Brand and Product Image */}
+    <div className="w-full flex flex-col rounded-xl overflow-hidden border border-gray-300 bg-white shadow-sm hover:shadow-md transition-all duration-300">
         {/* Product Image */}
         <div className="relative z-10 w-full flex items-center justify-center">
-          <div className="w-full max-w-[280px] sm:max-w-[320px] aspect-square">
+          <div className="w-full  aspect-square">
             <img
               src={imageUrl}
               alt={product.name || 'Product image'}
@@ -61,23 +79,29 @@ export default function ProductCard({ product }) {
       {/* Bottom Section - White Background with Product Details */}
       <div className="bg-white px-4 pb-5 sm:pb-6 pt-4 sm:pt-5">
         {/* Product Name */}
-        <h3 className="text-center text-bold text-gray-900 mb-3 sm:mb-4">
+        <h3 className="text-center font-bold text-gray-900 mb-3 sm:mb-4">
           {product.name}
         </h3>
 
         {/* Quantity Selector Dropdown */}
-        {product.variants && product.variants.length > 0 && (
-          <div className="mb-3 sm:mb-4">
+        {variants.length > 0 && (
+          <div className="mb-3 sm:mb-4 flex justify-center">
             <select
-              value={selectedVariant ? `${selectedVariant.weight}-${selectedVariant.price}` : ''}
+              value={
+                selectedVariant
+                  ? variants.findIndex(
+                      (v) =>
+                        v.weight === selectedVariant.weight &&
+                        Number(v.price) === Number(selectedVariant.price)
+                    )
+                  : ''
+              }
               onChange={(e) => {
-                const [weight, price] = e.target.value.split('-');
-                const variant = product.variants.find(
-                  v => v.weight === weight && v.price === parseFloat(price)
-                );
+                const variantIndex = Number(e.target.value);
+                const variant = variants[variantIndex];
                 setSelectedVariant(variant || defaultVariant);
               }}
-              className="w-full px-3 py-2.5 border border-gray-300 rounded-md bg-white text-gray-900 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#8b4513] focus:border-transparent appearance-none cursor-pointer"
+              className="w-30 sm:w-30 px-1 py-1 border border-gray-300 bg-white text-gray-900 text-center text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#8b4513] focus:border-transparent appearance-none cursor-pointer"
               style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E")`,
                 backgroundRepeat: 'no-repeat',
@@ -86,12 +110,15 @@ export default function ProductCard({ product }) {
                 paddingRight: '2.5rem'
               }}
             >
-              {product.variants.map((variant, index) => (
+              <option value="" disabled hidden>
+                Select weight
+              </option>
+              {variants.map((variant, index) => (
                 <option
                   key={index}
-                  value={`${variant.weight}-${variant.price}`}
+                  value={index}
                 >
-                  {variant.weight}
+                  {(variant.weight || 'Default')}
                 </option>
               ))}
             </select>
@@ -99,16 +126,16 @@ export default function ProductCard({ product }) {
         )}
 
         {/* Price */}
-        {currentPrice > 0 && (
+        {currentPrice !== null && currentPrice !== undefined && (
           <p className="text-center text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">
-            ₹{currentPrice.toFixed(2)}
+            ₹{Number(currentPrice).toFixed(2)}
           </p>
         )}
 
         {/* View Details Button */}
         <Link
           to={`/products/${product._id}`}
-          className="flex items-center justify-center w-full bg-[#5e0404] hover:bg-gray-900 text-white py-2.5 sm:py-3 px-4 rounded-md font-medium text-sm sm:text-base transition-colors shadow-sm"
+          className="mx-auto flex items-center justify-center w-[50%] bg-[#5e0404] hover:bg-gray-900 text-white py-1.5 sm:py-1.5 px-4 rounded-md font-medium text-sm sm:text-base transition-colors shadow-sm"
         >
           <svg
             className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
