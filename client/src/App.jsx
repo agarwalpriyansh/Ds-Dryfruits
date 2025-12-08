@@ -6,6 +6,7 @@ import ProductDetail from './page/ProductDetail';
 import Navbar from './component/Navbar';
 import Strip from './component/Strip';
 import TrustStrip from './component/TrustStrip';
+import { AboutUs } from './page/AboutUs';
 import Footer from './component/Footer';
 
 function App() {
@@ -19,8 +20,10 @@ function App() {
         <Routes>
           {/* Route 1: The Home Page */}
           <Route path="/" element={<HomePage />} />
+
           <Route path="/themes/:themeSlug" element={<ThemeDetail />} />
           <Route path="/products/:productId" element={<ProductDetail />} />
+          <Route path="/about" element={<AboutUs />} />
         </Routes>
       </main>
       <TrustStrip />
