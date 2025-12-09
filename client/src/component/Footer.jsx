@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Linkedin, Mail, MapPin, Phone, ArrowUp } from 'lucide-react';
 
 export default function Footer() {
@@ -64,13 +65,26 @@ export default function Footer() {
           <div>
             <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4 sm:mb-6">Account Info</h3>
             <ul className="space-y-3 sm:space-y-4">
-              {['My Account', 'Privacy Policy', 'Return Policy', 'Terms & Conditions'].map((link) => (
-                <li key={link}>
-                  <a href="#" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
-                    {link}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <a href="#" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
+                  My Account
+                </a>
+              </li>
+              <li>
+                <Link to="/privacy" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <a href="#" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
+                  Return Policy
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
+                  Terms & Conditions
+                </a>
+              </li>
             </ul>
           </div>
 

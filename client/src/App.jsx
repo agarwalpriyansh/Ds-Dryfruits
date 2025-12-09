@@ -9,6 +9,7 @@ import TrustStrip from './component/TrustStrip';
 import { AboutUs } from './page/AboutUs';
 import Contact from './page/Contact';
 import BulkOrder from './page/BulkOrder';
+import Privacy from './page/Privacy';
 import Footer from './component/Footer';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/bulk" element={<BulkOrder />} />
+          <Route path="/privacy" element={<Privacy />} />
         </Routes>
       </main>
       <TrustStrip />
