@@ -76,9 +76,9 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
+                <Link to="/returns" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
                   Return Policy
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="#" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">

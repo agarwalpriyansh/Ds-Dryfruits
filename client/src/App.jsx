@@ -10,6 +10,7 @@ import { AboutUs } from './page/AboutUs';
 import Contact from './page/Contact';
 import BulkOrder from './page/BulkOrder';
 import Privacy from './page/Privacy';
+import Returns from './page/Returns';
 import Footer from './component/Footer';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/bulk" element={<BulkOrder />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/returns" element={<Returns />} />
         </Routes>
       </main>
       <TrustStrip />
