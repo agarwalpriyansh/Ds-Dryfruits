@@ -17,4 +17,7 @@ export const apiService = {
   getProductsByTheme: (themeId) => api.get(`/products/by-theme/${themeId}`),
   getProductById: (id) => api.get(`/products/${id}`),
   getFeaturedProducts: () => api.get('/products/featured'),
+
+  // Contact functions
+  sendContactMessage: (formData) => api.post('/contact', formData),
 };
