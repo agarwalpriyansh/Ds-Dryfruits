@@ -11,6 +11,7 @@ import Contact from './page/Contact';
 import BulkOrder from './page/BulkOrder';
 import Privacy from './page/Privacy';
 import Returns from './page/Returns';
+import Terms from './page/Terms';
 import Footer from './component/Footer';
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path="/bulk" element={<BulkOrder />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/returns" element={<Returns />} />
+          <Route path="/terms" element={<Terms />} />
         </Routes>
       </main>
       <TrustStrip />

@@ -81,9 +81,9 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
+                <Link to="/terms" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
                   Terms & Conditions
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
