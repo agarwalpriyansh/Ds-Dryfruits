@@ -8,6 +8,7 @@ import Strip from './component/Strip';
 import TrustStrip from './component/TrustStrip';
 import { AboutUs } from './page/AboutUs';
 import Contact from './page/Contact';
+import BulkOrder from './page/BulkOrder';
 import Footer from './component/Footer';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/products/:productId" element={<ProductDetail />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/bulk" element={<BulkOrder />} />
         </Routes>
       </main>
       <TrustStrip />
