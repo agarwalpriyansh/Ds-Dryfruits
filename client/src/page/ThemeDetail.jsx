@@ -8,8 +8,17 @@ function ThemeDetail() {
   const { themeSlug } = useParams();
   const location = useLocation();
 
-  const [theme, setTheme] = useState(location.state?.theme || null);
-  const [themeLoading, setThemeLoading] = useState(!location.state?.theme);
+  // Initialize theme from location.state if it matches the current themeSlug
+  const initialTheme = useMemo(() => {
+    const stateTheme = location.state?.theme;
+    if (stateTheme && slugifyThemeName(stateTheme.name) === themeSlug) {
+      return stateTheme;
+    }
+    return null;
+  }, []); // Only check on mount
+
+  const [theme, setTheme] = useState(initialTheme);
+  const [themeLoading, setThemeLoading] = useState(!initialTheme);
   const [themeError, setThemeError] = useState(null);
 
   const [products, setProducts] = useState([]);
@@ -48,10 +57,22 @@ function ThemeDetail() {
   }, [theme?.name, themeSlug]);
 
   useEffect(() => {
-    if (theme) {
+    // Check if current theme matches the themeSlug
+    const currentThemeSlug = theme ? slugifyThemeName(theme.name) : null;
+    
+    // If theme already matches themeSlug, no need to reload
+    if (currentThemeSlug === themeSlug && theme) {
       setThemeLoading(false);
       setThemeError(null);
       return;
+    }
+
+    // Reset theme and products when themeSlug changes
+    if (currentThemeSlug !== themeSlug) {
+      setTheme(null);
+      setThemeError(null);
+      setProducts([]);
+      setProductsError(null);
     }
 
     let isMounted = true;
@@ -89,7 +110,7 @@ function ThemeDetail() {
     return () => {
       isMounted = false;
     };
-  }, [theme, themeSlug]);
+  }, [themeSlug]);
 
   useEffect(() => {
     if (!theme?._id) return;
