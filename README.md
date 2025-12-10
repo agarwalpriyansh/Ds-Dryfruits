@@ -103,23 +103,18 @@ npm run dev
 
 ## 📸 Screenshots
 
-### Homepage
-![Homepage](./screenshots/1.png)
-
-### Theme Collection Page
-![Theme Collection Page](./screenshots/2.png)
-
-### Product Details
-![Product Details](./screenshots/3.png)
-
-### Featured Products
-![Featured Products](./screenshots/4.png)
-
-### Contact Page
-![Contact Page](./screenshots/5.png)
-
-### Gift Box Showcase
-![Gift Box Showcase](./screenshots/6.png)
+<table>
+  <tr>
+    <td><img src="./screenshots/1.png" alt="Homepage" width="200" /></td>
+    <td><img src="./screenshots/2.png" alt="Theme Collection Page" width="200" /></td>
+    <td><img src="./screenshots/3.png" alt="Product Details" width="200" /></td>
+  </tr>
+  <tr>
+    <td><img src="./screenshots/4.png" alt="Featured Products" width="200" /></td>
+    <td><img src="./screenshots/5.png" alt="Contact Page" width="200" /></td>
+    <td><img src="./screenshots/6.png" alt="Gift Box Showcase" width="200" /></td>
+  </tr>
+</table>
 
 ## 🤝 Contributing
 
