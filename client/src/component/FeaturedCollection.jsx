@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { apiService } from '../utils/apiConnector';
+import GiftBoxCard from './gift-box-card';
 
 function FeaturedCollection() {
   const [products, setProducts] = useState([]);
@@ -42,8 +42,7 @@ function FeaturedCollection() {
     };
   }, []);
 
-  const placeholderImage =
-    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23e5e7eb'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='%239ca3af'%3ENo Image%3C/text%3E%3C/svg%3E";
+  const placeholderImage = "/placeholder.svg";
 
   const Wrapper = ({ children }) => (
     <div className="py-4 sm:py-6 md:py-8 px-4 sm:px-6 lg:px-8">
@@ -86,49 +85,18 @@ function FeaturedCollection() {
       <div className="overflow-x-auto pb-3 sm:pb-4 scroll-smooth -mx-4 sm:mx-0">
         <div className="flex gap-0 sm:gap-4 md:gap-6 min-w-max snap-x snap-mandatory pl-4 pr-4 sm:pl-0 sm:pr-0">
           {products.map((product) => (
-            <Link
+            <div
               key={product._id}
-              to={`/products/${product._id}`}
-              className="flex-shrink-0 w-[calc(100vw-2rem)] sm:w-64 md:w-72 bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-2 snap-center"
+              className="flex-shrink-0 w-64 md:w-72 snap-center"
             >
-              {/* Product Image */}
-              <div className="w-full h-40 sm:h-48 overflow-hidden bg-gray-100">
-                <img
-                  src={product.imageUrl || placeholderImage}
-                  alt={product.name}
-                  className="w-full h-full object-cover object-center"
-                  onError={(e) => {
-                    if (e.currentTarget.src !== placeholderImage) {
-                      e.currentTarget.src = placeholderImage;
-                    }
-                  }}
-                />
-              </div>
-
-              {/* Product Details */}
-              <div className="p-3 sm:p-4">
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
-                  {product.name}
-                </h3>
-
-                {product.shortDescription && (
-                  <p className="text-xs sm:text-sm text-gray-600 mb-3 line-clamp-2">
-                    {product.shortDescription}
-                  </p>
-                )}
-
-                {product.defaultPrice && (
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs sm:text-sm text-gray-500">
-                      {product.defaultPrice.weight}
-                    </span>
-                    <span className="text-lg sm:text-xl font-bold text-gray-900">
-                      ₹{product.defaultPrice.price}
-                    </span>
-                  </div>
-                )}
-              </div>
-            </Link>
+              <GiftBoxCard
+                id={product._id}
+                image={product.imageUrl || placeholderImage}
+                brand="DS Dryfruits"
+                collection={product.name}
+                to={`/products/${product._id}`}
+              />
+            </div>
           ))}
         </div>
       </div>
