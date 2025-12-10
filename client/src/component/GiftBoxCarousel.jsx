@@ -46,6 +46,7 @@ const GIFT_BOXES = [
 export default function GiftBoxCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [itemsPerPage, setItemsPerPage] = useState(1)
+  const [gapSize, setGapSize] = useState(1) // in rem
   const [touchStartX, setTouchStartX] = useState(null)
 
   useEffect(() => {
@@ -53,12 +54,16 @@ export default function GiftBoxCarousel() {
       const width = window.innerWidth
       if (width >= 1200) {
         setItemsPerPage(4)
+        setGapSize(1.5) // gap-6 = 1.5rem
       } else if (width >= 992) {
         setItemsPerPage(3)
+        setGapSize(1.5) // gap-6 = 1.5rem
       } else if (width >= 640) {
         setItemsPerPage(2)
+        setGapSize(1.5) // gap-6 = 1.5rem
       } else {
         setItemsPerPage(1)
+        setGapSize(1) // gap-4 = 1rem
       }
     }
 
@@ -67,18 +72,23 @@ export default function GiftBoxCarousel() {
     return () => window.removeEventListener("resize", updateItemsPerPage)
   }, [])
 
+  const maxIndex = Math.max(0, GIFT_BOXES.length - itemsPerPage)
+
   const goToPrevious = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? GIFT_BOXES.length - 1 : prevIndex - 1))
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? maxIndex : prevIndex - 1))
   }
 
   const goToNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === GIFT_BOXES.length - 1 ? 0 : prevIndex + 1))
+    setCurrentIndex((prevIndex) => (prevIndex >= maxIndex ? 0 : prevIndex + 1))
   }
 
   // Calculate which items to show based on available width
   const visibleItems = []
   for (let i = 0; i < itemsPerPage; i++) {
-    visibleItems.push(GIFT_BOXES[(currentIndex + i) % GIFT_BOXES.length])
+    const index = currentIndex + i
+    if (index < GIFT_BOXES.length) {
+      visibleItems.push(GIFT_BOXES[index])
+    }
   }
 
   const handleTouchStart = (event) => {
@@ -107,42 +117,44 @@ export default function GiftBoxCarousel() {
           Gift Boxes - Signature Collection
         </h2>
         <div className="relative w-full">
-          <div className="flex items-center justify-center gap-4">
-            {/* Left Arrow */}
-            <button
-              onClick={goToPrevious}
-              className="hidden sm:flex absolute left-0 z-10 -left-12 sm:-left-14 md:-left-16 lg:-left-20 xl:-left-24 items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-700 hover:bg-red-800 text-white transition-colors shadow-lg"
-              aria-label="Previous"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-
-            {/* Carousel Items */}
-            <div
-              className="flex gap-4 sm:gap-6 px-4 sm:px-6 lg:px-8 overflow-hidden w-full"
-              onTouchStart={handleTouchStart}
-              onTouchEnd={handleTouchEnd}
-            >
-              {visibleItems.map((box) => (
-                <div
-                  key={box.id}
-                  className="flex-shrink-0 min-w-0"
-                  style={{ flexBasis: `${100 / itemsPerPage}%` }}
-                >
-                  <GiftBoxCard {...box} />
-                </div>
-              ))}
-            </div>
-
-            {/* Right Arrow */}
-            <button
-              onClick={goToNext}
-              className="hidden sm:flex absolute right-0 z-10 -right-12 sm:-right-14 md:-right-16 lg:-right-20 xl:-right-24 items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-700 hover:bg-red-800 text-white transition-colors shadow-lg"
-              aria-label="Next"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
+          {/* Carousel Items */}
+          <div
+            className="flex gap-4 sm:gap-6 overflow-hidden w-full pr-0"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            {visibleItems.map((box) => (
+              <div
+                key={box.id}
+                className="flex-shrink-0"
+                style={{ 
+                  flex: `0 0 calc((100% - ${(itemsPerPage - 1) * gapSize}rem) / ${itemsPerPage})`,
+                  minWidth: 0,
+                  maxWidth: `calc((100% - ${(itemsPerPage - 1) * gapSize}rem) / ${itemsPerPage})`
+                }}
+              >
+                <GiftBoxCard {...box} />
+              </div>
+            ))}
           </div>
+
+          {/* Left Arrow */}
+          <button
+            onClick={goToPrevious}
+            className="hidden sm:flex absolute left-2 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#5e0404] hover:bg-[#4a0303] text-white transition-colors shadow-lg"
+            aria-label="Previous"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+
+          {/* Right Arrow */}
+          <button
+            onClick={goToNext}
+            className="hidden sm:flex absolute right-2 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#5e0404] hover:bg-[#4a0303] text-white transition-colors shadow-lg"
+            aria-label="Next"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
 
           {/* Indicators */}
           <div className="flex justify-center gap-2 mt-4">
