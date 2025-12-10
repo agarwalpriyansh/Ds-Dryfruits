@@ -45,7 +45,7 @@ const Returns = () => {
               Customers must return the product(s) for which they are seeking a refund at their own cost.
             </p>
             <p className="text-gray-700 text-base leading-relaxed">
-              The customer must comply with the directions of Dry Fruit House staff in order to facilitate a refund or exchange.
+              The customer must comply with the directions of DS Dryfruits staff in order to facilitate a refund or exchange.
             </p>
           </section>
 
@@ -63,13 +63,13 @@ const Returns = () => {
           <section className="space-y-2">
             <h2 className="text-2xl font-semibold text-gray-900">Refund Processing</h2>
             <p className="text-gray-700 text-base leading-relaxed">
-              After receiving the returned Dry Fruit House product(s), Dry Fruit House will issue a refund as soon as is reasonably practicable, and the customer will be provided with e-mail acknowledgement.
+              After receiving the returned Ds Dryfruits product(s), Ds Dryfruits will issue a refund as soon as is reasonably practicable, and the customer will be provided with e-mail acknowledgement.
             </p>
             <p className="text-gray-700 text-base leading-relaxed">
               Where possible, refunds will be processed by reversing the initial customer transaction.
             </p>
             <p className="text-gray-700 text-base leading-relaxed">
-              Dry Fruit House accepts no responsibility for any delays that may occur in receiving the refund as a result of any third-party payment gateway.
+              DS Dryfruits accepts no responsibility for any delays that may occur in receiving the refund as a result of any third-party payment gateway.
             </p>
           </section>
         </div>

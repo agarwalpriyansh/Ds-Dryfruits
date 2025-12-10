@@ -18,7 +18,7 @@ const Privacy = () => {
           <section className="space-y-1">
             <h2 className="text-2xl font-semibold text-gray-900">1. Who we are</h2>
             <p className="text-gray-700 text-base leading-relaxed">
-              Our website address is: <a href="https://dryfruithouse.com" className="text-amber-700 hover:underline">dryfruithouse.com</a>
+              Our website address is: <a href="https://dsdryfruits.com" className="text-amber-700 hover:underline">dsdryfruits.com</a>
             </p>
           </section>
 
@@ -111,8 +111,8 @@ const Privacy = () => {
           <div className="pt-6 border-t border-gray-200">
             <p className="text-gray-600 text-sm">
               If you have any questions about this privacy policy, please contact us at{' '}
-              <a href="mailto:info@dryfruithouse.com" className="text-amber-700 hover:underline">
-                info@dryfruithouse.com
+              <a href="mailto:dryfruits.ds@gmail.com" className="text-amber-700 hover:underline">
+                dryfruits.ds@gmail.com
               </a>
             </p>
           </div>

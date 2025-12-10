@@ -69,7 +69,7 @@ export default function Strip() {
                   <Phone className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
                 </div>
                 <p className="text-[0.7rem] sm:text-[0.75rem] md:text-[0.875rem] text-[#D3D3D3] font-normal whitespace-nowrap">
-                  +91-7483600212
+                  +91-9024675644
                 </p>
               </div>
 
@@ -79,7 +79,7 @@ export default function Strip() {
                   <Mail className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
                 </div>
                 <p className="text-[0.7rem] sm:text-[0.75rem] md:text-[0.875rem] text-[#D3D3D3] font-normal whitespace-normal sm:whitespace-nowrap break-all sm:break-normal">
-                  info@dryfruithouse.com
+                  dryfruits.ds@gmail.com
                 </p>
               </div>
             </div>

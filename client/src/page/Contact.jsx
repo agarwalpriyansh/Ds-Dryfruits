@@ -84,7 +84,7 @@ const Contact = () => {
                   <div>
                     <p className="text-sm mb-1">Reach us on call/whatsapp</p>
                     <a href="tel:+917483600212" className="text-white hover:underline">
-                      +91-7483600212
+                      +91-9024675644
                     </a>
                   </div>
                 </div>
@@ -96,7 +96,7 @@ const Contact = () => {
                 <div className="flex gap-3 items-start">
                   <Mail className="w-5 h-5 flex-shrink-0 mt-1" />
                   <a href="mailto:info@dryfruithouse.com" className="text-white hover:underline break-all">
-                    info@dryfruithouse.com
+                    dryfruits.ds@gmail.com
                   </a>
                 </div>
               </div>
@@ -107,7 +107,7 @@ const Contact = () => {
                 <div className="flex gap-3 items-start">
                   <MapPin className="w-5 h-5 flex-shrink-0 mt-1" />
                   <p className="text-sm leading-relaxed">
-                    NR Tower, 17th Cross, Sector 4, 19th Main Road, HSR Layout, Bengaluru, Karnataka 560102
+                  329-330 Khatipura Road,Opposite Bank of Baroda, Jhotwara, Jaipur.
                   </p>
                 </div>
               </div>
