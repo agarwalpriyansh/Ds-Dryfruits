@@ -111,7 +111,7 @@ export default function Navbar() {
   const shopCategories = [
     'Nuts & Dry Fruits',
     'Dates',
-    'DFH Exclusives',
+    'Exclusives',
     'Berries',
     'Seeds & More',
     'Gift Boxes'
