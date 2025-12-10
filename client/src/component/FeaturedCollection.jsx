@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { apiService } from '../utils/apiConnector';
 import GiftBoxCard from './gift-box-card';
@@ -11,6 +11,12 @@ function FeaturedCollection() {
   const [itemsPerPage, setItemsPerPage] = useState(1);
   const [gapSize, setGapSize] = useState(1); // in rem
   const [touchStartX, setTouchStartX] = useState(null);
+  const [touchStartY, setTouchStartY] = useState(null);
+  const [isSwiping, setIsSwiping] = useState(false);
+  const [swipeOffset, setSwipeOffset] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const containerRef = useRef(null);
+  const [itemWidth, setItemWidth] = useState(0);
 
   useEffect(() => {
     let isMounted = true;
@@ -50,6 +56,8 @@ function FeaturedCollection() {
   useEffect(() => {
     const updateItemsPerPage = () => {
       const width = window.innerWidth;
+      setIsMobile(width < 640);
+      
       if (width >= 1200) {
         setItemsPerPage(4);
         setGapSize(1.5); // gap-6 = 1.5rem
@@ -70,6 +78,29 @@ function FeaturedCollection() {
     return () => window.removeEventListener('resize', updateItemsPerPage);
   }, []);
 
+  // Calculate item width for accurate transform
+  useEffect(() => {
+    const updateItemWidth = () => {
+      if (!containerRef.current) return;
+      
+      const container = containerRef.current;
+      const containerWidth = container.offsetWidth;
+      const gapPixels = gapSize * 16; // Convert rem to pixels (assuming 16px base)
+      const calculatedItemWidth = (containerWidth - (itemsPerPage - 1) * gapPixels) / itemsPerPage;
+      setItemWidth(calculatedItemWidth);
+    };
+
+    // Use setTimeout to ensure DOM is ready
+    const timeoutId = setTimeout(updateItemWidth, 0);
+    window.addEventListener('resize', updateItemWidth);
+    
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', updateItemWidth);
+    };
+  }, [itemsPerPage, gapSize, products.length]);
+
+
   const maxIndex = Math.max(0, products.length - itemsPerPage);
 
   const goToPrevious = () => {
@@ -80,32 +111,69 @@ function FeaturedCollection() {
     setCurrentIndex((prevIndex) => (prevIndex >= maxIndex ? 0 : prevIndex + 1));
   };
 
-  // Calculate which items to show based on available width
-  const visibleItems = [];
-  for (let i = 0; i < itemsPerPage; i++) {
-    const index = currentIndex + i;
-    if (index < products.length) {
-      visibleItems.push(products[index]);
-    }
-  }
-
   const handleTouchStart = (event) => {
+    // Only enable swipe on mobile screens
+    if (!isMobile) return;
+    
     setTouchStartX(event.touches[0].clientX);
+    setTouchStartY(event.touches[0].clientY);
+    setIsSwiping(false);
+    setSwipeOffset(0);
+  };
+
+  const handleTouchMove = (event) => {
+    // Only enable swipe on mobile screens
+    if (!isMobile || touchStartX === null || touchStartY === null) return;
+    
+    const touchCurrentX = event.touches[0].clientX;
+    const touchCurrentY = event.touches[0].clientY;
+    const deltaX = touchStartX - touchCurrentX;
+    const deltaY = touchStartY - touchCurrentY;
+    
+    // Only handle horizontal swipes (prevent vertical scroll interference)
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 5) {
+      setIsSwiping(true);
+      setSwipeOffset(-deltaX);
+      // Prevent scrolling while swiping horizontally
+      if (Math.abs(deltaX) > 10) {
+        event.preventDefault();
+      }
+    }
   };
 
   const handleTouchEnd = (event) => {
-    if (touchStartX === null) return;
+    // Only enable swipe on mobile screens
+    if (!isMobile) {
+      setTouchStartX(null);
+      setTouchStartY(null);
+      return;
+    }
+    
+    if (touchStartX === null) {
+      setIsSwiping(false);
+      setSwipeOffset(0);
+      return;
+    }
+    
     const touchEndX = event.changedTouches[0].clientX;
     const delta = touchStartX - touchEndX;
-    const threshold = 40;
+    const threshold = 30; // Minimum swipe distance
 
-    if (delta > threshold) {
-      goToNext();
-    } else if (delta < -threshold) {
-      goToPrevious();
+    if (Math.abs(delta) > threshold) {
+      if (delta > 0) {
+        // Swiped left - go to next
+        goToNext();
+      } else {
+        // Swiped right - go to previous
+        goToPrevious();
+      }
     }
 
+    // Reset touch state
     setTouchStartX(null);
+    setTouchStartY(null);
+    setIsSwiping(false);
+    setSwipeOffset(0);
   };
 
   const placeholderImage = "/placeholder.svg";
@@ -145,34 +213,60 @@ function FeaturedCollection() {
     );
   }
 
+  // Calculate transform for carousel - move based on currentIndex
+  const calculateTransform = () => {
+    if (products.length === 0 || itemWidth === 0) return 'translateX(0)';
+    
+    const gapPixels = gapSize * 16; // Convert rem to pixels
+    // Base transform: move left by currentIndex items
+    const baseOffset = -(currentIndex * (itemWidth + gapPixels));
+    
+    // Add swipe offset during interaction
+    const totalOffset = swipeOffset !== 0 ? baseOffset + swipeOffset : baseOffset;
+    
+    return `translateX(${totalOffset}px)`;
+  };
+
   return (
     <Wrapper>
       <div className="relative w-full">
         {/* Carousel Items */}
         <div
-          className="flex gap-4 sm:gap-6 overflow-hidden w-full pr-0"
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
+          ref={containerRef}
+          className="overflow-hidden w-full relative"
         >
-          {visibleItems.map((product) => (
-            <div
-              key={product._id}
-              className="flex-shrink-0"
-              style={{
-                flex: `0 0 calc((100% - ${(itemsPerPage - 1) * gapSize}rem) / ${itemsPerPage})`,
-                minWidth: 0,
-                maxWidth: `calc((100% - ${(itemsPerPage - 1) * gapSize}rem) / ${itemsPerPage})`
-              }}
-            >
-              <GiftBoxCard
-                id={product._id}
-                image={product.imageUrl || placeholderImage}
-                brand="DS Dryfruits"
-                collection={product.name}
-                to={`/products/${product._id}`}
-              />
-            </div>
-          ))}
+          <div
+            className="flex gap-4 sm:gap-6 w-full"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            style={{
+              touchAction: isMobile ? 'pan-x' : 'pan-y pinch-zoom',
+              transform: calculateTransform(),
+              transition: isSwiping ? 'none' : 'transform 0.3s ease-out',
+              willChange: isSwiping ? 'transform' : 'auto',
+            }}
+          >
+            {products.map((product) => (
+              <div
+                key={product._id}
+                className="flex-shrink-0"
+                style={{
+                  flex: `0 0 calc((100% - ${(itemsPerPage - 1) * gapSize}rem) / ${itemsPerPage})`,
+                  minWidth: 0,
+                  maxWidth: `calc((100% - ${(itemsPerPage - 1) * gapSize}rem) / ${itemsPerPage})`
+                }}
+              >
+                <GiftBoxCard
+                  id={product._id}
+                  image={product.imageUrl || placeholderImage}
+                  brand="DS Dryfruits"
+                  collection={product.name}
+                  to={`/products/${product._id}`}
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Left Arrow */}
