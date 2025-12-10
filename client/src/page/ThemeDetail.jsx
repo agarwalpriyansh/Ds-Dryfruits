@@ -3,6 +3,7 @@ import { useLocation, useParams, Link } from 'react-router-dom';
 import { apiService } from '../utils/apiConnector';
 import { deslugifyThemeName, slugifyThemeName } from '../utils/slugify';
 import ProductCard from '../component/ProductCard';
+import ThemeStrip from '../component/ThemeStrip';
 
 function ThemeDetail() {
   const { themeSlug } = useParams();
@@ -165,6 +166,11 @@ function ThemeDetail() {
           </div>
         </div>
       </div>
+
+      {/* Theme Strip */}
+      {!themeLoading && !themeError && theme && (
+        <ThemeStrip theme={theme} />
+      )}
 
       {/* Body */}
       <div className="px-4 sm:px-5 md:px-6 max-w-[95%] mx-auto mt-6 sm:mt-8">
