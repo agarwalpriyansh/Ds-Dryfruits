@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu as MenuIcon, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { slugifyThemeName } from '../utils/slugify';
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [shopMenuOpen, setShopMenuOpen] = useState(false);
@@ -15,6 +16,8 @@ export default function Navbar() {
   const [isStripVisible, setIsStripVisible] = useState(true);
   const lastScrollY = useRef(0);
   const shopMenuRef = useRef(null);
+  const mobileShopMenuRef = useRef(null);
+  const mobileShopDropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
 
   // Check screen size
@@ -96,9 +99,37 @@ export default function Navbar() {
   // Close menus when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
+      // Don't close menus if clicking on a link or inside a link (let the link handle navigation)
+      const clickedLink = event.target.closest('a');
+      if (clickedLink) {
+        return;
+      }
+
+      // Check if click is inside mobile shop menu dropdown - don't close anything in this case
+      if (mobileShopDropdownRef.current && mobileShopDropdownRef.current.contains(event.target)) {
+        return;
+      }
+
+      // Check if click is inside mobile shop menu container (button area)
+      if (mobileShopMenuRef.current && mobileShopMenuRef.current.contains(event.target)) {
+        // If clicking on the button itself, let it toggle (don't close)
+        if (event.target.closest('button')) {
+          return;
+        }
+      }
+
+      // Check if click is outside desktop shop menu
       if (shopMenuRef.current && !shopMenuRef.current.contains(event.target)) {
         setShopMenuOpen(false);
       }
+      // Check if click is outside mobile shop menu button area (but not the dropdown)
+      if (mobileShopMenuRef.current && !mobileShopMenuRef.current.contains(event.target)) {
+        // Only close shop menu if clicking outside mobile menu entirely
+        if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+          setShopMenuOpen(false);
+        }
+      }
+      // Check if click is outside mobile menu
       if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
         setMobileMenuOpen(false);
       }
@@ -238,7 +269,7 @@ export default function Navbar() {
             >
               Home
             </Link>
-            <div className="relative">
+            <div className="relative" ref={mobileShopMenuRef}>
               <button
                 onClick={() => setShopMenuOpen(!shopMenuOpen)}
                 className="w-full text-left text-[#2c2c2c] text-base py-2 px-6 hover:bg-[#f5f5f5] transition-colors bg-transparent border-none cursor-pointer"
@@ -246,20 +277,28 @@ export default function Navbar() {
                 Shop +
               </button>
               {shopMenuOpen && (
-                <div className="ml-4 mt-1 bg-white rounded-md shadow-[0_4px_6px_rgba(0,0,0,0.1)] py-2 border border-gray-100">
-                  {shopCategories.map((category) => (
-                    <Link
-                      key={category}
-                      to={`/themes/${slugifyThemeName(category)}`}
-                      onClick={() => {
-                        setShopMenuOpen(false);
-                        setMobileMenuOpen(false);
-                      }}
-                      className="block w-full text-left text-[#2c2c2c] text-base font-medium py-2 px-6 hover:bg-[#f5f5f5] transition-colors no-underline"
-                    >
-                      {category}
-                    </Link>
-                  ))}
+                <div 
+                  ref={mobileShopDropdownRef}
+                  className="ml-4 mt-1 bg-white rounded-md shadow-[0_4px_6px_rgba(0,0,0,0.1)] py-2 border border-gray-100"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {shopCategories.map((category) => {
+                    const categoryPath = `/themes/${slugifyThemeName(category)}`;
+                    return (
+                      <div
+                        key={category}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShopMenuOpen(false);
+                          setMobileMenuOpen(false);
+                          navigate(categoryPath);
+                        }}
+                        className="block w-full text-left text-[#2c2c2c] text-base font-medium py-2 px-6 hover:bg-[#f5f5f5] transition-colors cursor-pointer"
+                      >
+                        {category}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
