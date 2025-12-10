@@ -4,7 +4,7 @@ A modern, full-stack MERN e-commerce application designed for selling premium dr
 
 This Site was built to provide a seamless shopping experience where customers can browse products by specific "Themes" (like Nuts, Berries, or Exotic Mixes) and select custom weight variants for each item.
 
-./screenshots/1.png
+![Alt Text](./screenshots/1.png)
 
 ## 💡 The Idea
 
@@ -103,12 +103,12 @@ npm run dev
 
 ## 📸 Screenshots
 
-./screenshots/1.png
-./screenshots/2.png
-./screenshots/3.png
-./screenshots/4.png
-./screenshots/5.png
-./screenshots/6.png
+![Alt Text](./screenshots/1.png)
+![Alt Text](./screenshots/2.png)
+![Alt Text](./screenshots/3.png)
+![Alt Text](./screenshots/4.png)
+![Alt Text](./screenshots/5.png)
+![Alt Text](./screenshots/6.png)
 
 ## 🤝 Contributing
 
