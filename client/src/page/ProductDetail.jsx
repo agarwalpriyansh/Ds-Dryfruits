@@ -192,7 +192,7 @@ function ProductDetail() {
                 href={`https://wa.me/919024675644?text=Hi, I'm interested in ${encodeURIComponent(product.name)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block w-[30%] bg-[#5e0404] text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-700 transition-colors shadow-md text-center"
+                className="inline-block w-full sm:w-auto sm:min-w-[200px] md:w-[30%] bg-[#5e0404] text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-700 transition-colors shadow-md text-center"
               >
                 Whatsapp Us
               </a>
