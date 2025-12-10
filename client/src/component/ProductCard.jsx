@@ -61,12 +61,20 @@ export default function ProductCard({ product }) {
   return (
     <div className="w-full flex flex-col rounded-xl overflow-hidden border border-gray-300 bg-white shadow-sm hover:shadow-md transition-all duration-300">
         {/* Product Image */}
-        <div className="relative z-10 w-full flex items-center justify-center">
-          <div className="w-full  aspect-square">
+        <div 
+          className="relative z-10 w-full flex items-center justify-center aspect-square"
+          style={{
+            backgroundImage: `url('https://res.cloudinary.com/dsbu2gzgi/image/upload/v1765387511/prouctbg_jkhkhw.png')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        >
+          <div className="w-[60%] h-[60%] flex items-center justify-center">
             <img
               src={imageUrl}
               alt={product.name || 'Product image'}
-              className="w-full h-full object-cover object-center"
+              className="w-full h-full rounded-full object-cover object-center"
               onError={(e) => {
                 if (e.target.src !== placeholderImage) {
                   e.target.src = placeholderImage;
