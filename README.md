@@ -103,12 +103,23 @@ npm run dev
 
 ## 📸 Screenshots
 
-![Alt Text](./screenshots/1.png)
-![Alt Text](./screenshots/2.png)
-![Alt Text](./screenshots/3.png)
-![Alt Text](./screenshots/4.png)
-![Alt Text](./screenshots/5.png)
-![Alt Text](./screenshots/6.png)
+### Homepage
+![Homepage](./screenshots/1.png)
+
+### Theme Collection Page
+![Theme Collection Page](./screenshots/2.png)
+
+### Product Details
+![Product Details](./screenshots/3.png)
+
+### Featured Products
+![Featured Products](./screenshots/4.png)
+
+### Contact Page
+![Contact Page](./screenshots/5.png)
+
+### Gift Box Showcase
+![Gift Box Showcase](./screenshots/6.png)
 
 ## 🤝 Contributing
 
