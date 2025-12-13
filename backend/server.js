@@ -27,6 +27,11 @@ app.use('/api/themes', themesRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/contact', contactRouter);
 
+app.get("/", (req, res) => {
+  res.send("Backend is running 🚀");
+});
+
+
 app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "OK" });
 });
