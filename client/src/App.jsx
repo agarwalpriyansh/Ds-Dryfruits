@@ -1,4 +1,3 @@
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import HomePage from './page/Home';
 import ThemeDetail from './page/ThemeDetail';
@@ -13,10 +12,16 @@ import Privacy from './page/Privacy';
 import Returns from './page/Returns';
 import Terms from './page/Terms';
 import Footer from './component/Footer';
+import SEO from './component/SEO';
 
 function App() {
   return (
-    <div className="flex min-h-screen flex-col bg-white text-slate-900">
+    <>
+      <SEO 
+        title="Premium Quality Dry Fruits & Nuts"
+        description="Shop premium quality dry fruits and nuts. Best prices on almonds, cashews, walnuts, and more. Bulk orders available."
+      />
+      <div className="flex min-h-screen flex-col bg-white text-slate-900">
       <div><Strip/></div>
       <div><Navbar/></div>
 
@@ -38,8 +43,8 @@ function App() {
       </main>
       <TrustStrip />
       <Footer />
-    </div>
-
+      </div>
+    </>
   );
 }
 
