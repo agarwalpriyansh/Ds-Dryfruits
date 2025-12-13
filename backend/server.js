@@ -27,6 +27,10 @@ app.use('/api/themes', themesRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/contact', contactRouter);
 
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ status: "OK" });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
