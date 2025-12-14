@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://dsdryfruits.com/sitemap.xml
+Sitemap: https://dsdryfruits.in/sitemap.xml
 
 # Disallow admin or private areas if any
 # Disallow: /admin/

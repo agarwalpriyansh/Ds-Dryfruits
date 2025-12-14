@@ -188,7 +188,7 @@ export default function Navbar() {
             to="/" 
             className="text-black no-underline font-semibold hover:opacity-80 transition-opacity"
           >
-            The Dry Fruit Store
+            DS Dryfruits
           </Link>
         </h1>
 

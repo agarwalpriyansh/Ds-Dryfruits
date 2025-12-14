@@ -9,7 +9,7 @@ const SEO = ({
   ogType = 'website'
 }) => {
   const siteName = 'DS Dryfruits';
-  const siteUrl = 'https://dsdryfruits.com';
+  const siteUrl = 'https://dsdryfruits.in';
   const defaultTitle = `${siteName} - Premium Quality Dry Fruits & Nuts`;
   const defaultDescription = 'Shop premium quality dry fruits and nuts. Best prices on almonds, cashews, walnuts, and more. Bulk orders available.';
   
