@@ -13,10 +13,12 @@ import Returns from './page/Returns';
 import Terms from './page/Terms';
 import Footer from './component/Footer';
 import SEO from './component/SEO';
+import ScrollToTop from './component/ScrollToTop';
 
 function App() {
   return (
     <>
+      <ScrollToTop />
       <SEO 
         title="Premium Quality Dry Fruits & Nuts"
         description="Shop premium quality dry fruits and nuts. Best prices on almonds, cashews, walnuts, and more. Bulk orders available."
