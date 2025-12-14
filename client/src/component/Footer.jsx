@@ -1,8 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Linkedin, Mail, MapPin, Phone, ArrowUp } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Linkedin, Mail, MapPin, Phone, ArrowUp, ChevronDown } from 'lucide-react';
 
 export default function Footer() {
+  const [openDropdowns, setOpenDropdowns] = useState({
+    quickLinks: false,
+    accountInfo: false,
+    contactDetails: false,
+  });
+
+  const toggleDropdown = (key) => {
+    setOpenDropdowns(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -49,8 +62,17 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4 sm:mb-6">Quick Links</h3>
-            <ul className="space-y-3 sm:space-y-4">
+            <button
+              onClick={() => toggleDropdown('quickLinks')}
+              className="w-full flex items-center justify-between md:justify-start text-base sm:text-lg font-semibold text-foreground mb-4 sm:mb-6 md:mb-6"
+            >
+              <span>Quick Links</span>
+              <ChevronDown 
+                size={20} 
+                className={`md:hidden transition-transform ${openDropdowns.quickLinks ? 'rotate-180' : ''}`}
+              />
+            </button>
+            <ul className={`space-y-3 sm:space-y-4 ${openDropdowns.quickLinks ? 'block' : 'hidden'} md:block`}>
               {['About Us', 'Contact Us', 'Bulk Ordering', 'Shopping'].map((link) => (
                 <li key={link}>
                   <a href="#" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
@@ -63,8 +85,17 @@ export default function Footer() {
 
           {/* Account Info */}
           <div>
-            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4 sm:mb-6">Account Info</h3>
-            <ul className="space-y-3 sm:space-y-4">
+            <button
+              onClick={() => toggleDropdown('accountInfo')}
+              className="w-full flex items-center justify-between md:justify-start text-base sm:text-lg font-semibold text-foreground mb-4 sm:mb-6 md:mb-6"
+            >
+              <span>Account Info</span>
+              <ChevronDown 
+                size={20} 
+                className={`md:hidden transition-transform ${openDropdowns.accountInfo ? 'rotate-180' : ''}`}
+              />
+            </button>
+            <ul className={`space-y-3 sm:space-y-4 ${openDropdowns.accountInfo ? 'block' : 'hidden'} md:block`}>
               <li>
                 <a href="#" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
                   My Account
@@ -90,8 +121,17 @@ export default function Footer() {
 
           {/* Contact Details */}
           <div>
-            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4 sm:mb-6">Contact Details</h3>
-            <div className="space-y-3 sm:space-y-4">
+            <button
+              onClick={() => toggleDropdown('contactDetails')}
+              className="w-full flex items-center justify-between md:justify-start text-base sm:text-lg font-semibold text-foreground mb-4 sm:mb-6 md:mb-6"
+            >
+              <span>Contact Details</span>
+              <ChevronDown 
+                size={20} 
+                className={`md:hidden transition-transform ${openDropdowns.contactDetails ? 'rotate-180' : ''}`}
+              />
+            </button>
+            <div className={`space-y-3 sm:space-y-4 ${openDropdowns.contactDetails ? 'block' : 'hidden'} md:block`}>
               <div className="flex gap-2 sm:gap-3">
                 <MapPin size={18} className="sm:w-5 sm:h-5 text-foreground flex-shrink-0 mt-0.5" />
                 <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
