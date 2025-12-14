@@ -181,16 +181,20 @@ export default function Navbar() {
       } ${elevated ? 'shadow-[0px_2px_20px_rgba(0,0,0,0.35)]' : 'shadow-none'}`}
       style={isSmallScreen ? topStyle : {}}
     >
-      <div className="min-h-[48px] sm:min-h-16 flex items-center justify-between px-4 sm:px-8 md:px-12">
+      <div className="min-h-[48px] sm:min-h-16 md:min-h-18 flex items-center justify-between px-4 sm:px-8 md:px-12">
         {/* Logo/Brand */}
-        <h1 className="flex-grow text-base sm:text-xl md:text-2xl font-semibold m-0">
+        <div className="flex-grow m-0">
           <Link 
             to="/" 
-            className="text-black no-underline font-semibold hover:opacity-80 transition-opacity"
+            className="text-black no-underline hover:opacity-80 transition-opacity inline-block"
           >
-            DS Dryfruits
+            <img 
+              src="https://res.cloudinary.com/dsbu2gzgi/image/upload/v1765721414/nav_logo_xkyhl7.png" 
+              alt="DS Dryfruits Logo" 
+              className="h-8 sm:h-10 md:h-12 lg:h-14 w-auto"
+            />
           </Link>
-        </h1>
+        </div>
 
         {/* Desktop Navigation Buttons */}
         <div className="hidden md:flex items-center gap-8">
