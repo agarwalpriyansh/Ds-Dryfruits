@@ -241,7 +241,7 @@ function FeaturedCollection() {
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
             style={{
-              touchAction: isMobile ? 'pan-x' : 'pan-y pinch-zoom',
+              touchAction: isMobile ? 'pan-x pan-y' : 'pan-y pinch-zoom',
               transform: calculateTransform(),
               transition: isSwiping ? 'none' : 'transform 0.3s ease-out',
               willChange: isSwiping ? 'transform' : 'auto',
