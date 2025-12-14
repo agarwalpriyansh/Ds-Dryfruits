@@ -12,10 +12,9 @@ function FeaturedCollection() {
   const [gapSize, setGapSize] = useState(1); // in rem
   const [touchStartX, setTouchStartX] = useState(null);
   const [touchStartY, setTouchStartY] = useState(null);
-  const [isSwiping, setIsSwiping] = useState(false);
-  const [swipeOffset, setSwipeOffset] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef(null);
+  const flexContainerRef = useRef(null);
   const [itemWidth, setItemWidth] = useState(0);
 
   useEffect(() => {
@@ -101,6 +100,7 @@ function FeaturedCollection() {
   }, [itemsPerPage, gapSize, products.length]);
 
 
+
   const maxIndex = Math.max(0, products.length - itemsPerPage);
 
   const goToPrevious = () => {
@@ -115,49 +115,53 @@ function FeaturedCollection() {
     // Only enable swipe on mobile screens
     if (!isMobile) return;
     
-    setTouchStartX(event.touches[0].clientX);
-    setTouchStartY(event.touches[0].clientY);
-    setIsSwiping(false);
-    setSwipeOffset(0);
+    const touch = event.touches[0];
+    if (touch) {
+      setTouchStartX(touch.clientX);
+      setTouchStartY(touch.clientY);
+    }
   };
 
   const handleTouchMove = (event) => {
     // Only enable swipe on mobile screens
-    if (!isMobile || touchStartX === null || touchStartY === null) return;
+    if (!isMobile || touchStartX === null) return;
     
-    const touchCurrentX = event.touches[0].clientX;
-    const touchCurrentY = event.touches[0].clientY;
+    const touch = event.touches[0];
+    if (!touch) return;
+    
+    const touchCurrentX = touch.clientX;
+    const touchCurrentY = touch.clientY;
     const deltaX = touchStartX - touchCurrentX;
     const deltaY = touchStartY - touchCurrentY;
     
-    // Only handle horizontal swipes (prevent vertical scroll interference)
-    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 5) {
-      setIsSwiping(true);
-      setSwipeOffset(-deltaX);
-      // Prevent scrolling while swiping horizontally
-      if (Math.abs(deltaX) > 10) {
-        event.preventDefault();
-      }
+    // Determine if this is primarily a horizontal swipe
+    const isHorizontalSwipe = Math.abs(deltaX) > Math.abs(deltaY);
+    
+    // If horizontal movement detected, prevent vertical scrolling
+    if (isHorizontalSwipe && Math.abs(deltaX) > 10) {
+      event.preventDefault();
+      event.stopPropagation();
     }
   };
 
   const handleTouchEnd = (event) => {
     // Only enable swipe on mobile screens
-    if (!isMobile) {
+    if (!isMobile || touchStartX === null) {
       setTouchStartX(null);
       setTouchStartY(null);
       return;
     }
     
-    if (touchStartX === null) {
-      setIsSwiping(false);
-      setSwipeOffset(0);
+    const touch = event.changedTouches[0];
+    if (!touch) {
+      setTouchStartX(null);
+      setTouchStartY(null);
       return;
     }
     
-    const touchEndX = event.changedTouches[0].clientX;
+    const touchEndX = touch.clientX;
     const delta = touchStartX - touchEndX;
-    const threshold = 30; // Minimum swipe distance
+    const threshold = 50; // Minimum swipe distance
 
     if (Math.abs(delta) > threshold) {
       if (delta > 0) {
@@ -172,14 +176,19 @@ function FeaturedCollection() {
     // Reset touch state
     setTouchStartX(null);
     setTouchStartY(null);
-    setIsSwiping(false);
-    setSwipeOffset(0);
   };
 
   const placeholderImage = "/placeholder.svg";
 
   const Wrapper = ({ children }) => (
-    <div className="py-4 sm:py-6 md:py-8 px-4 sm:px-6 lg:px-8">
+    <div 
+      className="py-4 sm:py-6 md:py-8 px-4 sm:px-6 lg:px-8"
+      style={{
+        touchAction: isMobile ? 'pan-x' : 'auto',
+        overflowX: 'hidden',
+        overflowY: 'hidden',
+      }}
+    >
       <div className="max-w-[99%] mx-auto w-full">
         <h2 className="text-2xl lg:mb-10 mt-0 sm:text-3xl font-bold text-gray-900 sm:mb-6 text-center">
           Dry-Fruits Featured Collection
@@ -215,16 +224,23 @@ function FeaturedCollection() {
 
   // Calculate transform for carousel - move based on currentIndex
   const calculateTransform = () => {
-    if (products.length === 0 || itemWidth === 0) return 'translateX(0)';
+    if (products.length === 0) return 'translateX(0)';
+    
+    // On mobile, use percentage-based calculation for simplicity
+    if (isMobile) {
+      // Each item is 100% of container width, so move by 100% per item
+      const offsetPercent = -(currentIndex * 100);
+      return `translateX(${offsetPercent}%)`;
+    }
+    
+    // Desktop: use pixel-based calculation
+    if (itemWidth === 0) return 'translateX(0)';
     
     const gapPixels = gapSize * 16; // Convert rem to pixels
     // Base transform: move left by currentIndex items
     const baseOffset = -(currentIndex * (itemWidth + gapPixels));
     
-    // Add swipe offset during interaction
-    const totalOffset = swipeOffset !== 0 ? baseOffset + swipeOffset : baseOffset;
-    
-    return `translateX(${totalOffset}px)`;
+    return `translateX(${baseOffset}px)`;
   };
 
   return (
@@ -234,17 +250,23 @@ function FeaturedCollection() {
         <div
           ref={containerRef}
           className="overflow-hidden w-full relative"
+          style={{
+            touchAction: isMobile ? 'pan-x' : 'auto',
+            overflowX: 'hidden',
+            overflowY: 'hidden',
+          }}
         >
           <div
-            className="flex gap-4 sm:gap-6 w-full"
+            ref={flexContainerRef}
+            className="flex gap-4 sm:gap-6"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
             style={{
               touchAction: isMobile ? 'pan-x' : 'pan-y pinch-zoom',
               transform: calculateTransform(),
-              transition: isSwiping ? 'none' : 'transform 0.3s ease-out',
-              willChange: isSwiping ? 'transform' : 'auto',
+              transition: 'transform 0.3s ease-out',
+              width: isMobile ? `${products.length * 100}%` : '100%',
             }}
           >
             {products.map((product) => (
@@ -252,9 +274,10 @@ function FeaturedCollection() {
                 key={product._id}
                 className="flex-shrink-0"
                 style={{
-                  flex: `0 0 calc((100% - ${(itemsPerPage - 1) * gapSize}rem) / ${itemsPerPage})`,
+                  flex: `0 0 ${isMobile ? '100%' : `calc((100% - ${(itemsPerPage - 1) * gapSize}rem) / ${itemsPerPage})`}`,
                   minWidth: 0,
-                  maxWidth: `calc((100% - ${(itemsPerPage - 1) * gapSize}rem) / ${itemsPerPage})`
+                  width: isMobile ? '100%' : undefined,
+                  maxWidth: isMobile ? '100%' : `calc((100% - ${(itemsPerPage - 1) * gapSize}rem) / ${itemsPerPage})`
                 }}
               >
                 <GiftBoxCard
