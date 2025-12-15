@@ -69,17 +69,30 @@ export default function Footer() {
               <span>Quick Links</span>
               <ChevronDown 
                 size={20} 
-                className={`md:hidden transition-transform ${openDropdowns.quickLinks ? 'rotate-180' : ''}`}
+                className={`md:hidden transition-transform ${openDropdowns.accountInfo ? 'rotate-180' : ''}`}
               />
             </button>
-            <ul className={`space-y-3 sm:space-y-4 ${openDropdowns.quickLinks ? 'block' : 'hidden'} md:block`}>
-              {['About Us', 'Contact Us', 'Bulk Ordering', 'Shopping'].map((link) => (
-                <li key={link}>
-                  <a href="#" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
-                    {link}
-                  </a>
-                </li>
-              ))}
+            <ul className={`space-y-3 sm:space-y-4 ${openDropdowns.accountInfo ? 'block' : 'hidden'} md:block`}>
+              <li>
+                <Link to="/about" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
+                  Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/bulk" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
+                  Bulk Ordering
+                </Link>
+              </li>
+              <li>
+                <Link to="/themes/nuts-dry-fruits" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
+                  Shopping
+                </Link>
+              </li>
             </ul>
           </div>
 
