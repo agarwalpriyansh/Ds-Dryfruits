@@ -69,10 +69,10 @@ export default function Footer() {
               <span>Quick Links</span>
               <ChevronDown 
                 size={20} 
-                className={`md:hidden transition-transform ${openDropdowns.accountInfo ? 'rotate-180' : ''}`}
+                className={`md:hidden transition-transform ${openDropdowns.quickLinks ? 'rotate-180' : ''}`}
               />
             </button>
-            <ul className={`space-y-3 sm:space-y-4 ${openDropdowns.accountInfo ? 'block' : 'hidden'} md:block`}>
+            <ul className={`space-y-3 sm:space-y-4 ${openDropdowns.quickLinks ? 'block' : 'hidden'} md:block`}>
               <li>
                 <Link to="/about" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
                   About Us
