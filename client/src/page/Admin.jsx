@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { apiService, setAuthToken } from '../utils/apiConnector';
 
 function Admin() {
+  const navigate = useNavigate();
   const [themes, setThemes] = useState([]);
   const [products, setProducts] = useState([]);
 
@@ -52,6 +54,14 @@ function Admin() {
     }
     loadData();
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('userEmail');
+    setAuthToken(null);
+    navigate('/admin-login', { replace: true });
+  };
 
   const handleThemeChange = (e) => {
     const { name, value } = e.target;
@@ -150,10 +160,20 @@ function Admin() {
 
   return (
     <div className="px-4 sm:px-5 md:px-6 max-w-[1200px] mx-auto py-6">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-4">Admin Dashboard</h1>
-      <p className="text-sm text-gray-500 mb-4">
-        Simple admin panel to manage themes and products. (No authentication configured.)
-      </p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold">Admin Dashboard</h1>
+          <p className="text-sm text-gray-500">
+            Simple admin panel to manage themes and products.
+          </p>
+        </div>
+        <button
+          onClick={handleLogout}
+          className="self-start rounded bg-gray-800 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-700"
+        >
+          Logout
+        </button>
+      </div>
 
       {message && (
         <div className="mb-4 rounded bg-blue-50 px-4 py-2 text-sm text-blue-800">

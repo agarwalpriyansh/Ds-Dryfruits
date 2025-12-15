@@ -1,11 +1,16 @@
 'use client';
 
+import gift1 from '../assets/giftbox/1.jpeg';
+import gift2 from '../assets/giftbox/2.jpeg';
+import gift3 from '../assets/giftbox/3.jpeg';
+import gift4 from '../assets/giftbox/4.jpeg';
+
 export default function VideoCarousel() {
   const media = [
-    { id: 1, title: 'Video 1', thumbnail: '/store-shelf.jpg', type: 'video' },
-    { id: 2, title: 'Photo 1', thumbnail: '/store-shelf.jpg', type: 'photo' },
-    { id: 3, title: 'Photo 2', thumbnail: '/store-shelf.jpg', type: 'photo' },
-    { id: 4, title: 'Photo 3', thumbnail: '/store-shelf.jpg', type: 'photo' },
+    { id: 1, title: 'Video 1', thumbnail: gift1, type: 'video' },
+    { id: 2, title: 'Photo 1', thumbnail: gift2, type: 'photo' },
+    { id: 3, title: 'Photo 2', thumbnail: gift3, type: 'photo' },
+    { id: 4, title: 'Photo 3', thumbnail: gift4, type: 'photo' },
   ];
 
   const features = [
