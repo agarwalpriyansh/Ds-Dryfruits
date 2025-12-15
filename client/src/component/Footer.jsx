@@ -110,9 +110,9 @@ export default function Footer() {
             </button>
             <ul className={`space-y-3 sm:space-y-4 ${openDropdowns.accountInfo ? 'block' : 'hidden'} md:block`}>
               <li>
-                <a href="#" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
+                <Link to="/admin-login" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">
                   My Account
-                </a>
+                </Link>
               </li>
               <li>
                 <Link to="/privacy" className="text-gray-600 hover:text-foreground transition text-xs sm:text-sm">

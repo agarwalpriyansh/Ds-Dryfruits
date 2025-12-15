@@ -14,6 +14,9 @@ import Terms from './page/Terms';
 import Footer from './component/Footer';
 import SEO from './component/SEO';
 import ScrollToTop from './component/ScrollToTop';
+import Admin from './page/Admin';
+import AdminLogin from './page/AdminLogin';
+import ProtectedRoute from './component/ProtectedRoute';
 
 function App() {
   return (
@@ -41,6 +44,15 @@ function App() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/returns" element={<Returns />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/admin-login" element={<AdminLogin />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <Admin />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
       <TrustStrip />

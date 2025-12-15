@@ -31,10 +31,12 @@ mongoose.connect(process.env.MONGO_URI)
 const themesRouter = require('./routes/theme');
 const productsRouter = require('./routes/product');
 const contactRouter = require('./routes/contact');
+const authRouter = require('./routes/auth');
 
 app.use('/api/themes', themesRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/contact', contactRouter);
+app.use('/api/auth', authRouter);
 
 app.get("/", (req, res) => {
   res.send("Backend is running 🚀");

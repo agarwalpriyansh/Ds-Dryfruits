@@ -1,53 +1,128 @@
 const router = require('express').Router();
-let Product = require('../models/product.model'); 
+let Product = require('../models/product.model');
+const { verifyToken, requireRole } = require('../middleware/auth');
 
 // IMPORTANT: Define /featured route FIRST before any parameterized routes
 router.get('/featured', (req, res) => {
   Product.find({ isFeatured: true })
-    .then(products => {
+    .then((products) => {
       if (!products || products.length === 0) {
-        return res.json([]); 
+        return res.json([]);
       }
 
-      const productSummaries = products.map(product => ({
+      const productSummaries = products.map((product) => ({
         _id: product._id,
         name: product.name,
         shortDescription: product.shortDescription,
         imageUrl: product.imageUrl,
         variants: product.variants, // include all variants for dropdown pricing
-        defaultPrice: (product.variants && product.variants.length > 0)
-          ? product.variants[0]
-          : { weight: 'N/A', price: 0 }
+        defaultPrice:
+          product.variants && product.variants.length > 0
+            ? product.variants[0]
+            : { weight: 'N/A', price: 0 },
       }));
       res.json(productSummaries);
     })
-    .catch(err => {
+    .catch((err) => {
       console.error('Error in featured products route:', err);
       res.status(400).json('Error: ' + err);
     });
 });
 
-router.route('/by-theme/:themeId').get((req, res) => {
+// Get all products (admin use)
+router.get('/', verifyToken, requireRole('admin'), (req, res) => {
+  Product.find()
+    .populate('theme')
+    .then((products) => res.json(products))
+    .catch((err) => res.status(400).json('Error: ' + err));
+});
 
+router.route('/by-theme/:themeId').get((req, res) => {
   Product.find({ theme: req.params.themeId })
-    .then(products => {
+    .then((products) => {
       if (!products || products.length === 0) {
-        return res.json([]); 
+        return res.json([]);
       }
 
-      const productSummaries = products.map(product => ({
+      const productSummaries = products.map((product) => ({
         _id: product._id,
         name: product.name,
         shortDescription: product.shortDescription,
         imageUrl: product.imageUrl,
         variants: product.variants, // include all variants for dropdown pricing
-        defaultPrice: (product.variants && product.variants.length > 0)
-          ? product.variants[0]
-          : { weight: 'N/A', price: 0 }
+        defaultPrice:
+          product.variants && product.variants.length > 0
+            ? product.variants[0]
+            : { weight: 'N/A', price: 0 },
       }));
       res.json(productSummaries);
     })
-    .catch(err => res.status(400).json('Error: ' + err));
+    .catch((err) => res.status(400).json('Error: ' + err));
+});
+
+// Create a new product (admin use)
+router.post('/', verifyToken, requireRole('admin'), async (req, res) => {
+  try {
+    const {
+      name,
+      fullDescription,
+      shortDescription,
+      benefits,
+      imageUrl,
+      variants,
+      theme,
+      isFeatured,
+    } = req.body;
+
+    if (!name || !fullDescription || !shortDescription || !benefits || !theme) {
+      return res
+        .status(400)
+        .json('Error: name, fullDescription, shortDescription, benefits and theme are required');
+    }
+
+    if (!Array.isArray(variants) || variants.length === 0) {
+      return res
+        .status(400)
+        .json('Error: at least one price variant is required');
+    }
+
+    const product = new Product({
+      name: name.trim(),
+      fullDescription,
+      shortDescription,
+      benefits,
+      imageUrl: imageUrl || '',
+      variants,
+      theme,
+      isFeatured: !!isFeatured,
+    });
+
+    const saved = await product.save();
+    res.status(201).json(saved);
+  } catch (err) {
+    console.error('Error creating product:', err);
+    res.status(400).json('Error: ' + err.message);
+  }
+});
+
+// Update existing product (admin use)
+router.put('/:id', verifyToken, requireRole('admin'), async (req, res) => {
+  try {
+    const updates = req.body;
+    const product = await Product.findByIdAndUpdate(req.params.id, updates, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!product) {
+      return res.status(404).json('Error: Product not found');
+    }
+
+    res.json(product);
+  } catch (err) {
+    console.error('Error updating product:', err);
+    res.status(400).json('Error: ' + err.message);
+  }
 });
 
 router.route('/:id').get((req, res) => {
@@ -56,15 +131,15 @@ router.route('/:id').get((req, res) => {
     console.warn('Warning: /:id route matched "featured" - route order issue!');
     return res.status(404).json('Error: Route not found');
   }
-  
+
   Product.findById(req.params.id)
-    .then(product => {
+    .then((product) => {
       if (!product) {
         return res.status(404).json('Error: Product not found');
       }
-      
+
       res.json(product);
     })
-    .catch(err => res.status(400).json('Error: ' + err));
+    .catch((err) => res.status(400).json('Error: ' + err));
 });
 module.exports = router;
