@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { ChevronUp } from "lucide-react"
 import giftBox1 from "../assets/giftbox/1.jpeg"
 import giftBox2 from "../assets/giftbox/2.jpeg"
@@ -37,6 +38,7 @@ const CAROUSEL_ITEMS = [
 ]
 
 export default function GiftBoxCarousel() {
+  const navigate = useNavigate()
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [itemsPerView, setItemsPerView] = useState(3)
@@ -129,6 +131,7 @@ export default function GiftBoxCarousel() {
             </p>
             <button
               className="border border-black w-fit px-6 py-3 bg-black text-white hover:bg-black/90 font-semibold rounded-lg transition-colors"
+              onClick={() => navigate("/themes/gift-boxes")}
             >
               View More
             </button>
