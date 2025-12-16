@@ -1,6 +1,8 @@
 const router = require('express').Router();
 let Product = require('../models/product.model');
 const { verifyToken, requireRole } = require('../middleware/auth');
+const upload = require('../middleware/upload');
+const { uploadToCloudinary } = require('../utils/cloudinaryUpload');
 
 // IMPORTANT: Define /featured route FIRST before any parameterized routes
 router.get('/featured', (req, res) => {
@@ -61,49 +63,82 @@ router.route('/by-theme/:themeId').get((req, res) => {
 });
 
 // Create a new product (admin use)
-router.post('/', verifyToken, requireRole('admin'), async (req, res) => {
-  try {
-    const {
-      name,
-      fullDescription,
-      shortDescription,
-      benefits,
-      imageUrl,
-      variants,
-      theme,
-      isFeatured,
-    } = req.body;
+router.post(
+  '/',
+  verifyToken,
+  requireRole('admin'),
+  upload.single('image'),
+  async (req, res) => {
+    try {
+      const {
+        name,
+        fullDescription,
+        shortDescription,
+        benefits,
+        imageUrl,
+        variants,
+        theme,
+        isFeatured,
+      } = req.body;
 
-    if (!name || !fullDescription || !shortDescription || !benefits || !theme) {
-      return res
-        .status(400)
-        .json('Error: name, fullDescription, shortDescription, benefits and theme are required');
+      if (!name || !fullDescription || !shortDescription || !benefits || !theme) {
+        return res
+          .status(400)
+          .json('Error: name, fullDescription, shortDescription, benefits and theme are required');
+      }
+
+      // Parse variants if it's a string (from FormData)
+      let parsedVariants = variants;
+      if (typeof variants === 'string') {
+        try {
+          parsedVariants = JSON.parse(variants);
+        } catch (e) {
+          return res.status(400).json('Error: Invalid variants format');
+        }
+      }
+
+      if (!Array.isArray(parsedVariants) || parsedVariants.length === 0) {
+        return res
+          .status(400)
+          .json('Error: at least one price variant is required');
+      }
+
+      let finalImageUrl = imageUrl || '';
+
+      // Upload image file if provided
+      if (req.file) {
+        try {
+          const imageResult = await uploadToCloudinary(
+            req.file.buffer,
+            'home/Ds/products',
+            `product-${name.trim().toLowerCase().replace(/\s+/g, '-')}-image`
+          );
+          finalImageUrl = imageResult.secure_url;
+        } catch (uploadError) {
+          console.error('Error uploading image:', uploadError);
+          return res.status(400).json('Error: Failed to upload image file');
+        }
+      }
+
+      const product = new Product({
+        name: name.trim(),
+        fullDescription,
+        shortDescription,
+        benefits,
+        imageUrl: finalImageUrl,
+        variants: parsedVariants,
+        theme,
+        isFeatured: !!isFeatured,
+      });
+
+      const saved = await product.save();
+      res.status(201).json(saved);
+    } catch (err) {
+      console.error('Error creating product:', err);
+      res.status(400).json('Error: ' + err.message);
     }
-
-    if (!Array.isArray(variants) || variants.length === 0) {
-      return res
-        .status(400)
-        .json('Error: at least one price variant is required');
-    }
-
-    const product = new Product({
-      name: name.trim(),
-      fullDescription,
-      shortDescription,
-      benefits,
-      imageUrl: imageUrl || '',
-      variants,
-      theme,
-      isFeatured: !!isFeatured,
-    });
-
-    const saved = await product.save();
-    res.status(201).json(saved);
-  } catch (err) {
-    console.error('Error creating product:', err);
-    res.status(400).json('Error: ' + err.message);
   }
-});
+);
 
 // Update existing product (admin use)
 router.put('/:id', verifyToken, requireRole('admin'), async (req, res) => {

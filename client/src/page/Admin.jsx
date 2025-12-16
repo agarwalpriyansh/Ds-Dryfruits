@@ -13,6 +13,11 @@ function Admin() {
     bannerUrl: '',
   });
 
+  const [themeFiles, setThemeFiles] = useState({
+    image: null,
+    banner: null,
+  });
+
   const [productForm, setProductForm] = useState({
     name: '',
     fullDescription: '',
@@ -23,6 +28,8 @@ function Admin() {
     isFeatured: false,
     variants: [{ weight: '', price: '' }],
   });
+
+  const [productFile, setProductFile] = useState(null);
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -68,13 +75,44 @@ function Admin() {
     setThemeForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleThemeFileChange = (e) => {
+    const { name, files } = e.target;
+    setThemeFiles((prev) => ({
+      ...prev,
+      [name]: files[0] || null,
+    }));
+  };
+
   const handleCreateTheme = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
       setMessage('');
-      await apiService.createTheme(themeForm);
+      
+      const formData = new FormData();
+      formData.append('name', themeForm.name);
+      
+      // Add image URL if no file is uploaded
+      if (!themeFiles.image && themeForm.imageUrl) {
+        formData.append('imageUrl', themeForm.imageUrl);
+      }
+      
+      // Add banner URL if no file is uploaded
+      if (!themeFiles.banner && themeForm.bannerUrl) {
+        formData.append('bannerUrl', themeForm.bannerUrl);
+      }
+      
+      // Add files if uploaded
+      if (themeFiles.image) {
+        formData.append('image', themeFiles.image);
+      }
+      if (themeFiles.banner) {
+        formData.append('banner', themeFiles.banner);
+      }
+
+      await apiService.createTheme(formData);
       setThemeForm({ name: '', imageUrl: '', bannerUrl: '' });
+      setThemeFiles({ image: null, banner: null });
       await loadData();
       setMessage('Theme created successfully');
     } catch (err) {
@@ -93,6 +131,10 @@ function Admin() {
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
     }));
+  };
+
+  const handleProductFileChange = (e) => {
+    setProductFile(e.target.files[0] || null);
   };
 
   const handleVariantChange = (index, field, value) => {
@@ -130,10 +172,26 @@ function Admin() {
           price: Number(v.price),
         }));
 
-      await apiService.createProduct({
-        ...productForm,
-        variants: formattedVariants,
-      });
+      const formData = new FormData();
+      formData.append('name', productForm.name);
+      formData.append('fullDescription', productForm.fullDescription);
+      formData.append('shortDescription', productForm.shortDescription);
+      formData.append('benefits', productForm.benefits);
+      formData.append('theme', productForm.theme);
+      formData.append('isFeatured', productForm.isFeatured);
+      formData.append('variants', JSON.stringify(formattedVariants));
+      
+      // Add image URL if no file is uploaded
+      if (!productFile && productForm.imageUrl) {
+        formData.append('imageUrl', productForm.imageUrl);
+      }
+      
+      // Add file if uploaded
+      if (productFile) {
+        formData.append('image', productFile);
+      }
+
+      await apiService.createProduct(formData);
 
       setProductForm({
         name: '',
@@ -145,6 +203,7 @@ function Admin() {
         isFeatured: false,
         variants: [{ weight: '', price: '' }],
       });
+      setProductFile(null);
 
       await loadData();
       setMessage('Product created successfully');
@@ -202,26 +261,43 @@ function Admin() {
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium">Image URL</label>
+              <label className="mb-1 block text-sm font-medium">Image</label>
+              <input
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={handleThemeFileChange}
+                className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+              />
+              <p className="mt-1 text-xs text-gray-500">Or provide URL below</p>
               <input
                 type="text"
                 name="imageUrl"
                 value={themeForm.imageUrl}
                 onChange={handleThemeChange}
-                className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+                placeholder="Image URL (optional if file uploaded)"
+                className="mt-1 w-full rounded border border-gray-300 px-3 py-2 text-sm"
               />
             </div>
             <div>
               <label className="mb-1 block text-sm font-medium">
-                Banner URL (required)
+                Banner (required)
               </label>
+              <input
+                type="file"
+                name="banner"
+                accept="image/*"
+                onChange={handleThemeFileChange}
+                className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+              />
+              <p className="mt-1 text-xs text-gray-500">Or provide URL below</p>
               <input
                 type="text"
                 name="bannerUrl"
                 value={themeForm.bannerUrl}
                 onChange={handleThemeChange}
-                className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
-                required
+                placeholder="Banner URL (required if file not uploaded)"
+                className="mt-1 w-full rounded border border-gray-300 px-3 py-2 text-sm"
               />
             </div>
             <button
@@ -339,13 +415,22 @@ function Admin() {
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium">Image URL</label>
+              <label className="mb-1 block text-sm font-medium">Image</label>
+              <input
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={handleProductFileChange}
+                className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+              />
+              <p className="mt-1 text-xs text-gray-500">Or provide URL below</p>
               <input
                 type="text"
                 name="imageUrl"
                 value={productForm.imageUrl}
                 onChange={handleProductChange}
-                className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+                placeholder="Image URL (optional if file uploaded)"
+                className="mt-1 w-full rounded border border-gray-300 px-3 py-2 text-sm"
               />
             </div>
 

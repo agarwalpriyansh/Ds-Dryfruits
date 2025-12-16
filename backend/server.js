@@ -24,6 +24,9 @@ app.use(cors({
   optionsSuccessStatus: 204
 }));
 
+// Note: For multipart/form-data, we don't set Content-Type header manually
+// Multer will handle it automatically
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected successfully'))
   .catch((err) => console.error('MongoDB connection error:', err));
