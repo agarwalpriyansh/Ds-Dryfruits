@@ -30,6 +30,7 @@ function Admin() {
   });
 
   const [productFile, setProductFile] = useState(null);
+  const [editingProductId, setEditingProductId] = useState(null);
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -159,6 +160,40 @@ function Admin() {
     }));
   };
 
+  const handleEditProduct = (product) => {
+    setEditingProductId(product._id);
+    setProductForm({
+      name: product.name || '',
+      fullDescription: product.fullDescription || '',
+      shortDescription: product.shortDescription || '',
+      benefits: product.benefits || '',
+      imageUrl: product.imageUrl || '',
+      theme: product.theme?._id || product.theme || '',
+      isFeatured: product.isFeatured || false,
+      variants: product.variants && product.variants.length > 0
+        ? product.variants.map((v) => ({ weight: v.weight || '', price: v.price || '' }))
+        : [{ weight: '', price: '' }],
+    });
+    setProductFile(null);
+    // Scroll to form
+    document.querySelector('.rounded-lg.border.border-gray-200.bg-white.p-4')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingProductId(null);
+    setProductForm({
+      name: '',
+      fullDescription: '',
+      shortDescription: '',
+      benefits: '',
+      imageUrl: '',
+      theme: '',
+      isFeatured: false,
+      variants: [{ weight: '', price: '' }],
+    });
+    setProductFile(null);
+  };
+
   const handleCreateProduct = async (e) => {
     e.preventDefault();
     try {
@@ -191,7 +226,15 @@ function Admin() {
         formData.append('image', productFile);
       }
 
-      await apiService.createProduct(formData);
+      if (editingProductId) {
+        // Update existing product
+        await apiService.updateProduct(editingProductId, formData);
+        setMessage('Product updated successfully');
+      } else {
+        // Create new product
+        await apiService.createProduct(formData);
+        setMessage('Product created successfully');
+      }
 
       setProductForm({
         name: '',
@@ -204,13 +247,13 @@ function Admin() {
         variants: [{ weight: '', price: '' }],
       });
       setProductFile(null);
+      setEditingProductId(null);
 
       await loadData();
-      setMessage('Product created successfully');
     } catch (err) {
-      console.error('Error creating product:', err);
+      console.error('Error saving product:', err);
       setMessage(
-        err?.response?.data || 'Failed to create product. Check console for details.'
+        err?.response?.data || 'Failed to save product. Check console for details.'
       );
     } finally {
       setLoading(false);
@@ -324,7 +367,20 @@ function Admin() {
 
         {/* Product Form */}
         <div className="rounded-lg border border-gray-200 bg-white p-4 sm:p-6">
-          <h2 className="mb-4 text-lg font-semibold">Create Product</h2>
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-lg font-semibold">
+              {editingProductId ? 'Edit Product' : 'Create Product'}
+            </h2>
+            {editingProductId && (
+              <button
+                type="button"
+                onClick={handleCancelEdit}
+                className="rounded bg-gray-200 px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+            )}
+          </div>
           <form onSubmit={handleCreateProduct} className="space-y-3">
             <div>
               <label className="mb-1 block text-sm font-medium">Name *</label>
@@ -482,13 +538,25 @@ function Admin() {
               </div>
             </div>
 
-            <button
-              type="submit"
-              className="mt-2 rounded bg-[#5e0404] px-4 py-2 text-sm font-semibold text-white hover:bg-gray-800"
-              disabled={loading}
-            >
-              Save Product
-            </button>
+            <div className="mt-2 flex gap-2">
+              <button
+                type="submit"
+                className="rounded bg-[#5e0404] px-4 py-2 text-sm font-semibold text-white hover:bg-gray-800"
+                disabled={loading}
+              >
+                {editingProductId ? 'Update Product' : 'Save Product'}
+              </button>
+              {editingProductId && (
+                <button
+                  type="button"
+                  onClick={handleCancelEdit}
+                  className="rounded bg-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-400"
+                  disabled={loading}
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
           </form>
         </div>
       </div>
@@ -504,11 +572,21 @@ function Admin() {
                 key={p._id}
                 className="flex flex-col rounded border border-gray-100 bg-gray-50 px-3 py-2"
               >
-                <div className="flex justify-between">
-                  <span className="font-semibold">{p.name}</span>
-                  <span className="text-xs text-gray-500">
-                    Theme: {p.theme?.name || 'N/A'}
-                  </span>
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold">{p.name}</span>
+                      <button
+                        onClick={() => handleEditProduct(p)}
+                        className="ml-2 rounded bg-blue-600 px-2 py-1 text-xs font-medium text-white hover:bg-blue-700"
+                      >
+                        Edit
+                      </button>
+                    </div>
+                    <span className="text-xs text-gray-500">
+                      Theme: {p.theme?.name || 'N/A'}
+                    </span>
+                  </div>
                 </div>
                 <div className="mt-1 text-xs text-gray-600">
                   Variants:{' '}

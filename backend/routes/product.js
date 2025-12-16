@@ -141,24 +141,83 @@ router.post(
 );
 
 // Update existing product (admin use)
-router.put('/:id', verifyToken, requireRole('admin'), async (req, res) => {
-  try {
-    const updates = req.body;
-    const product = await Product.findByIdAndUpdate(req.params.id, updates, {
-      new: true,
-      runValidators: true,
-    });
+router.put(
+  '/:id',
+  verifyToken,
+  requireRole('admin'),
+  upload.single('image'),
+  async (req, res) => {
+    try {
+      const {
+        name,
+        fullDescription,
+        shortDescription,
+        benefits,
+        imageUrl,
+        variants,
+        theme,
+        isFeatured,
+      } = req.body;
 
-    if (!product) {
-      return res.status(404).json('Error: Product not found');
+      // Get existing product first
+      const existingProduct = await Product.findById(req.params.id);
+      if (!existingProduct) {
+        return res.status(404).json('Error: Product not found');
+      }
+
+      // Parse variants if it's a string (from FormData)
+      let parsedVariants = variants;
+      if (typeof variants === 'string') {
+        try {
+          parsedVariants = JSON.parse(variants);
+        } catch (e) {
+          return res.status(400).json('Error: Invalid variants format');
+        }
+      }
+
+      // Build update object
+      const updates = {};
+      if (name) updates.name = name.trim();
+      if (fullDescription !== undefined) updates.fullDescription = fullDescription;
+      if (shortDescription !== undefined) updates.shortDescription = shortDescription;
+      if (benefits !== undefined) updates.benefits = benefits;
+      if (theme !== undefined) updates.theme = theme;
+      if (isFeatured !== undefined) updates.isFeatured = !!isFeatured;
+      if (parsedVariants && Array.isArray(parsedVariants) && parsedVariants.length > 0) {
+        updates.variants = parsedVariants;
+      }
+
+      // Handle image upload
+      if (req.file) {
+        try {
+          const imageResult = await uploadToCloudinary(
+            req.file.buffer,
+            'home/Ds/products',
+            `product-${(name || existingProduct.name).trim().toLowerCase().replace(/\s+/g, '-')}-image`
+          );
+          updates.imageUrl = imageResult.secure_url;
+        } catch (uploadError) {
+          console.error('Error uploading image:', uploadError);
+          return res.status(400).json('Error: Failed to upload image file');
+        }
+      } else if (imageUrl !== undefined) {
+        // If imageUrl is provided and no file uploaded, use the URL
+        updates.imageUrl = imageUrl;
+      }
+      // If neither file nor URL is provided, keep existing imageUrl
+
+      const product = await Product.findByIdAndUpdate(req.params.id, updates, {
+        new: true,
+        runValidators: true,
+      });
+
+      res.json(product);
+    } catch (err) {
+      console.error('Error updating product:', err);
+      res.status(400).json('Error: ' + err.message);
     }
-
-    res.json(product);
-  } catch (err) {
-    console.error('Error updating product:', err);
-    res.status(400).json('Error: ' + err.message);
   }
-});
+);
 
 router.route('/:id').get((req, res) => {
   // Skip if the id is "featured" - this should never happen if routes are in correct order
