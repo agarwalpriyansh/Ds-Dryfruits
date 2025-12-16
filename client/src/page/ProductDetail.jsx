@@ -122,7 +122,7 @@ function ProductDetail() {
                 <img
                   src={product.imageUrl}
                   alt={product.name}
-                  className="w-full h-auto object-cover"
+                  className="w-full h-auto max-h-[550px] object-cover"
                   onError={(e) => {
                     if (e.currentTarget.src !== placeholderImage) {
                       e.currentTarget.src = placeholderImage;
@@ -130,7 +130,7 @@ function ProductDetail() {
                   }}
                 />
               ) : (
-                <div className="w-full h-96 flex items-center justify-center">
+                <div className="w-full h-[550px] flex items-center justify-center">
                   <img
                     src={placeholderImage}
                     alt="No image available"
