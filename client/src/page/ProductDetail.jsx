@@ -97,8 +97,8 @@ function ProductDetail() {
   return (
     <div className="pb-10">
       {/* Breadcrumb Navigation */}
-      <div className="px-4 sm:px-5 md:px-6 max-w-[1200px] mx-auto mt-4 sm:mt-6">
-        <nav className="flex items-center gap-2 text-sm sm:text-base mb-3 sm:mb-4" aria-label="Breadcrumb">
+      <div className="px-4 sm:px-5 md:px-6 max-w-[1200px] mx-auto mt-2 sm:mt-3">
+        <nav className="flex items-center gap-4 text-sm sm:text-base mb-3 sm:mb-4" aria-label="Breadcrumb">
           <Link
             to="/"
             className="text-gray-900 hover:text-gray-700 transition-colors"
@@ -107,16 +107,17 @@ function ProductDetail() {
           </Link>
           {theme && themeSlug && themeName && (
             <>
+              <span className="text-gray-400">/</span>
               <Link
                 to={`/themes/${themeSlug}`}
                 className="text-gray-900 hover:text-gray-700 transition-colors"
               >
                 Collections
               </Link>
-              <span className="text-gray-900">{themeName}</span>
+              <span className="text-gray-400">/</span>
             </>
           )}
-          <span className="text-gray-900 font-bold">{product.name}</span>
+          <span className="text-gray-900">{themeName}</span>
         </nav>
       </div>
 
