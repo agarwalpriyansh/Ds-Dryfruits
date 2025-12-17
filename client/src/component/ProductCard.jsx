@@ -70,7 +70,7 @@ export default function ProductCard({ product }) {
             backgroundRepeat: 'no-repeat'
           }}
         >
-          <div className="w-[60%] h-[60%] flex items-center justify-center">
+          <div className="w-[85%] aspect-square flex items-center justify-center">
             <img
               src={imageUrl}
               alt={product.name || 'Product image'}
@@ -97,11 +97,14 @@ export default function ProductCard({ product }) {
             <select
               value={
                 selectedVariant
-                  ? variants.findIndex(
-                      (v) =>
-                        v.weight === selectedVariant.weight &&
-                        Number(v.price) === Number(selectedVariant.price)
-                    )
+                  ? (() => {
+                      const index = variants.findIndex(
+                        (v) =>
+                          v.weight === selectedVariant.weight &&
+                          Number(v.price) === Number(selectedVariant.price)
+                      );
+                      return index >= 0 ? index : '';
+                    })()
                   : ''
               }
               onChange={(e) => {

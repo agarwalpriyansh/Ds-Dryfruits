@@ -128,7 +128,7 @@ function ProductDetail() {
             <div className="rounded-xl overflow-hidden shadow-lg">
               {/* Product Image Container - Same style as theme page */}
               <div 
-                className="relative z-10 w-full flex items-center justify-center aspect-[4/3] max-h-[400px]"
+                className="relative z-10 w-full flex items-center justify-center aspect-[4/3] max-h-[700px]"
                 style={{
                   backgroundImage: `url('https://res.cloudinary.com/dsbu2gzgi/image/upload/v1765387511/prouctbg_jkhkhw.png')`,
                   backgroundSize: 'cover',
@@ -136,7 +136,7 @@ function ProductDetail() {
                   backgroundRepeat: 'no-repeat'
                 }}
               >
-                <div className="w-[60%] h-[60%] flex items-center justify-center">
+                <div className="w-[70%] h-[90%] flex items-center justify-center">
                   {product.imageUrl ? (
                     <img
                       src={product.imageUrl}
