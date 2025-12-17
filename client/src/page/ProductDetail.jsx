@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { apiService } from '../utils/apiConnector';
 import ProductStrip from '../component/ProductStrip';
+import { slugifyThemeName } from '../utils/slugify';
 
 function ProductDetail() {
   const { productId } = useParams();
@@ -87,29 +88,36 @@ function ProductDetail() {
     return null;
   }
 
+  // Get theme information for breadcrumb
+  const theme = product?.theme;
+  // Ensure theme is a populated object (not just an ID)
+  const themeName = theme && typeof theme === 'object' && 'name' in theme ? theme.name : null;
+  const themeSlug = themeName ? slugifyThemeName(themeName) : '';
+
   return (
     <div className="pb-10">
-      {/* Back Button */}
+      {/* Breadcrumb Navigation */}
       <div className="px-4 sm:px-5 md:px-6 max-w-[1200px] mx-auto mt-4 sm:mt-6">
-        <button
-          onClick={() => navigate(-1)}
-          className="flex items-center text-gray-600 hover:text-gray-900 transition-colors mb-3 sm:mb-4 text-sm sm:text-base"
-        >
-          <svg
-            className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        <nav className="flex items-center gap-2 text-sm sm:text-base mb-3 sm:mb-4" aria-label="Breadcrumb">
+          <Link
+            to="/"
+            className="text-gray-900 hover:text-gray-700 transition-colors"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-          Back
-        </button>
+            Home
+          </Link>
+          {theme && themeSlug && themeName && (
+            <>
+              <Link
+                to={`/themes/${themeSlug}`}
+                className="text-gray-900 hover:text-gray-700 transition-colors"
+              >
+                Collections
+              </Link>
+              <span className="text-gray-900">{themeName}</span>
+            </>
+          )}
+          <span className="text-gray-900 font-bold">{product.name}</span>
+        </nav>
       </div>
 
       {/* Product Content */}
@@ -117,27 +125,38 @@ function ProductDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           {/* Product Image */}
           <div className="w-full">
-            <div className="rounded-xl overflow-hidden bg-gray-100 shadow-lg">
-              {product.imageUrl ? (
-                <img
-                  src={product.imageUrl}
-                  alt={product.name}
-                  className="w-full h-auto max-h-[550px] object-cover"
-                  onError={(e) => {
-                    if (e.currentTarget.src !== placeholderImage) {
-                      e.currentTarget.src = placeholderImage;
-                    }
-                  }}
-                />
-              ) : (
-                <div className="w-full h-[550px] flex items-center justify-center">
-                  <img
-                    src={placeholderImage}
-                    alt="No image available"
-                    className="w-full h-full object-cover"
-                  />
+            <div className="rounded-xl overflow-hidden shadow-lg">
+              {/* Product Image Container - Same style as theme page */}
+              <div 
+                className="relative z-10 w-full flex items-center justify-center aspect-[4/3] max-h-[400px]"
+                style={{
+                  backgroundImage: `url('https://res.cloudinary.com/dsbu2gzgi/image/upload/v1765387511/prouctbg_jkhkhw.png')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat'
+                }}
+              >
+                <div className="w-[60%] h-[60%] flex items-center justify-center">
+                  {product.imageUrl ? (
+                    <img
+                      src={product.imageUrl}
+                      alt={product.name}
+                      className="w-full h-full rounded-full object-cover object-center"
+                      onError={(e) => {
+                        if (e.currentTarget.src !== placeholderImage) {
+                          e.currentTarget.src = placeholderImage;
+                        }
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={placeholderImage}
+                      alt="No image available"
+                      className="w-full h-full rounded-full object-cover object-center"
+                    />
+                  )}
                 </div>
-              )}
+              </div>
             </div>
             {/* Product Strip */}
             <ProductStrip />

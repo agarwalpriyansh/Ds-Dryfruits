@@ -227,6 +227,7 @@ router.route('/:id').get((req, res) => {
   }
 
   Product.findById(req.params.id)
+    .populate('theme')
     .then((product) => {
       if (!product) {
         return res.status(404).json('Error: Product not found');
