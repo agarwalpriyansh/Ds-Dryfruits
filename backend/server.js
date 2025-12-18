@@ -31,6 +31,17 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected successfully'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
+
+app.get("/", (req, res) => {
+  res.status(200).send("API is running");
+});
+
+//tells google that api endpoint is not allowed to be indexed
+app.get("/robots.txt", (req, res) => {
+  res.type("text/plain");
+  res.send("User-agent: *\nDisallow: /");
+});
+
 const themesRouter = require('./routes/theme');
 const productsRouter = require('./routes/product');
 const contactRouter = require('./routes/contact');
