@@ -134,6 +134,10 @@ function Admin() {
     }));
   };
 
+  const selectedThemeObj = themes.find(t => t._id === productForm.theme);
+  const isGiftBoxTheme = selectedThemeObj?.name?.toLowerCase().includes('gift') && selectedThemeObj?.name?.toLowerCase().includes('box');
+
+
   const handleProductFileChange = (e) => {
     setProductFile(e.target.files[0] || null);
   };
@@ -200,7 +204,19 @@ function Admin() {
       setLoading(true);
       setMessage('');
 
-      const formattedVariants = productForm.variants
+      let finalVariants = productForm.variants;
+      let finalShortDesc = productForm.shortDescription;
+      let finalFullDesc = productForm.fullDescription;
+      let finalBenefits = productForm.benefits;
+
+      if (isGiftBoxTheme) {
+        finalShortDesc = "Exclusive Gift Box";
+        finalFullDesc = "A premium collection perfect for gifting.";
+        finalBenefits = "Perfect for all occasions.";
+        finalVariants = [{ weight: "Standard", price: 0 }];
+      }
+
+      const formattedVariants = finalVariants
         .filter((v) => v.weight && v.price !== '')
         .map((v) => ({
           weight: v.weight,
@@ -209,9 +225,9 @@ function Admin() {
 
       const formData = new FormData();
       formData.append('name', productForm.name);
-      formData.append('fullDescription', productForm.fullDescription);
-      formData.append('shortDescription', productForm.shortDescription);
-      formData.append('benefits', productForm.benefits);
+      formData.append('fullDescription', finalFullDesc);
+      formData.append('shortDescription', finalShortDesc);
+      formData.append('benefits', finalBenefits);
       formData.append('theme', productForm.theme);
       formData.append('isFeatured', productForm.isFeatured);
       formData.append('variants', JSON.stringify(formattedVariants));
@@ -428,6 +444,7 @@ function Admin() {
               </label>
             </div>
 
+            {!isGiftBoxTheme && (
             <div>
               <label className="mb-1 block text-sm font-medium">
                 Short Description *
@@ -438,10 +455,12 @@ function Admin() {
                 onChange={handleProductChange}
                 className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
                 rows={2}
-                required
+                required={!isGiftBoxTheme}
               />
             </div>
+          )}
 
+          {!isGiftBoxTheme && (
             <div>
               <label className="mb-1 block text-sm font-medium">
                 Full Description * (first line will be bold on product page)
@@ -452,10 +471,12 @@ function Admin() {
                 onChange={handleProductChange}
                 className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
                 rows={4}
-                required
+                required={!isGiftBoxTheme}
               />
             </div>
+          )}
 
+          {!isGiftBoxTheme && (
             <div>
               <label className="mb-1 block text-sm font-medium">
                 Benefits * (you can use new lines for bullet-style formatting)
@@ -466,9 +487,10 @@ function Admin() {
                 onChange={handleProductChange}
                 className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
                 rows={4}
-                required
+                required={!isGiftBoxTheme}
               />
             </div>
+          )}
 
             <div>
               <label className="mb-1 block text-sm font-medium">Image</label>
@@ -490,6 +512,7 @@ function Admin() {
               />
             </div>
 
+            {!isGiftBoxTheme && (
             <div>
               <div className="mb-1 flex items-center justify-between">
                 <label className="block text-sm font-medium">
@@ -537,6 +560,7 @@ function Admin() {
                 ))}
               </div>
             </div>
+          )}
 
             <div className="mt-2 flex gap-2">
               <button
