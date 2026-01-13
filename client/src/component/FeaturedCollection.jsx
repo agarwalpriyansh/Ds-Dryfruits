@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { apiService } from '../utils/apiConnector';
-import GiftBoxCard from './gift-box-card';
+import FeaturedProductCard from './FeaturedProductCard';
 
 function FeaturedCollection() {
   const [products, setProducts] = useState([]);
@@ -257,7 +257,7 @@ function FeaturedCollection() {
                   maxWidth: `calc((100% - ${(itemsPerPage - 1) * gapSize}rem) / ${itemsPerPage})`
                 }}
               >
-                <GiftBoxCard
+                <FeaturedProductCard
                   id={product._id}
                   image={product.imageUrl || placeholderImage}
                   brand="DS Dryfruits"
