@@ -7,31 +7,31 @@ import GiftBoxCard from "./gift-box-card"
 const GIFT_BOXES = [
   {
     id: 1,
-    image: "https://res.cloudinary.com/dsbu2gzgi/image/upload/v1764775659/2_jukcok.jpg",
+    image: "https://res.cloudinary.com/dsbu2gzgi/image/upload/v1768281122/4_cpbmto.jpg",
     brand: "DS Dryfruits",
     collection: "Gift Box Collection",
   },
   {
     id: 2,
-    image: "https://res.cloudinary.com/dsbu2gzgi/image/upload/v1764775660/3_wsqm07.jpg",
+    image: "https://res.cloudinary.com/dsbu2gzgi/image/upload/v1768281122/5_vfmrtn.jpg",
     brand: "DS Dryfruits",
     collection: "Gift Box Collection",
   },
   {
     id: 3,
-    image: "https://res.cloudinary.com/dsbu2gzgi/image/upload/v1764775664/5_q0mjbz.jpg",
+    image: "https://res.cloudinary.com/dsbu2gzgi/image/upload/v1768281121/3_qkh7mc.jpg",
     brand: "DS Dryfruits",
     collection: "Gift Box Collection",
   },
   {
     id: 4,
-    image: "https://res.cloudinary.com/dsbu2gzgi/image/upload/v1764775666/6_sywzk0.jpg",
+    image: "https://res.cloudinary.com/dsbu2gzgi/image/upload/v1768281121/2_mkju55.jpg",
     brand: "DS Dryfruits",
     collection: "Gift Box Collection",
   },
   {
     id: 5,
-    image: "https://res.cloudinary.com/dsbu2gzgi/image/upload/v1764775658/1_jem9kz.jpg",
+    image: "https://res.cloudinary.com/dsbu2gzgi/image/upload/v1768281121/1_zjedi0.jpg",
     brand: "DS Dryfruits",
     collection: "Gift Box Collection",
   },
