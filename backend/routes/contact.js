@@ -23,6 +23,10 @@ router.route('/').post(async (req, res) => {
       });
     }
 
+    // Log environment variables (masked for security)
+    console.log('Email User:', process.env.EMAIL_USER ? 'Set' : 'Not Set');
+    console.log('Email Pass:', process.env.EMAIL_PASS ? 'Set' : 'Not Set');
+
     // Email content
     const mailOptions = {
       from: process.env.EMAIL_USER,
@@ -41,17 +45,20 @@ router.route('/').post(async (req, res) => {
     };
 
     // Send email
-    await transporter.sendMail(mailOptions);
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully:', info.response);
+    console.log('Message ID:', info.messageId);
 
     res.json({ 
       success: true, 
       message: 'Your message has been sent successfully!' 
     });
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('Error sending email detail:', error);
     res.status(500).json({ 
       success: false, 
-      message: 'Failed to send message. Please try again later.' 
+      message: 'Failed to send message. Please try again later.',
+      error: error.message // Return error message to client for debugging
     });
   }
 });
