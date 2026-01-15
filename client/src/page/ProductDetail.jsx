@@ -3,15 +3,35 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { apiService } from '../utils/apiConnector';
 import ProductStrip from '../component/ProductStrip';
 import { slugifyThemeName } from '../utils/slugify';
+import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 function ProductDetail() {
   const { productId } = useParams();
   const navigate = useNavigate();
 
+  const { addToCart } = useCart();
+  const { isAuthenticated } = useAuth();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('benefits');
+  const [addedItems, setAddedItems] = useState({});
+
+  const handleAddToCart = (variant) => {
+    if (!isAuthenticated) {
+      alert("Please login to add items to cart.");
+      navigate('/login', { state: { from: `/products/${productId}` } });
+      return;
+    }
+
+    addToCart(product, 1, variant);
+    setAddedItems(prev => ({ ...prev, [variant.weight]: true }));
+    // Reset feedback after 2 seconds
+    setTimeout(() => {
+      setAddedItems(prev => ({ ...prev, [variant.weight]: false }));
+    }, 2000);
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -194,34 +214,57 @@ function ProductDetail() {
                 <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3 sm:mb-4">
                   Available Sizes & Prices
                 </h2>
-                <div className="space-y-2 sm:space-y-3">
-                  {product.variants.map((variant, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-200"
-                    >
-                      <span className="text-base sm:text-lg font-medium text-gray-900">
-                        {variant.weight}
-                      </span>
-                      <span className="text-lg sm:text-xl font-bold text-gray-900">
-                        ₹{variant.price}
-                      </span>
-                    </div>
-                  ))}
+                <div className="space-y-4">
+                  {product.variants.map((variant, index) => {
+                    const isAdded = addedItems[`${variant.weight}`];
+                    return (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-200"
+                      >
+                        <div className="flex flex-col">
+                          <span className="text-base sm:text-lg font-medium text-gray-900">
+                            {variant.weight}
+                          </span>
+                          <span className="text-lg sm:text-xl font-bold text-gray-900">
+                            ₹{variant.price}
+                          </span>
+                        </div>
+                        
+                        <button
+                          onClick={() => handleAddToCart(variant)}
+                          className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                            isAdded 
+                              ? 'bg-green-600 text-white hover:bg-green-700' 
+                              : 'bg-amber-900 text-white hover:bg-amber-950'
+                          }`}
+                        >
+                          {isAdded ? 'Added! +1' : 'Add to Cart'}
+                        </button>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
 
             {/* Action Buttons */}
-            <div className="mt-auto pt-4 sm:pt-6">
+            <div className="mt-auto pt-4 sm:pt-6 flex flex-col sm:flex-row gap-4">
               <a
                 href={`https://wa.me/919024675644?text=Hi, I'm interested in ${encodeURIComponent(product.name)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block w-full sm:w-auto sm:min-w-[200px] md:w-[30%] bg-[#5e0404] text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-700 transition-colors shadow-md text-center"
+                className="inline-block w-full sm:w-auto sm:min-w-[200px] md:w-[48%] bg-[#5e0404] text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-700 transition-colors shadow-md text-center"
               >
                 Whatsapp Us
               </a>
+              
+              <Link
+                to="/cart"
+                className="inline-block w-full sm:w-auto sm:min-w-[200px] md:w-[48%] bg-white border-2 border-[#5e0404] text-[#5e0404] py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-50 transition-colors shadow-md text-center"
+              >
+                Go to Cart
+              </Link>
             </div>
           </div>
         </div>

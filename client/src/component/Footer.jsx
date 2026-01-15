@@ -54,9 +54,6 @@ export default function Footer() {
               <a href="#" className="text-foreground hover:text-amber-700 transition" aria-label="Instagram">
                 <Instagram size={18} className="sm:w-5 sm:h-5" />
               </a>
-              <a href="#" className="text-foreground hover:text-amber-700 transition" aria-label="LinkedIn">
-                <Linkedin size={18} className="sm:w-5 sm:h-5" />
-              </a>
             </div>
           </div>
 

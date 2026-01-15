@@ -17,48 +17,58 @@ import ScrollToTop from './component/ScrollToTop';
 import Admin from './page/Admin';
 import AdminLogin from './page/AdminLogin';
 import ProtectedRoute from './component/ProtectedRoute';
+import Login from './page/Login';
+import Signup from './page/Signup';
+import Cart from './page/Cart';
+import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
 
 function App() {
   return (
-    <>
-      <ScrollToTop />
-      <SEO 
-        title="Premium Quality Dry Fruits & Nuts"
-        description="Shop premium quality dry fruits and nuts. Best prices on almonds, cashews, walnuts, and more. Bulk orders available."
-      />
-      <div className="flex min-h-screen flex-col bg-white text-slate-900">
-      <div><Strip/></div>
-      <div><Navbar/></div>
+    <AuthProvider>
+      <CartProvider>
+        <ScrollToTop />
+        <SEO 
+          title="Premium Quality Dry Fruits & Nuts"
+          description="Shop premium quality dry fruits and nuts. Best prices on almonds, cashews, walnuts, and more. Bulk orders available."
+        />
+        <div className="flex min-h-screen flex-col bg-white text-slate-900">
+          <div><Strip/></div>
+          <div><Navbar/></div>
 
-      {/* Main Content Area */}
-      <main className="flex-1   md:pt-[71px]">
-        <Routes>
-          {/* Route 1: The Home Page */}
-          <Route path="/" element={<HomePage />} />
+          {/* Main Content Area */}
+          <main className="flex-1 md:pt-[71px]">
+            <Routes>
+              {/* Route 1: The Home Page */}
+              <Route path="/" element={<HomePage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/cart" element={<Cart />} />
 
-          <Route path="/themes/:themeSlug" element={<ThemeDetail />} />
-          <Route path="/products/:productId" element={<ProductDetail />} />
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/bulk" element={<BulkOrder />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/returns" element={<Returns />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/admin-login" element={<AdminLogin />} />
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <Admin />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </main>
-      <TrustStrip />
-      <Footer />
-      </div>
-    </>
+              <Route path="/themes/:themeSlug" element={<ThemeDetail />} />
+              <Route path="/products/:productId" element={<ProductDetail />} />
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/bulk" element={<BulkOrder />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/returns" element={<Returns />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/admin-login" element={<AdminLogin />} />
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute>
+                    <Admin />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </main>
+          <TrustStrip />
+          <Footer />
+        </div>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 

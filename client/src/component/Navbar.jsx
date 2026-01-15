@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu as MenuIcon, X } from 'lucide-react';
+import { Menu as MenuIcon, X, ShoppingCart } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { slugifyThemeName } from '../utils/slugify';
+import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const { getCartCount } = useCart();
+  const { isAuthenticated } = useAuth();
   const [isMobile, setIsMobile] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [shopMenuOpen, setShopMenuOpen] = useState(false);
@@ -249,6 +253,47 @@ export default function Navbar() {
           >
             Contact Us
           </Link>
+
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              if (isAuthenticated) {
+                navigate('/cart');
+              } else {
+                navigate('/login');
+              }
+            }}
+            className="text-black hover:opacity-70 transition-opacity relative bg-transparent border-none cursor-pointer p-0 flex"
+          >
+            <ShoppingCart className="w-6 h-6" />
+            {isAuthenticated && getCartCount() > 0 && (
+              <span className="absolute -top-2 -right-2 bg-amber-900 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                {getCartCount()}
+              </span>
+            )}
+          </button>
+        </div>
+
+        {/* Mobile Actions (Cart + Menu) */}
+        <div className="md:hidden flex items-center gap-4">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              if (isAuthenticated) {
+                navigate('/cart');
+              } else {
+                navigate('/login');
+              }
+            }}
+            className="text-black hover:opacity-70 transition-opacity relative bg-transparent border-none cursor-pointer p-0 flex"
+          >
+            <ShoppingCart className="w-6 h-6" />
+            {isAuthenticated && getCartCount() > 0 && (
+              <span className="absolute -top-2 -right-2 bg-amber-900 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                {getCartCount()}
+              </span>
+            )}
+          </button>
         </div>
 
         {/* Mobile Menu Button */}
