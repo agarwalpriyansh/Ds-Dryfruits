@@ -174,7 +174,7 @@ export default function Strip() {
                 <Twitter className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-[18px] md:h-[18px]" />
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/d.s.dryfruitswala?igsh=dXpoeGF5cHc4dHB6"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[#D3D3D3] cursor-pointer transition-colors duration-300 ease-in-out flex hover:text-white"
