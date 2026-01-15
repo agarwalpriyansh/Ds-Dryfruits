@@ -56,6 +56,26 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+
+
+  const googleLogin = async (tokenData) => {
+    try {
+      const response = await apiService.googleLogin({ token: tokenData });
+      const { token, user } = response.data;
+      
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      setAuthToken(token);
+      setUser(user);
+      return { success: true };
+    } catch (error) {
+       return { 
+        success: false, 
+        message: error.response?.data || 'Google Login failed' 
+      };
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -68,6 +88,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     login,
     signup,
+    googleLogin,
     logout,
     isAuthenticated: !!user
   };

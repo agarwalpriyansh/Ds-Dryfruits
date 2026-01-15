@@ -20,6 +20,7 @@ export const apiService = {
   // Auth
   login: (data) => api.post('/auth/login', data),
   signup: (data) => api.post('/auth/signup', data),
+  googleLogin: (data) => api.post('/auth/google', data),
 
   // Theme functions
   getThemes: () => api.get('/themes'),

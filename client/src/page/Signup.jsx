@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Mail, Lock, User, AlertCircle, Loader2 } from 'lucide-react';
+import GoogleAuthButton from '../component/GoogleAuthButton';
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -176,6 +177,17 @@ export default function Signup() {
             )}
           </button>
         </form>
+
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-gray-300" />
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-white text-gray-500">Or continue with</span>
+          </div>
+        </div>
+        
+        <GoogleAuthButton text="Sign up with Google" />
         
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
