@@ -1,5 +1,6 @@
 import { Package, Calendar } from "lucide-react"
 import { Link } from "react-router-dom"
+import LazyImage from "./LazyImage"
 
 export default function FeaturedProductCard({ id, image, brand, collection, to = "/themes/gift-boxes" }) {
   const bgImage = "https://res.cloudinary.com/dsbu2gzgi/image/upload/v1765387511/prouctbg_jkhkhw.png";
@@ -17,7 +18,7 @@ export default function FeaturedProductCard({ id, image, brand, collection, to =
         }}
       >
         <div className="relative w-full h-full rounded-full border-4 border-white overflow-hidden shadow-md">
-          <img src={image || "/placeholder.svg"} alt={collection} className="w-full h-full object-cover" />
+          <LazyImage src={image || "/placeholder.svg"} alt={collection} className="w-full h-full object-cover" skeletonClassName="rounded-full" />
         </div>
       </div>
 

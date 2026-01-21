@@ -5,6 +5,7 @@ import ProductStrip from '../component/ProductStrip';
 import { slugifyThemeName } from '../utils/slugify';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import LazyImage from '../component/LazyImage';
 
 function ProductDetail() {
   const { productId } = useParams();
@@ -159,10 +160,11 @@ function ProductDetail() {
               >
                 <div className="w-[70%] h-[90%] flex items-center justify-center">
                   {product.imageUrl ? (
-                    <img
+                    <LazyImage
                       src={product.imageUrl}
                       alt={product.name}
                       className="w-full h-full rounded-full object-cover object-center"
+                      skeletonClassName="rounded-full"
                       onError={(e) => {
                         if (e.currentTarget.src !== placeholderImage) {
                           e.currentTarget.src = placeholderImage;
@@ -170,10 +172,11 @@ function ProductDetail() {
                       }}
                     />
                   ) : (
-                    <img
+                    <LazyImage
                       src={placeholderImage}
                       alt="No image available"
                       className="w-full h-full rounded-full object-cover object-center"
+                      skeletonClassName="rounded-full"
                     />
                   )}
                 </div>

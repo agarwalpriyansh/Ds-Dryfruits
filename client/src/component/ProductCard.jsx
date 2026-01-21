@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import LazyImage from './LazyImage';
 
 export default function ProductCard({ product, isGiftBox }) {
   if (!product) return null;
@@ -71,10 +72,11 @@ export default function ProductCard({ product, isGiftBox }) {
           }}
         >
           <div className="w-[85%] aspect-square flex items-center justify-center">
-            <img
+            <LazyImage
               src={imageUrl}
               alt={product.name || 'Product image'}
               className="w-full h-full rounded-full object-cover object-center"
+              skeletonClassName="rounded-full"
               onError={(e) => {
                 if (e.target.src !== placeholderImage) {
                   e.target.src = placeholderImage;

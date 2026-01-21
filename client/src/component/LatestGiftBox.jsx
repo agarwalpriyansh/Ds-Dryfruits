@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { ChevronUp } from "lucide-react"
+import LazyImage from "./LazyImage"
 import giftBox1 from "../assets/giftbox/1.jpeg"
 import giftBox2 from "../assets/giftbox/2.jpeg"
 import giftBox3 from "../assets/giftbox/3.jpeg"
@@ -160,10 +161,11 @@ export default function GiftBoxCarousel() {
                       className="relative flex-shrink-0 aspect-square rounded-lg overflow-hidden bg-muted/30 shadow-md hover:shadow-lg transition-shadow"
                       style={{ width: `calc((100% - ${(itemsPerView - 1) * 1}rem) / ${itemsPerView})` }}
                     >
-                      <img 
+                      <LazyImage 
                         src={item.image || "/placeholder.svg"} 
                         alt={item.alt} 
                         className="w-full h-full object-cover scale-105 hover:scale-110 transition-transform duration-300" 
+                        skeletonClassName="rounded-lg"
                       />
                     </div>
                   ))}
