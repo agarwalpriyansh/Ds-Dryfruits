@@ -45,8 +45,15 @@ export default function LazyImage({ src, alt, className = "", skeletonClassName 
     };
   }, []);
 
+  const [hasError, setHasError] = useState(false);
+
   const handleImageLoad = () => {
     setIsLoaded(true);
+  };
+
+  const handleImageError = () => {
+    setIsLoaded(true);
+    setHasError(true);
   };
 
   return (
@@ -66,13 +73,21 @@ export default function LazyImage({ src, alt, className = "", skeletonClassName 
 
       {/* Actual Image */}
       {isInView && (
-        <img
-          src={src}
-          alt={alt}
-          className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${className}`}
-          onLoad={handleImageLoad}
-          {...props}
-        />
+        !hasError ? (
+          <img
+            src={src}
+            alt={alt}
+            className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${className}`}
+            onLoad={handleImageLoad}
+            onError={handleImageError}
+            {...props}
+          />
+        ) : (
+          <div className={`flex items-center justify-center bg-gray-200 text-gray-400 ${className}`}>
+             {/* Fallback icon or text could go here */}
+             <span className="text-xs">IMG ERR</span>
+          </div>
+        )
       )}
     </div>
   );
