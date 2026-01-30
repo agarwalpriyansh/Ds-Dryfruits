@@ -1,12 +1,13 @@
 import { Package, Calendar } from "lucide-react"
 import { Link } from "react-router-dom"
+import LazyImage from "./LazyImage"
 
 export default function GiftBoxCard({ id, image, brand, collection, to = "/themes/gift-boxes" }) {
   return (
     <Link to={to} className="block border-2 border-gray-200 bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer">
       {/* Image */}
       <div className="relative w-[80%] mx-auto mt-4 aspect-square bg-muted overflow-hidden rounded-xl">
-        <img src={image || "/placeholder.svg"} alt={collection} className="w-full h-full object-cover" />
+        <LazyImage src={image || "/placeholder.svg"} alt={collection} className="w-full h-full object-cover" skeletonClassName="rounded-xl" />
       </div>
 
       {/* Content */}

@@ -4,6 +4,7 @@ import gift1 from '../assets/giftbox/1.jpeg';
 import gift2 from '../assets/giftbox/2.jpeg';
 import gift3 from '../assets/giftbox/3.jpeg';
 import gift4 from '../assets/giftbox/4.jpeg';
+import LazyImage from './LazyImage';
 
 export default function VideoCarousel() {
   const media = [
@@ -105,7 +106,7 @@ export default function VideoCarousel() {
                     style={{ zIndex: media.length - index }}
                   >
                     <div className={`relative ${sizeClasses} rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow ${isVideo ? 'scale-110' : ''}`}>
-                      <img src={item.thumbnail || "/placeholder.svg"} alt={item.title} className="w-full h-full object-cover" />
+                      <LazyImage src={item.thumbnail || "/placeholder.svg"} alt={item.title} className="w-full h-full object-cover" skeletonClassName="w-full h-full" />
                       {/* Play Button - Only for Video */}
                       {isVideo && (
                         <div className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/50 transition-colors group cursor-pointer">

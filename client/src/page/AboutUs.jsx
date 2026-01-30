@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import ReviewsSection from '../component/Review'
+import LazyImage from '../component/LazyImage'
 
 const CAROUSEL_INTERVAL = 4000
 
@@ -30,10 +31,11 @@ export const AboutUs = () => {
   return (
     <div className="mt-1 space-y-12">
       <section className="relative h-64 overflow-hidden sm:h-80 lg:h-[280px]">
-        <img
+        <LazyImage
           src="https://i.pinimg.com/736x/cc/4f/39/cc4f394f191fa26abb938f3561fdcb92.jpg"
           alt="DS Dryfruits storefront"
           className="absolute inset-0 h-full w-full object-cover "
+          skeletonClassName="h-full w-full"
         />
         <div className="absolute inset-0 bg-black/45" />
         <div className="relative z-10 flex h-full items-center justify-center px-6 text-center">
@@ -45,10 +47,11 @@ export const AboutUs = () => {
 
       <div className="px-6 py-10 lg:px-8 space-y-12">
       <section className="max-w-6xl mx-auto flex flex-col gap-8 lg:flex-row lg:items-start">
-        <img
+        <LazyImage
           src="https://res.cloudinary.com/dsbu2gzgi/image/upload/v1765190213/3_bdq0yz.webp"
           alt="DS Dryfuits"
           className="w-full rounded-2xl object-cover shadow-2xl lg:h-[335px] lg:w-1/2"
+          skeletonClassName="rounded-2xl lg:h-[335px]"
         />
 
         <div className="space-y-4 lg:w-1/2">
@@ -99,10 +102,11 @@ export const AboutUs = () => {
       </section>
 
       <section className="max-w-6xl mx-auto relative overflow-hidden rounded-2xl bg-gray-100 shadow-2xl">
-        <img
+        <LazyImage
           src={images[current]}
           alt={`DS Dryfruits ${current + 1}`}
           className="block h-[280px] w-full object-cover transition-opacity duration-500 sm:h-[360px] md:h-[520px]"
+          skeletonClassName="h-[280px] sm:h-[360px] md:h-[520px]"
         />
 
         <button

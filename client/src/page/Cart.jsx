@@ -4,6 +4,7 @@ import { Trash2, Plus, Minus, ArrowRight, ShoppingBag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { slugifyThemeName } from '../utils/slugify';
+import LazyImage from '../component/LazyImage';
 
 export default function Cart() {
   const { cartItems, removeFromCart, updateQuantity, getCartTotal } = useCart();
@@ -65,10 +66,11 @@ export default function Cart() {
               {cartItems.map((item) => (
                 <li key={`${item.id}-${JSON.stringify(item.option)}`} className="p-6 sm:flex">
                   <div className="flex-shrink-0 w-24 h-24 sm:w-32 sm:h-32 rounded-md overflow-hidden bg-gray-100 border border-gray-200">
-                    <img
+                    <LazyImage
                       src={item.image}
                       alt={item.name}
                       className="w-full h-full object-center object-cover"
+                      skeletonClassName="w-full h-full"
                     />
                   </div>
 

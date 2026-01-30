@@ -13,9 +13,10 @@ import { useState, useEffect, useRef } from 'react';
  * - skeletonClassName: Classes for the skeleton container (should match image dimensions)
  * - ...props: Standard img attributes
  */
-export default function LazyImage({ src, alt, className = "", skeletonClassName = "", ...props }) {
+export default function LazyImage({ src, alt, className = "", skeletonClassName = "", onLoad, onError, ...props }) {
   const [isInView, setIsInView] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -45,15 +46,15 @@ export default function LazyImage({ src, alt, className = "", skeletonClassName 
     };
   }, []);
 
-  const [hasError, setHasError] = useState(false);
-
-  const handleImageLoad = () => {
+  const handleImageLoad = (e) => {
     setIsLoaded(true);
+    if (onLoad) onLoad(e);
   };
 
-  const handleImageError = () => {
+  const handleImageError = (e) => {
     setIsLoaded(true);
     setHasError(true);
+    if (onError) onError(e);
   };
 
   return (
@@ -78,9 +79,9 @@ export default function LazyImage({ src, alt, className = "", skeletonClassName 
             src={src}
             alt={alt}
             className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${className}`}
+            {...props}
             onLoad={handleImageLoad}
             onError={handleImageError}
-            {...props}
           />
         ) : (
           <div className={`flex items-center justify-center bg-gray-200 text-gray-400 ${className}`}>

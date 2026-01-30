@@ -1,4 +1,5 @@
 import React from 'react';
+import LazyImage from './LazyImage';
 
 export default function ThemeStrip({ theme }) {
   if (!theme) return null;
@@ -36,10 +37,11 @@ export default function ThemeStrip({ theme }) {
         {/* Theme Image */}
         {themeImageUrl && (
           <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-gray-200">
-            <img
+            <LazyImage
               src={themeImageUrl}
               alt={themeName}
               className="w-full h-full object-cover object-center"
+              skeletonClassName="w-full h-full rounded-full"
               onError={(e) => {
                 e.target.style.display = 'none';
               }}

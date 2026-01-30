@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import LazyImage from "./LazyImage"
 
 export default function ImageCarousel({ images, autoPlayInterval = 5000 }) {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -47,13 +48,16 @@ export default function ImageCarousel({ images, autoPlayInterval = 5000 }) {
               index === currentIndex ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            <img
+            <LazyImage
               src={image.src || "/placeholder.svg"}
               alt={image.alt || `Carousel image ${index + 1}`}
               className="w-full h-full object-cover object-center"
+              skeletonClassName="w-full h-full"
               onError={(e) => {
                 console.error('Image failed to load:', image.src);
-                e.target.src = '/placeholder.svg';
+                if (e.currentTarget.src !== '/placeholder.svg') {
+                    e.currentTarget.src = '/placeholder.svg';
+                }
               }}
               onLoad={() => {
                 console.log('Image loaded successfully:', image.src);

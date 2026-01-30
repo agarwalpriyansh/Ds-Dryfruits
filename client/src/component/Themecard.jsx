@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { slugifyThemeName } from '../utils/slugify';
+import LazyImage from './LazyImage';
 
 export default function ThemeCard({ theme }) {
   if (!theme) return null;
@@ -52,10 +53,11 @@ export default function ThemeCard({ theme }) {
       className="flex flex-col items-center cursor-pointer transition-all duration-300 ease-in-out rounded-xl border border-gray-400 bg-white shadow-sm hover:shadow-md"
     >
       <div className="w-[88%] mt-6 aspect-square overflow-hidden bg-gray-100">
-        <img
+        <LazyImage
           src={imageUrl}
           alt={theme.name || 'Theme image'}
           className="w-full h-full object-cover object-center"
+          skeletonClassName="w-full h-full"
           onError={(e) => {
             console.error('❌ Image failed to load:', {
               attemptedUrl: imageUrl,

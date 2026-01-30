@@ -1,3 +1,5 @@
+import LazyImage from './LazyImage';
+
 function ProductStrip() {
   const features = [
     {
@@ -41,14 +43,17 @@ function ProductStrip() {
             >
               {/* Icon Container */}
               <div className="mb-2 sm:mb-3 flex items-center justify-center">
-                <img
+                <LazyImage
                   src={feature.imageUrl}
                   alt={feature.name}
                   className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain ${
                     feature.isHighlighted ? "brightness-0 invert" : ""
                   }`}
+                  skeletonClassName="rounded-md"
                   onError={(e) => {
-                    e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23e5e7eb'/%3E%3C/svg%3E";
+                    if (e.currentTarget.src !== "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23e5e7eb'/%3E%3C/svg%3E") {
+                        e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23e5e7eb'/%3E%3C/svg%3E";
+                    }
                   }}
                 />
               </div>
