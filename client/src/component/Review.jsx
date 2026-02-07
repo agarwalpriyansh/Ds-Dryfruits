@@ -1,7 +1,9 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { Star } from 'lucide-react'
+
+const SWIPE_THRESHOLD = 50
 
 const reviews = [
   {
@@ -40,6 +42,7 @@ export default function ReviewsSection() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlay, setIsAutoPlay] = useState(true)
   const [visibleCount, setVisibleCount] = useState(1)
+  const touchStartX = useRef(null)
 
   const resolveVisibleCount = useCallback(() => {
     if (typeof window === 'undefined') {
@@ -81,6 +84,30 @@ export default function ReviewsSection() {
     setIsAutoPlay(false)
   }
 
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % reviews.length)
+    setIsAutoPlay(false)
+  }
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev === 0 ? reviews.length - 1 : prev - 1))
+    setIsAutoPlay(false)
+  }
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return
+    const touchEndX = e.changedTouches[0].clientX
+    const diff = touchStartX.current - touchEndX
+    touchStartX.current = null
+    if (Math.abs(diff) < SWIPE_THRESHOLD) return
+    if (diff > 0) nextSlide()
+    else prevSlide()
+  }
+
   return (
     <section className="w-full bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50 py-12 sm:py-16 px-4 sm:px-6">
       {/* Title */}
@@ -90,8 +117,12 @@ export default function ReviewsSection() {
         </h2>
       </div>
 
-      {/* Reviews Container */}
-      <div className="max-w-6xl mx-auto">
+      {/* Reviews Container - swipeable */}
+      <div
+        className="max-w-6xl mx-auto touch-pan-y select-none"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         {/* Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6 mb-8 sm:mb-10 px-2 sm:px-0">
           {getVisibleReviews().map((review) => (
