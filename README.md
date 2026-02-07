@@ -1,4 +1,4 @@
-# 🌰 Premium Dry Fruit & Gift Box Store
+#  Premium Dry Fruit & Gift Box Store
 
 A modern, full-stack MERN e-commerce application designed for selling premium dry fruits, nuts, and themed gift boxes.
 
