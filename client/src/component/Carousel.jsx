@@ -1,9 +1,12 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import LazyImage from "./LazyImage"
+
+const SWIPE_THRESHOLD = 50
 
 export default function ImageCarousel({ images, autoPlayInterval = 5000 }) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlay, setIsAutoPlay] = useState(true)
+  const touchStartX = useRef(null)
 
   // Auto-advance carousel
   useEffect(() => {
@@ -31,13 +34,30 @@ export default function ImageCarousel({ images, autoPlayInterval = 5000 }) {
     setIsAutoPlay(false)
   }
 
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return
+    const touchEndX = e.changedTouches[0].clientX
+    const diff = touchStartX.current - touchEndX
+    touchStartX.current = null
+
+    if (Math.abs(diff) < SWIPE_THRESHOLD) return
+    if (diff > 0) nextSlide()
+    else prevSlide()
+  }
+
   if (!images || images.length === 0) return null
 
   return (
     <div
-      className="relative w-full h-[340px] sm:h-[400px] md:h-[500px] overflow-hidden m-0 p-0"
+      className="relative w-full h-[340px] sm:h-[400px] md:h-[500px] overflow-hidden m-0 p-0 touch-pan-y select-none"
       onMouseEnter={() => setIsAutoPlay(false)}
       onMouseLeave={() => setIsAutoPlay(true)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       {/* Main carousel container */}
       <div className="relative w-full h-full">

@@ -80,7 +80,7 @@ export default function Strip() {
           <div className="w-full flex justify-between items-center px-1">
              <div className="flex-1"></div>
              <p className="text-white text-[0.7rem] sm:text-[0.8rem] font-normal text-center leading-tight whitespace-normal break-words flex-grow-[2]">
-              Dry Fruit House
+              DS Dryfruits
              </p>
              <div className="flex-1 flex justify-end" ref={dropdownRef}>
                <button 
