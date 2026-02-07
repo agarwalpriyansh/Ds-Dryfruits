@@ -45,8 +45,19 @@ function Home() {
                 </h2>
                 
                 {loading && (
-                    <div className="text-center p-6 sm:p-8 md:p-10 text-gray-500 text-sm sm:text-base">
-                        Loading themes...
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-4 gap-y-8 sm:gap-x-5 sm:gap-y-10 md:gap-x-6 md:gap-y-12 max-w-[1200px] mx-auto">
+                        {[1, 2, 3, 4, 5, 6].map((i) => (
+                            <div key={i} className="flex flex-col items-center rounded-xl border border-gray-200 bg-white shadow-sm">
+                                <div className="w-[88%] mt-6 aspect-square overflow-hidden rounded-lg bg-gray-100 relative">
+                                    <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 bg-[length:200%_100%]" />
+                                </div>
+                                <div className="pt-6 pb-8 w-full text-center">
+                                    <div className="mx-auto h-6 w-3/4 max-w-[140px] rounded bg-gray-100 relative overflow-hidden">
+                                        <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 bg-[length:200%_100%]" />
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 )}
                 

@@ -192,7 +192,31 @@ function FeaturedCollection() {
   if (loading) {
     return (
       <Wrapper>
-        <div className="text-center text-gray-500 text-sm sm:text-base">Loading featured products...</div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 w-full">
+          {[1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="border-2 border-gray-200 bg-card rounded-2xl overflow-hidden shadow-sm"
+            >
+              <div className="w-full aspect-square bg-muted relative overflow-hidden">
+                <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 bg-[length:200%_100%]" />
+              </div>
+              <div className="p-6 flex flex-col gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="h-4 w-20 rounded bg-gray-100 relative overflow-hidden">
+                    <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 bg-[length:200%_100%]" />
+                  </div>
+                  <div className="h-4 w-24 rounded bg-gray-100 relative overflow-hidden">
+                    <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 bg-[length:200%_100%]" />
+                  </div>
+                </div>
+                <div className="w-full h-10 rounded-full bg-gray-100 relative overflow-hidden">
+                  <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 bg-[length:200%_100%]" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </Wrapper>
     );
   }
