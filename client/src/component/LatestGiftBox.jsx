@@ -38,7 +38,7 @@ const CAROUSEL_ITEMS = [
     
 ]
 
-export default function GiftBoxCarousel() {
+export default function GiftBoxCarousel({ shouldLoad = true }) {
   const navigate = useNavigate()
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -117,6 +117,8 @@ export default function GiftBoxCarousel() {
 
   // Create extended items array for seamless wrapping
   const extendedItems = [...CAROUSEL_ITEMS, ...CAROUSEL_ITEMS.slice(0, itemsPerView)]
+
+  if (!shouldLoad) return null;
 
   return (
     <section className="w-full py-16 px-4 md:px-8 lg:px-12">

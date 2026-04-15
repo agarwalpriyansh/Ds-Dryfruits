@@ -6,7 +6,7 @@ import gift3 from '../assets/giftbox/3.jpeg';
 import gift4 from '../assets/giftbox/4.jpeg';
 import LazyImage from './LazyImage';
 
-export default function VideoCarousel() {
+export default function VideoCarousel({ shouldLoad = true }) {
   const media = [
     { id: 1, title: 'Video 1', thumbnail: gift1, type: 'video' },
     { id: 2, title: 'Photo 1', thumbnail: gift2, type: 'photo' },
@@ -73,6 +73,8 @@ export default function VideoCarousel() {
         return null;
     }
   };
+
+  if (!shouldLoad) return null;
 
   return (
     <div className="w-[90%] mx-auto">

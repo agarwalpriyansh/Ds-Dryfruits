@@ -14,18 +14,27 @@ function Home() {
     const [themes, setThemes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [loadingStep, setLoadingStep] = useState(1); // 1: Categories, 2: Everything else
 
     useEffect(() => {
         const fetchThemes = async () => {
             try {
                 setLoading(true);
                 const response = await apiService.getThemes();
-                console.log('Themes API response:', response.data);
                 setThemes(response.data);
                 setError(null);
+                
+                // Once themes are fetched, we can trigger the next loading step
+                // We add a small delay to ensure images start loading before the rest of the page data is fetched
+                setTimeout(() => {
+                    setLoadingStep(2);
+                }, 500); 
+
             } catch (err) {
                 console.error('Error fetching themes:', err);
                 setError('Failed to load themes');
+                // Even on error, we should probably allow rest of the page to load eventually
+                setLoadingStep(2);
             } finally {
                 setLoading(false);
             }
@@ -33,6 +42,8 @@ function Home() {
 
         fetchThemes();
     }, []);
+
+    const isRestReady = loadingStep >= 2;
 
     return (
         <div className="m-0 p-0 flex flex-col gap-6 sm:gap-10">
@@ -81,12 +92,13 @@ function Home() {
                     </div>
                 )}
             </div>
-            <LatestGiftBox />
-            <VideoCarousel />
-            <ReviewsSection />
-            <FeaturedCollection />
-            <GiftBoxCarousel />
-            
+
+            {/* Deferred Components */}
+            <LatestGiftBox shouldLoad={isRestReady} />
+            <VideoCarousel shouldLoad={isRestReady} />
+            <ReviewsSection shouldLoad={isRestReady} />
+            <FeaturedCollection shouldLoad={isRestReady} />
+            <GiftBoxCarousel shouldLoad={isRestReady} />
             
         </div>
     );

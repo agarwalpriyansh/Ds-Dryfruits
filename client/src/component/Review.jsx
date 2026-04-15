@@ -38,8 +38,9 @@ const reviews = [
   },
 ]
 
-export default function ReviewsSection() {
+export default function ReviewsSection({ shouldLoad = true }) {
   const [currentIndex, setCurrentIndex] = useState(0)
+  
   const [isAutoPlay, setIsAutoPlay] = useState(true)
   const [visibleCount, setVisibleCount] = useState(1)
   const touchStartX = useRef(null)
@@ -107,6 +108,8 @@ export default function ReviewsSection() {
     if (diff > 0) nextSlide()
     else prevSlide()
   }
+
+  if (!shouldLoad) return null;
 
   return (
     <section className="w-full bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50 py-12 sm:py-16 px-4 sm:px-6">

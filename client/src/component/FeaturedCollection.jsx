@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { apiService } from '../utils/apiConnector';
 import FeaturedProductCard from './FeaturedProductCard';
 
-function FeaturedCollection() {
+function FeaturedCollection({ shouldLoad = true }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -19,6 +19,8 @@ function FeaturedCollection() {
   const [itemWidth, setItemWidth] = useState(0);
 
   useEffect(() => {
+    if (!shouldLoad) return;
+
     let isMounted = true;
 
     const loadFeaturedProducts = async () => {
@@ -51,7 +53,7 @@ function FeaturedCollection() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [shouldLoad]);
 
   useEffect(() => {
     const updateItemsPerPage = () => {

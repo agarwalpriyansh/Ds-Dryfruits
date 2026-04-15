@@ -49,7 +49,12 @@ function Admin() {
       setProducts(productsRes.data || []);
     } catch (err) {
       console.error('Error loading admin data:', err);
-      setMessage('Failed to load data');
+      if (err.response?.status === 401) {
+        localStorage.removeItem('token');
+        navigate('/admin-login');
+      } else {
+        setMessage('Failed to load data');
+      }
     } finally {
       setLoading(false);
     }
@@ -57,11 +62,16 @@ function Admin() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
-      setAuthToken(token);
+    const role = localStorage.getItem('role');
+    
+    if (!token || role !== 'admin') {
+      navigate('/admin-login');
+      return;
     }
+    
+    setAuthToken(token);
     loadData();
-  }, []);
+  }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');

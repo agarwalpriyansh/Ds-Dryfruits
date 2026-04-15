@@ -43,8 +43,9 @@ const GIFT_BOXES = [
   },
 ]
 
-export default function GiftBoxCarousel() {
+export default function GiftBoxCarousel({ shouldLoad = true }) {
   const [currentIndex, setCurrentIndex] = useState(0)
+  
   const [itemsPerPage, setItemsPerPage] = useState(1)
   const [gapSize, setGapSize] = useState(1) // in rem
   const [touchStartX, setTouchStartX] = useState(null)
@@ -109,6 +110,8 @@ export default function GiftBoxCarousel() {
 
     setTouchStartX(null)
   }
+
+  if (!shouldLoad) return null;
 
   return (
     <div className="sm:pb-6 md:pb-0 px-4 sm:px-6 lg:px-8">
