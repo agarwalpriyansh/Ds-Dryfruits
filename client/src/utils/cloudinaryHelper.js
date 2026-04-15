@@ -27,7 +27,8 @@ export const getOptimizedCloudinaryUrl = (url, options = {}) => {
     width,
     quality = 'auto',
     format = 'auto',
-    crop = 'fill'
+    crop = 'fill',
+    placeholder = false
   } = options;
 
   // Split the URL to insert transformations
@@ -39,8 +40,15 @@ export const getOptimizedCloudinaryUrl = (url, options = {}) => {
   const transformations = [];
   transformations.push(`f_${format}`);
   transformations.push(`q_${quality}`);
-  if (width) transformations.push(`w_${width}`);
-  if (crop && width) transformations.push(`c_${crop}`);
+
+  if (placeholder) {
+    // For placeholders, we want a tiny, blurred image
+    transformations.push('w_40');
+    transformations.push('e_blur:1000');
+  } else {
+    if (width) transformations.push(`w_${width}`);
+    if (crop && width) transformations.push(`c_${crop}`);
+  }
 
   const transformString = transformations.join(',');
 

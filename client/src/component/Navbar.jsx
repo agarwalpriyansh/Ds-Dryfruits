@@ -194,9 +194,11 @@ export default function Navbar() {
             className="text-black no-underline hover:opacity-80 transition-opacity inline-block"
           >
             <img 
-              src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dsbu2gzgi/image/upload/v1765721414/nav_logo_xkyhl7.png", { width: 200 })} 
+              src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dsbu2gzgi/image/upload/v1765721414/nav_logo_xkyhl7.png", { width: 400 })} 
               alt="DS Dryfruits Logo" 
               className="h-8 sm:h-10 md:h-12 lg:h-14 w-auto"
+              loading="eager"
+              fetchpriority="high"
             />
           </Link>
         </div>

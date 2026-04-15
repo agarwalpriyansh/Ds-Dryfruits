@@ -154,6 +154,7 @@ function ThemeDetail() {
             src={getOptimizedCloudinaryUrl(bannerUrl || bannerPlaceholder, { width: 1600 })}
             alt={theme?.name || 'Theme banner'}
             className="absolute inset-0 h-full w-full object-cover"
+            priority="high"
             onError={(e) => {
               if (e.currentTarget.src !== bannerPlaceholder) {
                 e.currentTarget.src = bannerPlaceholder;

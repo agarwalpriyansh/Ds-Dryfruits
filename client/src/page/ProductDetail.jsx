@@ -166,6 +166,7 @@ function ProductDetail() {
                       alt={product.name}
                       className="w-full h-full rounded-full object-cover object-center"
                       skeletonClassName="rounded-full"
+                      priority="high"
                       onError={(e) => {
                         if (e.currentTarget.src !== placeholderImage) {
                           e.currentTarget.src = placeholderImage;
