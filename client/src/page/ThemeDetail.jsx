@@ -5,6 +5,7 @@ import { deslugifyThemeName, slugifyThemeName } from '../utils/slugify';
 import ProductCard from '../component/ProductCard';
 import ThemeStrip from '../component/ThemeStrip';
 import LazyImage from '../component/LazyImage';
+import { getOptimizedCloudinaryUrl } from '../utils/cloudinaryHelper';
 
 function ThemeDetail() {
   const { themeSlug } = useParams();
@@ -150,7 +151,7 @@ function ThemeDetail() {
       <div className="w-full">
         <div className="relative h-52 sm:h-64 md:h-72 lg:h-80 xl:h-96">
           <LazyImage
-            src={bannerUrl || bannerPlaceholder}
+            src={getOptimizedCloudinaryUrl(bannerUrl || bannerPlaceholder, { width: 1600 })}
             alt={theme?.name || 'Theme banner'}
             className="absolute inset-0 h-full w-full object-cover"
             onError={(e) => {

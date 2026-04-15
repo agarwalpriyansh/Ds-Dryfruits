@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { slugifyThemeName } from '../utils/slugify';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { getOptimizedCloudinaryUrl } from '../utils/cloudinaryHelper';
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -193,7 +194,7 @@ export default function Navbar() {
             className="text-black no-underline hover:opacity-80 transition-opacity inline-block"
           >
             <img 
-              src="https://res.cloudinary.com/dsbu2gzgi/image/upload/v1765721414/nav_logo_xkyhl7.png" 
+              src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dsbu2gzgi/image/upload/v1765721414/nav_logo_xkyhl7.png", { width: 200 })} 
               alt="DS Dryfruits Logo" 
               className="h-8 sm:h-10 md:h-12 lg:h-14 w-auto"
             />

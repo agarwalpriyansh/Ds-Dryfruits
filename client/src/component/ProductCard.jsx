@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import LazyImage from './LazyImage';
+import { getOptimizedCloudinaryUrl } from '../utils/cloudinaryHelper';
 
 export default function ProductCard({ product, isGiftBox }) {
   if (!product) return null;
@@ -65,7 +66,7 @@ export default function ProductCard({ product, isGiftBox }) {
         <div 
           className="relative z-10 w-full flex items-center justify-center aspect-square"
           style={{
-            backgroundImage: `url('https://res.cloudinary.com/dsbu2gzgi/image/upload/v1765387511/prouctbg_jkhkhw.png')`,
+            backgroundImage: `url('${getOptimizedCloudinaryUrl('https://res.cloudinary.com/dsbu2gzgi/image/upload/v1765387511/prouctbg_jkhkhw.png', { width: 600 })}')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat'
@@ -73,7 +74,7 @@ export default function ProductCard({ product, isGiftBox }) {
         >
           <div className="w-[85%] aspect-square flex items-center justify-center">
             <LazyImage
-              src={imageUrl}
+              src={getOptimizedCloudinaryUrl(imageUrl, { width: 500 })}
               alt={product.name || 'Product image'}
               className="w-full h-full rounded-full object-cover object-center"
               skeletonClassName="rounded-full"

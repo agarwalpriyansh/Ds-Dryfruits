@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { slugifyThemeName } from '../utils/slugify';
 import LazyImage from './LazyImage';
+import { getOptimizedCloudinaryUrl } from '../utils/cloudinaryHelper';
 
 export default function ThemeCard({ theme }) {
   if (!theme) return null;
@@ -54,7 +55,7 @@ export default function ThemeCard({ theme }) {
     >
       <div className="w-[88%] mt-6 aspect-square overflow-hidden bg-gray-100">
         <LazyImage
-          src={imageUrl}
+          src={getOptimizedCloudinaryUrl(imageUrl, { width: 500 })}
           alt={theme.name || 'Theme image'}
           className="w-full h-full object-cover object-center"
           skeletonClassName="w-full h-full"

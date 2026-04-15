@@ -1,4 +1,5 @@
 import LazyImage from './LazyImage';
+import { getOptimizedCloudinaryUrl } from '../utils/cloudinaryHelper';
 
 function ProductStrip() {
   const features = [
@@ -44,7 +45,7 @@ function ProductStrip() {
               {/* Icon Container */}
               <div className="mb-2 sm:mb-3 flex items-center justify-center">
                 <LazyImage
-                  src={feature.imageUrl}
+                  src={getOptimizedCloudinaryUrl(feature.imageUrl, { width: 200 })}
                   alt={feature.name}
                   className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain ${
                     feature.isHighlighted ? "brightness-0 invert" : ""

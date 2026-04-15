@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import ReviewsSection from '../component/Review'
 import LazyImage from '../component/LazyImage'
+import { getOptimizedCloudinaryUrl } from '../utils/cloudinaryHelper'
 
 const CAROUSEL_INTERVAL = 4000
 
@@ -12,7 +13,7 @@ export const AboutUs = () => {
       'https://res.cloudinary.com/dsbu2gzgi/image/upload/v1765190213/3_bdq0yz.webp',
       'https://res.cloudinary.com/dsbu2gzgi/image/upload/v1765190213/2_cmzuih.webp',
       'https://res.cloudinary.com/dsbu2gzgi/image/upload/v1765190213/4_kjmrb4.webp'
-    ],
+    ].map(url => getOptimizedCloudinaryUrl(url, { width: 1000 })),
     []
   )
 
@@ -48,7 +49,7 @@ export const AboutUs = () => {
       <div className="px-6 py-10 lg:px-8 space-y-12">
       <section className="max-w-6xl mx-auto flex flex-col gap-8 lg:flex-row lg:items-start">
         <LazyImage
-          src="https://res.cloudinary.com/dsbu2gzgi/image/upload/v1765190213/3_bdq0yz.webp"
+          src={getOptimizedCloudinaryUrl("https://res.cloudinary.com/dsbu2gzgi/image/upload/v1765190213/3_bdq0yz.webp", { width: 800 })}
           alt="DS Dryfuits"
           className="w-full rounded-2xl object-cover shadow-2xl lg:h-[335px] lg:w-1/2"
           skeletonClassName="rounded-2xl lg:h-[335px]"

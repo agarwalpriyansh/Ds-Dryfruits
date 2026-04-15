@@ -6,6 +6,7 @@ import { slugifyThemeName } from '../utils/slugify';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import LazyImage from '../component/LazyImage';
+import { getOptimizedCloudinaryUrl } from '../utils/cloudinaryHelper';
 
 function ProductDetail() {
   const { productId } = useParams();
@@ -161,7 +162,7 @@ function ProductDetail() {
                 <div className="w-[70%] h-[90%] flex items-center justify-center">
                   {product.imageUrl ? (
                     <LazyImage
-                      src={product.imageUrl}
+                      src={getOptimizedCloudinaryUrl(product.imageUrl, { width: 800 })}
                       alt={product.name}
                       className="w-full h-full rounded-full object-cover object-center"
                       skeletonClassName="rounded-full"
